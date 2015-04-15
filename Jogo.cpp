@@ -46,8 +46,6 @@ void Jogo::gerenciarEstado()
 	switch (estado) {
 		case menuPrincipal:
 			menu.desenhar();
-			if (menu.sair())
-				finalizar();
 			break;
 		case halterofilismo:
 			break;
