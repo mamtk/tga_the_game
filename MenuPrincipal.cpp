@@ -27,6 +27,7 @@ MenuPrincipal::MenuPrincipal()
 		};
 	sizeTextoAjuda = textoAjuda.size();
 	// inicializar texto das opções
+	textoCabecalhoOpcoes = L"Pressione [ESPAÇO] para voltar. Todas as opções destacadas serão ativadas.";
 	textoOpcoes = { L"Nível de dificuldade:", // [0]
 		L"Desativar eventos aleatórios:",	// [1]
 		L"Desativar fatality:", // [2]
@@ -115,7 +116,7 @@ void MenuPrincipal::desenhar()
 			vaiBase();
 		} else if (teclado.soltou[TECLA_HOME]) {
 			vaiTopo();
-		} else if (teclado.soltou[TECLA_ENTER] || teclado.soltou[TECLA_ESPACO] || mouse.pressionou[0]) { // [0] = primeiro botao do mouse
+		} else if (teclado.soltou[TECLA_ENTER] || teclado.soltou[TECLA_ESPACO] || mouse.pressionou[0]) {	// [0] = primeiro botao do mouse
 			vaiOpcao();
 		}
 		break;
@@ -125,7 +126,7 @@ void MenuPrincipal::desenhar()
 		break;
 	case Creditos:
 		textoHandler.desenhar(janela.getLargura()*.5, janela.getAltura()*.5);
-		if (teclado.soltou[TECLA_ENTER] || teclado.soltou[TECLA_ESPACO]) {
+		if (teclado.soltou[TECLA_ENTER] || teclado.soltou[TECLA_ESPACO] || mouse.pressionou[0]) {	// [0] = primeiro botao do mouse
 			textosMenuPrincipal[ativo].setCor(0, 255, 0);	// primeiro retornamos créditos para a cor normal
 			ativo = Jogar;						// em nome da usabilidade retornamos a opção para a primeira opção
 			textosMenuPrincipal[ativo].setCor(255, 255, 0);	// agora alteramos a cor da primeira opção pra mostrar que ela está selecionada
@@ -208,10 +209,10 @@ void MenuPrincipal::vaiOpcao()
 // aqui configuramos o textoHandler para o menu de opções
 void MenuPrincipal::prepararTextoOpcoes()
 {
-	textoHandler.setCor(100, 20, 50);
+	textoHandler.setCor(150, 200, 50);
 	textoHandler.setAlinhamento(TEXTO_CENTRALIZADO);
 	textoHandler.setEspacamentoLinhas(2.0f);
-	textoHandler.setWstring(textoCreditos);
+	textoHandler.setWstring(textoCabecalhoOpcoes);
 	textoHandler.setFonte("fonteNormal");
 	// setar fonte nos textos de opções
 	int totalElementos = textosMenuOpcoes.size(); // contador de elementos texto (para não ficar chamando size() desnecessariamente)
@@ -272,7 +273,9 @@ void MenuPrincipal::gerenciarMenuOpcoes()
 		}
 	}
 	// por fim desenhamos o cabeçalho
+	textoHandler.desenhar(janela.getLargura()*.5, janela.getAltura()*.79);
 
 	// aqui gerenciamos as seleções do usuário
-	// a selação varia em dois eixos, em y o jogador muda a opção, em x o jogador muda a variável; ambas precisam ter a cor destacada, a variável permanentemente
+	// a selação varia em dois eixos, em y (W S, ↑ ↓)  o jogador muda a opção, em x (A D, ← →) o jogador muda a variável;
+	//	ambas precisam ter a cor destacada, no eixo x permanentemente
 }
