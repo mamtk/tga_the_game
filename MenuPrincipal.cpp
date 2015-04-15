@@ -91,12 +91,20 @@ MenuPrincipal::~MenuPrincipal()
 
 void MenuPrincipal::desenhar()
 {
+	int xMenu = janela.getLargura() * .5;
+	int yBase = janela.getAltura() * .5;
 	switch (estadoInterno) {
 	default:
 	case Esperando:	// Aqui simplesmente desenhamos e esperamos por eventos no menu principal
 		for (int i = 0; i < sizeOpcoesPrincipais; i++) {
 			textosMenuPrincipal[i].setFonte("fonteNormal");
-			textosMenuPrincipal[i].desenhar(janela.getLargura() * .5, janela.getAltura() * .5 + (i * 27));
+			textosMenuPrincipal[i].desenhar(xMenu, yBase + (i * 27));
+			int tamanhoTexto = textosMenuPrincipal[i].getWstring().size();
+			if (mouse.y >= (yBase + (27 * i) - 15) && mouse.y <= (yBase + (27 * i)) && \
+				(mouse.x >= (xMenu - tamanhoTexto * 5) && (mouse.x <= (xMenu + tamanhoTexto * 5)))) {
+				// mouse provavelmente sobre a opção atual
+				vaiIndice(i);
+			}
 		}
 
 		if (teclado.soltou[TECLA_CIMA] || teclado.soltou[TECLA_W]) {
@@ -107,7 +115,7 @@ void MenuPrincipal::desenhar()
 			vaiBase();
 		} else if (teclado.soltou[TECLA_HOME]) {
 			vaiTopo();
-		} else if (teclado.soltou[TECLA_ENTER] || teclado.soltou[TECLA_ESPACO]) {
+		} else if (teclado.soltou[TECLA_ENTER] || teclado.soltou[TECLA_ESPACO] || mouse.pressionou[0]) { // [0] = primeiro botao do mouse
 			vaiOpcao();
 		}
 		break;
@@ -156,6 +164,12 @@ void MenuPrincipal::vaiBase()
 {
 	textosMenuPrincipal[ativo].setCor(0, 255, 0);
 	ativo = sizeOpcoesPrincipais - 1; // sizeOpcoesPrincipais = tamanho, como começa em zero reduzimos 1
+	textosMenuPrincipal[ativo].setCor(255, 255, 0);
+}
+void MenuPrincipal::vaiIndice(int i)
+{
+	textosMenuPrincipal[ativo].setCor(0, 255, 0);
+	ativo = i; // recebemos o índice i
 	textosMenuPrincipal[ativo].setCor(255, 255, 0);
 }
 

@@ -29,6 +29,7 @@ class MenuPrincipal
 	void vaiBaixo();
 	void vaiTopo();
 	void vaiBase();
+	void vaiIndice(int);
 	void vaiOpcao();
 	void prepararTextoOpcoes();
 	void prepararTextoCreditos();
