@@ -19,7 +19,7 @@ class MenuPrincipal
 	std::wstring textoCreditos;						// wstring texto dos créditos
 	std::wstring textoCabecalhoOpcoes;				// wstring texto cabecalho pro menu de opcoes
 	int ativo = 0;					// opcao ativa na tela (seleção)
-	std::vector<int> opcoesAtivas;	// vetor com cada valor ativo do menu opções, e.g. ({0,0,1} == {normal,nao,sim})
+	std::vector<int> valoresAtivos;	// vetor com cada valor ativo do menu opções, e.g. ({0,0,1} == {normal,nao,sim})
 	int sizeOpcoesPrincipais;		// tamanho do vetor com as opções principais
 	int sizeTextoAjuda;				// tamanho do vetor com os textos de ajuda
 	int sizetextoOpcoes;			// tamanho do vetor com os textos das opcoes

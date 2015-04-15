@@ -83,6 +83,7 @@ MenuPrincipal::MenuPrincipal()
 			}
 		}
 	}
+	// agora que temos o número de níveis inicializamos o vetor opcoesAtivas com zeros
 }
 
 
@@ -327,6 +328,7 @@ void MenuPrincipal::gerenciarMenuOpcoes()
 	} else if (teclado.soltou[TECLA_CIMA] || teclado.soltou[TECLA_W]) {
 		vaiCimaOpcoes();
 	}
+	// agora gerenciamos a seleção de valores, fazemos isso usando o vetor opcoesAtivas
 
 	// por fim, verificamos se devemos voltar ao menu principal
 	else if (teclado.soltou[TECLA_ESPACO]) // antes de sair salvamos os estados
