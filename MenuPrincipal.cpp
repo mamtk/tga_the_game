@@ -84,6 +84,7 @@ MenuPrincipal::MenuPrincipal()
 		}
 	}
 	// agora que temos o número de níveis inicializamos o vetor opcoesAtivas com zeros
+	valoresAtivos.resize(sizeOpcoesPrincipais, 0);
 }
 
 
@@ -209,7 +210,20 @@ void MenuPrincipal::vaiIndiceOpcoes(int i)
 	ativo = i; // recebemos o índice i
 	textosMenuOpcoes[ativo].setCor(255, 255, 0);
 }
+void MenuPrincipal::vaiDireitaOpcoes()
+{
+	int a = valoresAtivos[ativo];
+	textosMenuOpcoes[(sizeOpcoesPrincipais + ativo + valoresAtivos[ativo])].setCor(0, 255, 0);
+	valoresAtivos[ativo] = modulo((valoresAtivos[ativo] + 1), opcoesOpcoes[ativo].capacity()-1);
+	textosMenuOpcoes[(sizeOpcoesPrincipais + ativo + valoresAtivos[ativo])].setCor(255, 255, 0);
+}
+void MenuPrincipal::vaiEsquerdaOpcoes()
+{
 
+	textosMenuOpcoes[(sizeOpcoesPrincipais + ativo + valoresAtivos[ativo])].setCor(0, 255, 0);
+	valoresAtivos[ativo] = modulo((valoresAtivos[ativo] - 1), opcoesOpcoes[ativo].size());
+	textosMenuOpcoes[(sizeOpcoesPrincipais + ativo + valoresAtivos[ativo])].setCor(255, 255, 0);
+}
 void MenuPrincipal::resetarMenuPrincipal()
 {
 	textosMenuPrincipal[ativo].setCor(0, 255, 0);	// primeiro retornamos créditos para a cor normal
@@ -329,7 +343,9 @@ void MenuPrincipal::gerenciarMenuOpcoes()
 		vaiCimaOpcoes();
 	}
 	// agora gerenciamos a seleção de valores, fazemos isso usando o vetor opcoesAtivas
-
+	if (teclado.soltou[TECLA_DIR] || teclado.soltou[TECLA_D]) {
+		vaiDireitaOpcoes();
+	}
 	// por fim, verificamos se devemos voltar ao menu principal
 	else if (teclado.soltou[TECLA_ESPACO]) // antes de sair salvamos os estados
 	{
