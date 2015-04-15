@@ -92,8 +92,10 @@ MenuPrincipal::~MenuPrincipal()
 
 void MenuPrincipal::desenhar()
 {
+	// o menu é desenhado no meio da tela
 	int xMenu = janela.getLargura() * .5;
 	int yBase = janela.getAltura() * .5;
+
 	switch (estadoInterno) {
 	default:
 	case Esperando:	// Aqui simplesmente desenhamos e esperamos por eventos no menu principal
@@ -127,9 +129,7 @@ void MenuPrincipal::desenhar()
 	case Creditos:
 		textoHandler.desenhar(janela.getLargura()*.5, janela.getAltura()*.5);
 		if (teclado.soltou[TECLA_ENTER] || teclado.soltou[TECLA_ESPACO] || mouse.pressionou[0]) {	// [0] = primeiro botao do mouse
-			textosMenuPrincipal[ativo].setCor(0, 255, 0);	// primeiro retornamos créditos para a cor normal
-			ativo = Jogar;						// em nome da usabilidade retornamos a opção para a primeira opção
-			textosMenuPrincipal[ativo].setCor(255, 255, 0);	// agora alteramos a cor da primeira opção pra mostrar que ela está selecionada
+			resetarMenuPrincipal(); // usabilidade: antes de retornar para o menu principal queremos voltar para a primeira opção
 			estadoInterno = Esperando;
 		}
 		break;
@@ -137,6 +137,10 @@ void MenuPrincipal::desenhar()
 		// não esquecer de só colocar 'blablabla', como naquele trabalho que o professor gostou tanto,
 		//	que chegou a mostrar pra nós
 		textoHandler.desenhar(janela.getLargura()*.5, janela.getAltura()*.5);
+		if (teclado.soltou[TECLA_ENTER] || teclado.soltou[TECLA_ESPACO] || mouse.pressionou[0]) {	// [0] = primeiro botao do mouse
+			resetarMenuPrincipal(); // usabilidade: antes de retornar para o menu principal queremos voltar para a primeira opção
+			estadoInterno = Esperando;
+		}
 		break;
 	case Sair:
 		break;
@@ -172,6 +176,44 @@ void MenuPrincipal::vaiIndice(int i)
 	textosMenuPrincipal[ativo].setCor(0, 255, 0);
 	ativo = i; // recebemos o índice i
 	textosMenuPrincipal[ativo].setCor(255, 255, 0);
+}
+// e essas gerenciam os movimentos de seleção do menu de opções
+void MenuPrincipal::vaiBaixoOpcoes()
+{
+	textosMenuOpcoes[ativo].setCor(0, 255, 0);
+	ativo = modulo((ativo + 1), sizetextoOpcoes);
+	textosMenuOpcoes[ativo].setCor(255, 255, 0);
+}
+void MenuPrincipal::vaiCimaOpcoes()
+{
+	textosMenuOpcoes[ativo].setCor(0, 255, 0);
+	ativo = modulo((ativo - 1), sizetextoOpcoes);
+	textosMenuOpcoes[ativo].setCor(255, 255, 0);
+}
+void MenuPrincipal::vaiTopoOpcoes()
+{
+	textosMenuOpcoes[ativo].setCor(0, 255, 0);
+	ativo = 0; // 0 = primeiro elemento
+	textosMenuOpcoes[ativo].setCor(255, 255, 0);
+}
+void MenuPrincipal::vaiBaseOpcoes()
+{
+	textosMenuOpcoes[ativo].setCor(0, 255, 0);
+	ativo = sizetextoOpcoes - 1; // sizetextoOpcoes = tamanho, como começa em zero reduzimos 1
+	textosMenuOpcoes[ativo].setCor(255, 255, 0);
+}
+void MenuPrincipal::vaiIndiceOpcoes(int i)
+{
+	textosMenuOpcoes[ativo].setCor(0, 255, 0);
+	ativo = i; // recebemos o índice i
+	textosMenuOpcoes[ativo].setCor(255, 255, 0);
+}
+
+void MenuPrincipal::resetarMenuPrincipal()
+{
+	textosMenuPrincipal[ativo].setCor(0, 255, 0);	// primeiro retornamos créditos para a cor normal
+	ativo = Jogar;						// em nome da usabilidade retornamos a opção para a primeira opção
+	textosMenuPrincipal[ativo].setCor(255, 255, 0);	// agora alteramos a cor da primeira opção pra mostrar que ela está selecionada
 }
 
 /* alteramos o estadoInterno ou querSair;
@@ -219,6 +261,8 @@ void MenuPrincipal::prepararTextoOpcoes()
 	for (int i = 0; i < totalElementos; i++) {
 		textosMenuOpcoes[i].setFonte("fonteNormal");
 	}
+	ativo = 0; // entramos nas opções direto na primeira opção
+	textosMenuOpcoes[ativo].setCor(255, 255, 0);
 }
 // aqui configuramos o textoHandler para os créditos
 void MenuPrincipal::prepararTextoCreditos()
@@ -277,5 +321,17 @@ void MenuPrincipal::gerenciarMenuOpcoes()
 
 	// aqui gerenciamos as seleções do usuário
 	// a selação varia em dois eixos, em y (W S, ↑ ↓)  o jogador muda a opção, em x (A D, ← →) o jogador muda a variável;
-	//	ambas precisam ter a cor destacada, no eixo x permanentemente
+	//	ambas precisam ter a cor destacada, no eixo x a mudança deve ser permanente
+	if (teclado.soltou[TECLA_BAIXO] || teclado.soltou[TECLA_S]){
+		vaiBaixoOpcoes();
+	} else if (teclado.soltou[TECLA_CIMA] || teclado.soltou[TECLA_W]) {
+		vaiCimaOpcoes();
+	}
+
+	// por fim, verificamos se devemos voltar ao menu principal
+	else if (teclado.soltou[TECLA_ESPACO]) // antes de sair salvamos os estados
+	{
+		resetarMenuPrincipal();	// de graça essa função reseta o ativo para valores sãos
+		estadoInterno = Esperando;	// para efetivamente retornarmos a função desenhar() para o menu principal
+	}
 }
