@@ -33,6 +33,8 @@ class MenuPrincipal
 	void vaiIndice(int);
 	void vaiCimaOpcoes();
 	void vaiBaixoOpcoes();
+	void vaiDireitaOpcoes();
+	void vaiEsquerdaOpcoes();
 	void vaiTopoOpcoes();
 	void vaiBaseOpcoes();
 	void vaiIndiceOpcoes(int);

@@ -15,7 +15,7 @@ void Jogo::inicializar()
 	//	O resto da inicialização vem aqui!
 	//	...
 	//	1)	Carregar as fontes (passando o tamanho da fonte como parametro)
-	recursos.carregarFonte("fonteNormal", "UbuntuMono-R.ttf", 17);
+	recursos.carregarFonte("fonteNormal", "./UbuntuMono-R.ttf", 17);
 }
 
 void Jogo::finalizar()
