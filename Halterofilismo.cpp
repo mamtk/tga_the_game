@@ -16,7 +16,11 @@ void Halterofilismo::desenhar()
 {
 	fundo.desenhar(xCentro, yCentro);
 	personagem.desenhar(xCentro, yCentro);
-	personagem.avancarAnimacao();
+	barraProgresso.desenhar(xCentro - 450, yCentro - 100);
+	if (teclado.soltou[TECLA_W] || teclado.soltou[TECLA_CIMA]) {
+		personagem.avancarAnimacao();
+		barraProgresso.avancarAnimacao();
+	}
 }
 // não é possível fazer isso no construtor, pois a classe Halterofilismo é parte da classe Jogo
 //	então o construtor dessa classe é executado antes da classe Jogo ter um tipo completo
@@ -28,6 +32,8 @@ void Halterofilismo::inicializar()
 	personagem.setSpriteSheet("per_Halter01");
 	personagem.setAnimacao(0);
 	personagem.setEscala(5, 5);
+	personagem.setVelocidadeAnimacao(25);
+	barraProgresso.setSpriteSheet("fx_HalterBarra");
 }
 
 // aqui oferecemos opções de jogo ao usuário: incluem cenário (slider, incluindo opção pseudoaleatório),

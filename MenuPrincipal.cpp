@@ -6,8 +6,10 @@ MenuPrincipal::MenuPrincipal()
 {
 	// inicializar menu principal
 	opcoesPrincipais = { L"Iniciar Jogo", L"Opções", L"Ajuda", L"Créditos", L"Sair" };
-	textosMenuPrincipal.resize(opcoesPrincipais.size());	// iniciamos a memória, pois já sabemos o que vamos utilizar 
-	sizeOpcoesPrincipais = textosMenuPrincipal.size();	// assim não precisamos ficar chamando size(), e nem usar iteradores...
+	sizeOpcoesPrincipais = opcoesPrincipais.size();	// assim não precisamos ficar chamando size(), e nem usar iteradores...
+	textosMenuPrincipal.resize(sizeOpcoesPrincipais);	// iniciamos a memória, pois já sabemos o que vamos utilizar
+	textosMenuPrincipalX.resize(sizeOpcoesPrincipais);	// iniciamos a memória, pois já sabemos o que vamos utilizar
+	textosMenuPrincipalY.resize(sizeOpcoesPrincipais);	// iniciamos a memória, pois já sabemos o que vamos utilizar
 
 	// inicializar objetos Texto para cada uma das opções do menu principal
 	for (int i = 0; i < sizeOpcoesPrincipais; i++) {
@@ -21,8 +23,11 @@ MenuPrincipal::MenuPrincipal()
 
 	// inicializar menu secundário
 	opcoesSecundarias = { L"Halterofilismo (Campanha)", L"Halterofilismo (Sandbox)", L"Tiro (Campanha)", L"Tiro (Sandbox)", L"Voltar" };
-	textosMenuSecundario.resize(opcoesSecundarias.size());	// iniciamos a memória, pois já sabemos o que vamos utilizar 
-	sizeOpcoesSecundarias = textosMenuSecundario.size();	// assim não precisamos ficar chamando size(), e nem usar iteradores...
+	sizeOpcoesSecundarias = opcoesSecundarias.size();	// assim não precisamos ficar chamando size(), e nem usar iteradores...
+	textosMenuSecundario.resize(sizeOpcoesSecundarias);	// iniciamos a memória, pois já sabemos o que vamos utilizar 
+	textosMenuSecundarioX.resize(sizeOpcoesSecundarias);	// iniciamos a memória, pois já sabemos o que vamos utilizar
+	textosMenuSecundarioY.resize(sizeOpcoesSecundarias);	// iniciamos a memória, pois já sabemos o que vamos utilizar
+
 
 	// inicializar objetos Texto para cada uma das opções do menu principal
 	for (int i = 0; i < sizeOpcoesPrincipais; i++) {
@@ -50,43 +55,45 @@ MenuPrincipal::MenuPrincipal()
 		L"Desativar som:", // [3]
 		//L"Desativar história:", // [4]
 	};
-	sizetextoOpcoes = textoOpcoes.size();	// assim não precisamos ficar chamando size(), e nem usar iteradores...
-	opcoesOpcoes.resize(opcoesPrincipais.size());	// iniciamos a memória, pois já sabemos o que vamos utilizar
+	sizeTextoOpcoes = textoOpcoes.size();	// assim não precisamos ficar chamando size(), e nem usar iteradores...
+	opcoesOpcoes.resize(sizeTextoOpcoes);	// iniciamos a memória, pois já sabemos o que vamos utilizar
+	textosMenuOpcoesX.resize(sizeTextoOpcoes);	// iniciamos a memória, pois já sabemos o que vamos utilizar
+	textosMenuOpcoesY.resize(sizeTextoOpcoes);	// iniciamos a memória, pois já sabemos o que vamos utilizar
 
-	int contadorTotalElementosTexto = sizetextoOpcoes;	// vamos contar também os elementos texto de variáveis, para inicializar corretamente textosMenuOpcoes
-														//	adicionaremos o número de valores ao total das opções, já conhecido, e adicionado agora
+	sizeOpcoesOpcoes = sizeTextoOpcoes;	// vamos contar também os elementos texto de variáveis, para inicializar corretamente textosMenuOpcoes
+										//	adicionaremos o número de valores ao total das opções, já conhecido, e adicionado agora
 	// inicializar os "valores" possiveis para cada texto de opção
-	for (int i = 0; i < sizetextoOpcoes; i++) {
+	for (int i = 0; i < sizeTextoOpcoes; i++) {
 		switch (i) { // talvez fique mais fácil de entender se eu usar um loop for (embora fique mais lento, só roda uma vez)
 		case 0: // variáveis possíveis para a opção [0] do textoOpcoes
 			opcoesOpcoes[i] = { L"Normal", L"Difícil", L"Impossível", L"Impossível?" }; // opções para [0] (dificuldade)
-			contadorTotalElementosTexto += opcoesOpcoes[i].size(); // fazer a contabilidade corretamente
+			sizeOpcoesOpcoes += opcoesOpcoes[i].size(); // fazer a contabilidade corretamente
 			break;
 		case 1: // variáveis possíveis para a opção [1] do textoOpcoes
 			opcoesOpcoes[i] = { L"Não", L"Sim" }; // opções para [2] (desativar eventos pseudoaleatórios)
-			contadorTotalElementosTexto += opcoesOpcoes[i].size(); // fazer a contabilidade corretamente
+			sizeOpcoesOpcoes += opcoesOpcoes[i].size(); // fazer a contabilidade corretamente
 			break;
 		case 2: // variáveis possíveis para a opção [2] do textoOpcoes
 			opcoesOpcoes[i] = { L"Não", L"Sim" }; // opções para [3] (desativar fatality)
-			contadorTotalElementosTexto += opcoesOpcoes[i].size(); // fazer a contabilidade corretamente
+			sizeOpcoesOpcoes += opcoesOpcoes[i].size(); // fazer a contabilidade corretamente
 			break;
 		case 3: // variáveis possíveis para a opção [2] do textoOpcoes
 			opcoesOpcoes[i] = { L"Não", L"Sim" }; // opções para [4] (desativar som)
-			contadorTotalElementosTexto += opcoesOpcoes[i].size(); // fazer a contabilidade corretamente
+			sizeOpcoesOpcoes += opcoesOpcoes[i].size(); // fazer a contabilidade corretamente
 			break;
 		}
 	}
 	// agora que temos opcoes+valores, sabemos o tamanho do vetor de textos necessario
-	textosMenuOpcoes.resize(contadorTotalElementosTexto);	// os primeiros n = sizetextoOpcoes são as opções, os elementos seguintes são variáveis
+	textosMenuOpcoes.resize(sizeOpcoesOpcoes);	// os primeiros n = sizeTextoOpcoes são as opções, os elementos seguintes são variáveis
 															//	não precisamos de índice, pois o textosMenuOpcoes nos fornece um de graça
 	int cNivelVetor = 0, cElementoVetor = 0;						// contadores necessários para adicionar em ordem as opcoesOpcoes
-	for (int i = 0; i < contadorTotalElementosTexto; i++) { // inicializamos de forma análoga aos itens do menu principal
+	for (int i = 0; i < sizeOpcoesOpcoes; i++) { // inicializamos de forma análoga aos itens do menu principal
 		textosMenuOpcoes[i].setCor(0, 255, 0);
 		textosMenuOpcoes[i].setAlinhamento(TEXTO_CENTRALIZADO);
 		textosMenuOpcoes[i].setEspacamentoLinhas(1.5f);
 		textosMenuOpcoes[i].setFonte("fonteNormal");
 
-		if (i < sizetextoOpcoes) // estamos inicializando opções
+		if (i < sizeTextoOpcoes) // estamos inicializando opções
 			textosMenuOpcoes[i].setWstring(textoOpcoes[i]);
 		else {					// estamos inicializando valores
 			// aqui as coisas ficam um pouco mais complicadas, pois precisamos "transverssar"/atravessar ou iterar por mais de um nível
@@ -113,12 +120,24 @@ void MenuPrincipal::inicializar()
 	// o menu será desenhado no centro da tela
 	xMenu = janela.getLargura() * .5;
 	yBase = janela.getAltura() * .5;
+	// coordenadas do menu de opções
+	xOpcoes = janela.getLargura() * 0.21;	// x = 21%
+	xValores = janela.getLargura() * 0.43;	// x = 43%
+	yOpcoes = janela.getAltura() * 0.3;		// y = 30%
 
 	for (int i = 0; i < sizeOpcoesPrincipais; i++) {		// infelizmente a libUnicornio não consegue setar a fonte no construtor,
 		textosMenuPrincipal[i].setFonte("fonteNormal");		//	a classe Jogo só inicializa seus recursos após já estar com o tipo completo
+		textosMenuPrincipalX[i] = (xMenu - ( textosMenuPrincipal[i].getLargura() * .5 ));	// todos os textos do menu são centralizados
+		textosMenuPrincipalY[i] = (yBase + espacamentoOpcoes * i);	// todos os textos do menu são centralizados
 	}
 	for (int i = 0; i < sizeOpcoesSecundarias; i++) {		// como acima
 		textosMenuSecundario[i].setFonte("fonteNormal");
+		textosMenuSecundarioX[i] = (xMenu - (textosMenuPrincipal[i].getLargura() * .5));	// todos os textos do menu são centralizados
+		textosMenuSecundarioY[i] = (yBase + espacamentoOpcoes * i);	// todos os textos do menu são centralizados
+	}
+	for (int i = 0; i < sizeTextoOpcoes; i++) {
+		textosMenuOpcoesX[i] = (xOpcoes - (textosMenuPrincipal[i].getLargura() * .5));	// os textos não são centralizados
+		textosMenuOpcoesY[i] = (yOpcoes + espacamentoMenuOpcoes * i);	// os textos não são centralizados
 	}
 }
 
@@ -131,12 +150,12 @@ void MenuPrincipal::desenhar()
 	switch (estadoInterno) {
 	default:
 	case esperando:	// Aqui simplesmente desenhamos e esperamos por eventos no menu principal
+		uniDepurar("X0", textosMenuPrincipalX[0]);
+		uniDepurar("Y0", textosMenuPrincipalY[0]);
 		for (int i = 0; i < sizeOpcoesPrincipais; i++) {	// iteramos pelas opções principais
 			textosMenuPrincipal[i].desenhar(xMenu, yBase + (i * 27));		// desenhamos cada opção principal
 			int tamanhoTexto = textosMenuPrincipal[i].getWstring().size();	// usamos o tamanho do texto para determinar suas coordenadas máximas no eixo x
-			if (mouse.y >= (yBase + (27 * i) - 15) && mouse.y <= (yBase + (27 * i)) &&	// se o ponteiro está verticalmente próximo a esse objeto texto
-				(mouse.x >= (xMenu - tamanhoTexto * 5) && (mouse.x <= (xMenu + tamanhoTexto * 5)))) {	// também verificar se ele está horizontalmente próximo
-								// caso positivo, o ponteiro provavelmente está sobre a opção atual (textosMenuPrincipal[i])
+			if (mouseSobre(textosMenuPrincipal[i], textosMenuPrincipalX[i], textosMenuPrincipalY[i])) {	// se o mouse estiver sobre a opção atual
 				vaiIndice(i);	//	então usamos a função vaiIndice com a opção atual (i) como argumento, para destacá-la
 			}
 		}
@@ -158,10 +177,8 @@ void MenuPrincipal::desenhar()
 		for (int i = 0; i < sizeOpcoesSecundarias; i++) {
 			textosMenuSecundario[i].desenhar(xMenu, yBase + (i * 27));
 			int tamanhoTexto = textosMenuSecundario[i].getWstring().size();
-			if (mouse.y >= (yBase + (27 * i) - 15) && mouse.y <= (yBase + (27 * i)) && \
-				(mouse.x >= (xMenu - tamanhoTexto * 5) && (mouse.x <= (xMenu + tamanhoTexto * 5)))) {
-				// mouse provavelmente sobre a opção atual
-				vaiIndiceSecundario(i);
+			if (mouseSobre(textosMenuSecundario[i], textosMenuSecundarioX[i], textosMenuSecundarioY[i])) {	// se o mouse estiver sobre a opção atual
+				vaiIndiceSecundario(i);	//	então usamos a função vaiIndiceSecundario com a opção atual (i) como argumento, para destacá-la
 			}
 		}
 
@@ -276,7 +293,7 @@ void MenuPrincipal::vaiBaixoOpcoes()
 		anteriormente, alteramos o valor do índice ativo, e por fim
 		alteramos a cor da nova opcão correspondente a essa novo índice	*/
 	textosMenuOpcoes[ativo].setCor(0, 255, 0);
-	ativo = modulo((ativo + 1), sizetextoOpcoes);
+	ativo = modulo((ativo + 1), sizeTextoOpcoes);
 	textosMenuOpcoes[ativo].setCor(255, 255, 0);
 }
 void MenuPrincipal::vaiCimaOpcoes()
@@ -285,7 +302,7 @@ void MenuPrincipal::vaiCimaOpcoes()
 	anteriormente, alteramos o valor do índice ativo, e por fim
 	alteramos a cor da nova opcão correspondente a essa novo índice	*/
 	textosMenuOpcoes[ativo].setCor(0, 255, 0);
-	ativo = modulo((ativo - 1), sizetextoOpcoes);
+	ativo = modulo((ativo - 1), sizeTextoOpcoes);
 	textosMenuOpcoes[ativo].setCor(255, 255, 0);
 }
 void MenuPrincipal::vaiTopoOpcoes()
@@ -303,7 +320,7 @@ void MenuPrincipal::vaiBaseOpcoes()
 	anteriormente, alteramos o valor do índice ativo, e por fim
 	alteramos a cor da nova opcão correspondente a essa novo índice	*/
 	textosMenuOpcoes[ativo].setCor(0, 255, 0);
-	ativo = sizetextoOpcoes - 1; // sizetextoOpcoes = tamanho, como começa em zero reduzimos 1
+	ativo = sizeTextoOpcoes - 1; // sizeTextoOpcoes = tamanho, como começa em zero reduzimos 1
 	textosMenuOpcoes[ativo].setCor(255, 255, 0);
 }
 void MenuPrincipal::vaiIndiceOpcoes(int i)
@@ -362,8 +379,10 @@ void MenuPrincipal::vaiEsquerdaOpcoes()
 //	e finalmente destacamos o texto correspondente ao novo índice (0)
 void MenuPrincipal::resetarMenuPrincipal()
 {
-	textosMenuPrincipal[ativo].setCor(0, 255, 0);	// primeiro retornamos créditos para a cor normal
-	ativo = jogar;						// em nome da usabilidade retornamos a opção para a primeira opção
+	for (int i = 1; i < sizeOpcoesPrincipais; i++) {
+		textosMenuPrincipal[i].setCor(0, 255, 0);	// retornamos as opções para a cor normal
+	}
+	ativo = jogar;			// em nome da usabilidade retornamos a opção para a primeira opção
 	textosMenuPrincipal[ativo].setCor(255, 255, 0);	// agora alteramos a cor da primeira opção pra mostrar que ela está selecionada
 }
 
@@ -416,7 +435,6 @@ void MenuPrincipal::vaiOpcaoSecundario()
 	}
 }
 
-
 // aqui configuramos o textoHandler para o menu de opções
 void MenuPrincipal::prepararTextoOpcoes()
 {
@@ -426,8 +444,7 @@ void MenuPrincipal::prepararTextoOpcoes()
 	textoHandler.setWstring(textoCabecalhoOpcoes);
 	textoHandler.setFonte("fonteNormal");
 	// setar fonte nos textos de opções
-	int totalElementos = textosMenuOpcoes.size(); // contador de elementos texto (para não ficar chamando size() desnecessariamente)
-	for (int i = 0; i < totalElementos; i++) {
+	for (int i = 0; i < sizeOpcoesOpcoes; i++) {
 		textosMenuOpcoes[i].setFonte("fonteNormal");
 	}
 	ativo = 0; // entramos nas opções direto na primeira opção
@@ -459,12 +476,9 @@ void MenuPrincipal::prepararTextoAjuda()
 */
 void MenuPrincipal::gerenciarMenuOpcoes()
 {
-	int totalElementos = textosMenuOpcoes.size();
-	int xOpcoes = janela.getLargura()*0.15; // x = 5%
-	int xValores = janela.getLargura()*0.39; // x = 35%
-	int incrementoY = 71; // y = yBase + incrementoY
-	int incrementoX = 150; // x = xValores + cElementoVetor * incrementoX
-	int yBase = janela.getAltura()*0.1; // y = 90% - decrementoY
+	// y = yBase + incrementoY
+	// x = xValores + cElementoVetor * incrementoX
+	// y = 90% - decrementoY
 	int cNivelVetor = 0, cElementoVetor = 0;
 
 	////////////////////////////////////////////////////////////////////////
@@ -472,16 +486,19 @@ void MenuPrincipal::gerenciarMenuOpcoes()
 	uniDepurar("Coluna ativa (nos valores)", valoresAtivos[ativo]);
 	////////////////////////////////////////////////////////////////////////
 
-	for (int i = 0; i < totalElementos; i++) {	// primeiro precisamos posicionar cada elemento de acordo com sua função
+	for (int i = 0; i < sizeOpcoesOpcoes; i++) {	// primeiro precisamos posicionar cada elemento de acordo com sua função
 												//	o que significa opções a esquerda, valores a direita
 												//	e precisamos fazer isso em função de i ou do nível correspondente das variáveis
-		if (i < sizetextoOpcoes) // estamos desenhando opções
-			textosMenuOpcoes[i].desenhar(xOpcoes, yBase + (i * incrementoY)); // x é fixo para as opcoes, y varia (por nível) igualmente para opcoes e valores
-		else {					// estamos desenhando valores, aqui o y deve variar apenas em função de cNivelVetor, nunca em função de i
+		if (i < sizeTextoOpcoes) { // estamos desenhando opções
+			textosMenuOpcoes[i].desenhar(xOpcoes, yOpcoes + (i * espacamentoMenuOpcoes)); // x é fixo para as opcoes, y varia (por nível) igualmente para opcoes e valores
+			if (mouseSobre(textosMenuOpcoes[i], textosMenuOpcoesX[i], textosMenuOpcoesY[i])) {	// se o mouse estiver sobre a opção atual
+				vaiIndiceOpcoes(i);
+			}
+		} else {					// estamos desenhando valores, aqui o y deve variar apenas em função de cNivelVetor, nunca em função de i
 								//	além disso, o x deve variar em função de cElementoVetor
 			// como antes, aqui as coisas ficam um pouco mais complicadas, pois precisamos "transverssar"/atravessar ou iterar por mais de um nível no vetor
 			//	dentro do vetor, para fazer isso sem usar iteradores, novamente vamos usar dois contadores, pois é o meio aceitável mais eficiente
-			textosMenuOpcoes[i].desenhar(xValores + (cElementoVetor * incrementoX), yBase + (cNivelVetor * incrementoY));
+			textosMenuOpcoes[i].desenhar(xValores + (cElementoVetor * espacamentoValoresOpcoes), yOpcoes + (cNivelVetor * espacamentoMenuOpcoes));
 			if ((cElementoVetor + 1) >= opcoesOpcoes[cNivelVetor].size()) { // nível esgotado, ir para o próximo
 				cNivelVetor++;		// próximo nível
 				cElementoVetor = 0; // começar novamente pelo primeiro elemento
@@ -531,4 +548,14 @@ std::vector<int> MenuPrincipal::getOpcoes()
 bool MenuPrincipal::escolheu()
 {
 	return obteveEscolha;
+}
+
+bool MenuPrincipal::mouseSobre(Texto objetoTexto, int x, int y)	// eu usaria referência pro const, mas quem explicaria tal coisa?
+{
+	if (mouse.y >= (y - 15) && mouse.y <= (y + objetoTexto.getAlturaLinha(0)) &&	// se o ponteiro está verticalmente próximo a esse objeto texto
+		(mouse.x >= (x - 15) && (mouse.x <= (x + objetoTexto.getLargura())))) {	// também verificar se ele está horizontalmente próximo
+		// caso positivo, o ponteiro provavelmente está sobre a opção atual (textosMenuPrincipal[i])
+		return true;	//	então usamos a função vaiIndice com a opção atual (i) como argumento, para destacá-la
+	}
+	return false;
 }
