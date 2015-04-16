@@ -24,6 +24,10 @@ void Jogo::inicializar()
 	*/
 	recursos.carregarFonte("fonteNormal", "UbuntuMono-R.ttf", 17);
 	recursos.carregarSpriteSheet("fundo_Halter01", "img/fundos/halter_01.png");
+	recursos.carregarSpriteSheet("per_Halter01", "img/per/lucas1.png", 3, 9);
+	// especificar numeros de frames diferentes do maior
+	recursos.getSpriteSheet("per_Halter01")->setNumFramesDaAnimacao(0, 3);
+	recursos.getSpriteSheet("per_Halter01")->setNumFramesDaAnimacao(1, 8);
 }
 
 void Jogo::finalizar()
