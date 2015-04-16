@@ -3,11 +3,11 @@
 #include <vector>
 #include <string>
 
-enum EstadoMenu { Jogar, Opcoes, Ajuda, Creditos, Sair, Esperando };
-enum EstadoMenuSecundario { HalterofilismoCampanha, HalterofilismoSandbox, TiroCampanha, TiroSandbox, Menuzando };
-
 class MenuPrincipal
 {
+	enum EstadoMenu { jogar, opcoes, ajuda, creditos, sair, esperando }; // desnecessário usar enums em outro contexto
+	enum EstadoMenuSecundario { halterofilismoCampanha, halterofilismoSandbox, tiroCampanha, tiroSandbox, menuzando }; // desnecessário usar enums em outro contexto
+
 	std::vector<Texto> textosMenuPrincipal;	// textos (palavras) das opções do menuPrincipal
 	std::vector<Texto> textosMenuSecundario;	// textos (palavras) das opções do menuSecundario (tipos de jogos)
 	std::vector<Texto> textosMenuOpcoes;	// textos (opcoes, valores possíveis) das opções do menuPrincipal
@@ -28,10 +28,12 @@ class MenuPrincipal
 	int sizetextoOpcoes;			// tamanho do vetor com os textos das opcoes
 	int sizeOpcoesSecundarias;		// tamando do vetor com os textos das opcoes secundarias
 									//	(pra não ficar chamando size() desnecessariamente, sem usar iteradores...)
-	EstadoMenu estadoInterno = Esperando;	// armazena o método em uso
-	EstadoMenuSecundario estadoExterno = Menuzando;	// armazena o método de jogo ativo
+	int xMenu, yBase;				// usados nas coordenadas dos objetos texto nos menus principal e secundário
+	bool obteveEscolha = false;		// valor retornado pela função escolheu(), significa que o menu cumpriu sua função e o jogo deve começar
+	EstadoMenu estadoInterno = esperando;	// armazena o método em uso
+	EstadoMenuSecundario estadoExterno = menuzando;	// armazena o método de jogo ativo
 
-	// tantos vais não-genéricos poderiam ser evitados, mas quem ia explicar isso?
+	// tantos vais não-genéricos poderiam ser evitados, mas quem explicaria tal coisa?
 	void vaiCima();
 	void vaiBaixo();
 	void vaiTopo();
@@ -60,5 +62,9 @@ public:
 	MenuPrincipal();
 	~MenuPrincipal();
 	void desenhar();
+	void inicializar();
+	bool escolheu();
+
+	std::vector<int> getOpcoes();
 };
 

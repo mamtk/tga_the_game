@@ -54,6 +54,7 @@ MenuPrincipal::MenuPrincipal()
 	opcoesOpcoes.resize(opcoesPrincipais.size());	// iniciamos a memória, pois já sabemos o que vamos utilizar
 
 	int contadorTotalElementosTexto = sizetextoOpcoes;	// vamos contar também os elementos texto de variáveis, para inicializar corretamente textosMenuOpcoes
+														//	adicionaremos o número de valores ao total das opções, já conhecido, e adicionado agora
 	// inicializar os "valores" possiveis para cada texto de opção
 	for (int i = 0; i < sizetextoOpcoes; i++) {
 		switch (i) { // talvez fique mais fácil de entender se eu usar um loop for (embora fique mais lento, só roda uma vez)
@@ -106,6 +107,20 @@ MenuPrincipal::MenuPrincipal()
 	valoresAtivos.resize(sizeOpcoesPrincipais, 0);
 }
 
+// terminar de inicializar (aqui fazemos coisas que exigem um tipo completo para a classe Jogo)
+void MenuPrincipal::inicializar()
+{
+	// o menu será desenhado no centro da tela
+	xMenu = janela.getLargura() * .5;
+	yBase = janela.getAltura() * .5;
+
+	for (int i = 0; i < sizeOpcoesPrincipais; i++) {		// infelizmente a libUnicornio não consegue setar a fonte no construtor,
+		textosMenuPrincipal[i].setFonte("fonteNormal");		//	a classe Jogo só inicializa seus recursos após já estar com o tipo completo
+	}
+	for (int i = 0; i < sizeOpcoesSecundarias; i++) {		// como acima
+		textosMenuSecundario[i].setFonte("fonteNormal");
+	}
+}
 
 MenuPrincipal::~MenuPrincipal()
 {
@@ -113,39 +128,34 @@ MenuPrincipal::~MenuPrincipal()
 
 void MenuPrincipal::desenhar()
 {
-	// o menu é desenhado no meio da tela
-	int xMenu = janela.getLargura() * .5;
-	int yBase = janela.getAltura() * .5;
-
 	switch (estadoInterno) {
 	default:
-	case Esperando:	// Aqui simplesmente desenhamos e esperamos por eventos no menu principal
-		for (int i = 0; i < sizeOpcoesPrincipais; i++) {
-			textosMenuPrincipal[i].setFonte("fonteNormal");
-			textosMenuPrincipal[i].desenhar(xMenu, yBase + (i * 27));
-			int tamanhoTexto = textosMenuPrincipal[i].getWstring().size();
-			if (mouse.y >= (yBase + (27 * i) - 15) && mouse.y <= (yBase + (27 * i)) && \
-				(mouse.x >= (xMenu - tamanhoTexto * 5) && (mouse.x <= (xMenu + tamanhoTexto * 5)))) {
-				// mouse provavelmente sobre a opção atual
-				vaiIndice(i);
+	case esperando:	// Aqui simplesmente desenhamos e esperamos por eventos no menu principal
+		for (int i = 0; i < sizeOpcoesPrincipais; i++) {	// iteramos pelas opções principais
+			textosMenuPrincipal[i].desenhar(xMenu, yBase + (i * 27));		// desenhamos cada opção principal
+			int tamanhoTexto = textosMenuPrincipal[i].getWstring().size();	// usamos o tamanho do texto para determinar suas coordenadas máximas no eixo x
+			if (mouse.y >= (yBase + (27 * i) - 15) && mouse.y <= (yBase + (27 * i)) &&	// se o ponteiro está verticalmente próximo a esse objeto texto
+				(mouse.x >= (xMenu - tamanhoTexto * 5) && (mouse.x <= (xMenu + tamanhoTexto * 5)))) {	// também verificar se ele está horizontalmente próximo
+								// caso positivo, o ponteiro provavelmente está sobre a opção atual (textosMenuPrincipal[i])
+				vaiIndice(i);	//	então usamos a função vaiIndice com a opção atual (i) como argumento, para destacá-la
 			}
 		}
 
-		if (teclado.soltou[TECLA_CIMA] || teclado.soltou[TECLA_W]) {
+		if (teclado.soltou[TECLA_CIMA] || teclado.soltou[TECLA_W]) {			// vai cima ao apertar ↑ ou W
 			vaiCima();
-		} else if (teclado.soltou[TECLA_BAIXO] || teclado.soltou[TECLA_S]) {
+		} else if (teclado.soltou[TECLA_BAIXO] || teclado.soltou[TECLA_S]) {	// vai baixo ao apertar ↓ ou S
 			vaiBaixo();
-		} else if (teclado.soltou[TECLA_END]) {
+		} else if (teclado.soltou[TECLA_END]) {									// vai base ao apertar end
 			vaiBase();
-		} else if (teclado.soltou[TECLA_HOME]) {
+		} else if (teclado.soltou[TECLA_HOME]) {								// vai topo ao apertar home
 			vaiTopo();
 		} else if (teclado.soltou[TECLA_ENTER] || teclado.soltou[TECLA_ESPACO] || mouse.pressionou[0]) {	// [0] = primeiro botao do mouse
+			// executa opção ao pertar enter ou espaço
 			vaiOpcao();
 		}
 		break;
-	case Jogar:	// Aqui simplesmente desenhamos e esperamos por eventos no menu principal
+	case jogar:	// Aqui simplesmente desenhamos e esperamos por eventos no menu principal
 		for (int i = 0; i < sizeOpcoesSecundarias; i++) {
-			textosMenuSecundario[i].setFonte("fonteNormal");
 			textosMenuSecundario[i].desenhar(xMenu, yBase + (i * 27));
 			int tamanhoTexto = textosMenuSecundario[i].getWstring().size();
 			if (mouse.y >= (yBase + (27 * i) - 15) && mouse.y <= (yBase + (27 * i)) && \
@@ -171,29 +181,28 @@ void MenuPrincipal::desenhar()
 			vaiOpcaoSecundario();
 		}
 		break;
-	case Opcoes:
-			resetarMenuPrincipal(); // usabilidade: antes de retornar para o menu principal queremos voltar para a primeira opção
+	case opcoes:
 			// prefiro fazer a classe mudar de estado (valores) em uma função específica
 			gerenciarMenuOpcoes();
 		break;
-	case Creditos:
+	case creditos:
 		resetarMenuPrincipal(); // usabilidade: antes de retornar para o menu principal queremos voltar para a primeira opção
 		textoHandler.desenhar(janela.getLargura()*.5, janela.getAltura()*.5);
 		if (teclado.soltou[TECLA_ENTER] || teclado.soltou[TECLA_ESPACO] || mouse.pressionou[0]) {	// [0] = primeiro botao do mouse
-			estadoInterno = Esperando;
+			estadoInterno = esperando;
 		}
 		break;
-	case Ajuda:
+	case ajuda:
 		resetarMenuPrincipal(); // usabilidade: antes de retornar para o menu principal queremos voltar para a primeira opção
 		// não esquecer de só colocar 'blablabla', como naquele trabalho que o professor gostou tanto,
 		//	que chegou a mostrar pra nós
 		textoHandler.desenhar(janela.getLargura()*.5, janela.getAltura()*.5);
 		if (teclado.soltou[TECLA_ENTER] || teclado.soltou[TECLA_ESPACO] || mouse.pressionou[0]) {	// [0] = primeiro botao do mouse
 			resetarMenuPrincipal(); // usabilidade: antes de retornar para o menu principal queremos voltar para a primeira opção
-			estadoInterno = Esperando;
+			estadoInterno = esperando;
 		}
 		break;
-	case Sair:
+	case sair:
 			// libUnicornio deve fazer isso pra nós
 		break;
 	}
@@ -263,24 +272,36 @@ void MenuPrincipal::vaiIndiceSecundario(int i)
 // essas gerenciam os movimentos de seleção do menu de opções
 void MenuPrincipal::vaiBaixoOpcoes()
 {
+	/* nas classes vai{direção} basicamente mudamos a cor da opção selecionada
+		anteriormente, alteramos o valor do índice ativo, e por fim
+		alteramos a cor da nova opcão correspondente a essa novo índice	*/
 	textosMenuOpcoes[ativo].setCor(0, 255, 0);
 	ativo = modulo((ativo + 1), sizetextoOpcoes);
 	textosMenuOpcoes[ativo].setCor(255, 255, 0);
 }
 void MenuPrincipal::vaiCimaOpcoes()
 {
+	/* nas classes vai{direção} basicamente mudamos a cor da opção selecionada
+	anteriormente, alteramos o valor do índice ativo, e por fim
+	alteramos a cor da nova opcão correspondente a essa novo índice	*/
 	textosMenuOpcoes[ativo].setCor(0, 255, 0);
 	ativo = modulo((ativo - 1), sizetextoOpcoes);
 	textosMenuOpcoes[ativo].setCor(255, 255, 0);
 }
 void MenuPrincipal::vaiTopoOpcoes()
 {
+	/* nas classes vai{direção} basicamente mudamos a cor da opção selecionada
+	anteriormente, alteramos o valor do índice ativo, e por fim
+	alteramos a cor da nova opcão correspondente a essa novo índice	*/
 	textosMenuOpcoes[ativo].setCor(0, 255, 0);
 	ativo = 0; // 0 = primeiro elemento
 	textosMenuOpcoes[ativo].setCor(255, 255, 0);
 }
 void MenuPrincipal::vaiBaseOpcoes()
 {
+	/* nas classes vai{direção} basicamente mudamos a cor da opção selecionada
+	anteriormente, alteramos o valor do índice ativo, e por fim
+	alteramos a cor da nova opcão correspondente a essa novo índice	*/
 	textosMenuOpcoes[ativo].setCor(0, 255, 0);
 	ativo = sizetextoOpcoes - 1; // sizetextoOpcoes = tamanho, como começa em zero reduzimos 1
 	textosMenuOpcoes[ativo].setCor(255, 255, 0);
@@ -293,6 +314,10 @@ void MenuPrincipal::vaiIndiceOpcoes(int i)
 }
 void MenuPrincipal::vaiDireitaOpcoes()
 {
+	/* nas classes vai{direção} basicamente mudamos a cor da opção selecionada
+	anteriormente, alteramos o valor do índice ativo, e por fim
+	alteramos a cor da nova opcão correspondente a essa novo índice	*/
+
 	/****** textosMenuOpcoes é um vetor, de 0 a (sizeOpcoesPrincipais - 2) ele contém opções,
 	de sizeOpcoesPrincipais até sizeOpcoesPrincipais.size() ele contém valores.
 
@@ -307,11 +332,15 @@ void MenuPrincipal::vaiDireitaOpcoes()
 		numeroElementosAnteriores += opcoesOpcoes[i].size();	//	ou nenhum se o nível for 0
 	}
 	textosMenuOpcoes[(numeroElementosAnteriores + valoresAtivos[ativo])].setCor(0, 255, 0);
-	valoresAtivos[ativo] = modulo((valoresAtivos[ativo] + 1), opcoesOpcoes[ativo].capacity());
+	valoresAtivos[ativo] = modulo((valoresAtivos[ativo] + 1), opcoesOpcoes[ativo].size());
 	textosMenuOpcoes[(numeroElementosAnteriores + valoresAtivos[ativo])].setCor(255, 255, 0);
 }
 void MenuPrincipal::vaiEsquerdaOpcoes()
 {
+	/* nas classes vai{direção} basicamente mudamos a cor da opção selecionada
+	anteriormente, alteramos o valor do índice ativo, e por fim
+	alteramos a cor da nova opcão correspondente a essa novo índice	*/
+
 	/****** textosMenuOpcoes é um vetor, de 0 a (sizeOpcoesPrincipais - 2) ele contém opções,
 	de sizeOpcoesPrincipais até sizeOpcoesPrincipais.size() ele contém valores.
 
@@ -326,13 +355,15 @@ void MenuPrincipal::vaiEsquerdaOpcoes()
 		numeroElementosAnteriores += opcoesOpcoes[i].size();	//	ou nenhum se o nível for 0
 	}
 	textosMenuOpcoes[(numeroElementosAnteriores + valoresAtivos[ativo])].setCor(0, 255, 0);
-	valoresAtivos[ativo] = modulo((valoresAtivos[ativo] - 1), opcoesOpcoes[ativo].capacity());
+	valoresAtivos[ativo] = modulo((valoresAtivos[ativo] - 1), opcoesOpcoes[ativo].size());
 	textosMenuOpcoes[(numeroElementosAnteriores + valoresAtivos[ativo])].setCor(255, 255, 0);
 }
+// aqui removemos o destaque da opção do índice (ativo), depois retornamos o índice para a primeira opção,
+//	e finalmente destacamos o texto correspondente ao novo índice (0)
 void MenuPrincipal::resetarMenuPrincipal()
 {
 	textosMenuPrincipal[ativo].setCor(0, 255, 0);	// primeiro retornamos créditos para a cor normal
-	ativo = Jogar;						// em nome da usabilidade retornamos a opção para a primeira opção
+	ativo = jogar;						// em nome da usabilidade retornamos a opção para a primeira opção
 	textosMenuPrincipal[ativo].setCor(255, 255, 0);	// agora alteramos a cor da primeira opção pra mostrar que ela está selecionada
 }
 
@@ -342,26 +373,26 @@ void MenuPrincipal::resetarMenuPrincipal()
 void MenuPrincipal::vaiOpcao()
 {
 	switch (ativo) {
-	case Jogar:
-		estadoInterno = Jogar;
+	case jogar:
+		estadoInterno = jogar;
 		//textosMenuPrincipal[Jogar].setCor(255, 0, 0);
 		break;
-	case Opcoes:
-		estadoInterno = Opcoes;
+	case opcoes:
+		estadoInterno = opcoes;
 		prepararTextoOpcoes();
 		//textosMenuPrincipal[Opcoes].setCor(255, 0, 0);
 		break;
-	case Creditos:
-		estadoInterno = Creditos;
+	case creditos:
+		estadoInterno = creditos;
 		prepararTextoCreditos();
 		//textosMenuPrincipal[Creditos].setCor(255, 0, 0);
 		break;
-	case Ajuda:
-		estadoInterno = Ajuda;
+	case ajuda:
+		estadoInterno = ajuda;
 		prepararTextoAjuda();
 		//textosMenuPrincipal[Ajuda].setCor(255, 0, 0);
 		break;
-	case Sair:
+	case sair:
 		aplicacao.sair = true; // libUnicornio fornece essa facilidade
 		//textosMenuPrincipal[Sair].setCor(255, 0, 0);
 		break;
@@ -375,9 +406,12 @@ void MenuPrincipal::vaiOpcao()
 void MenuPrincipal::vaiOpcaoSecundario()
 {
 	switch (ativo) {
-	case Menuzando:
+	case halterofilismoCampanha:
+		obteveEscolha = true;
+		break;
+	case menuzando:
 		vaiTopoSecundario(); // "resetarMenuSecundario()", para corrigir o destacamento das opcoes
-		estadoInterno = Esperando;
+		estadoInterno = esperando;
 		break;
 	}
 }
@@ -432,6 +466,12 @@ void MenuPrincipal::gerenciarMenuOpcoes()
 	int incrementoX = 150; // x = xValores + cElementoVetor * incrementoX
 	int yBase = janela.getAltura()*0.1; // y = 90% - decrementoY
 	int cNivelVetor = 0, cElementoVetor = 0;
+
+	////////////////////////////////////////////////////////////////////////
+	uniDepurar("Linha ativa", ativo);
+	uniDepurar("Coluna ativa (nos valores)", valoresAtivos[ativo]);
+	////////////////////////////////////////////////////////////////////////
+
 	for (int i = 0; i < totalElementos; i++) {	// primeiro precisamos posicionar cada elemento de acordo com sua função
 												//	o que significa opções a esquerda, valores a direita
 												//	e precisamos fazer isso em função de i ou do nível correspondente das variáveis
@@ -467,11 +507,28 @@ void MenuPrincipal::gerenciarMenuOpcoes()
 		vaiDireitaOpcoes();
 	} else if (teclado.soltou[TECLA_ESQ] || teclado.soltou[TECLA_A]) {
 		vaiEsquerdaOpcoes();
+	} else if (teclado.soltou[TECLA_HOME]) {
+		vaiTopoOpcoes();
+	} else if (teclado.soltou[TECLA_END]) {
+		vaiBaseOpcoes();
 	}
 	// por fim, verificamos se devemos voltar ao menu principal
 	else if (teclado.soltou[TECLA_ESPACO]) // antes de sair salvamos os estados
 	{
 		resetarMenuPrincipal();	// de graça essa função reseta o ativo para valores sãos
-		estadoInterno = Esperando;	// para efetivamente retornarmos a função desenhar() para o menu principal
+		estadoInterno = esperando;	// para efetivamente retornarmos a função desenhar() para o menu principal
 	}
+}
+
+std::vector<int> MenuPrincipal::getOpcoes()
+{
+	return valoresAtivos;
+}
+
+/* MenuPrincipal nasceu com um propósito, para responder a grande questão de sua vida!!!
+	O jogador escolheu?
+*/
+bool MenuPrincipal::escolheu()
+{
+	return obteveEscolha;
 }

@@ -1,15 +1,19 @@
 #pragma once
 #include "MenuPrincipal.h"
+#include "Halterofilismo.h"
 #include "libUnicornio.h"
 
-enum Estado { menuPrincipal, halterofilismo };
+enum EstadoDeJogo { menuPrincipal, halterofilismo };
 
 class Jogo
 {
-	int jogo = 0;
 	Texto texto;
 	MenuPrincipal menu;
-	Estado estado = menuPrincipal;
+	Halterofilismo halterofilia;
+	EstadoDeJogo estado = menuPrincipal;
+
+	std::vector<int> opcoesDeJogo;
+	int jogo = 0;
 
 	void gerenciarEstado();
 public:
