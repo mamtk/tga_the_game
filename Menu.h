@@ -8,6 +8,8 @@ class Menu
 	enum EstadoMenu { escolhendo, escolheu };
 	enum TipoMenu { unico, duplo };
 
+	Sprite fundo, fundoEsmaecer;
+
 	//vector<wstring> opcoesPrincipais;			// Sabe como é, eu realmente gosto de acentos, mas quem é que vai explicar isso aqui depois?
 	vector<Texto> textosMenu;					// objetos Texto das opções do menu
 	vector<vector<Texto>> textosMenuValores;	// objetos Texto dos valores do menu
@@ -44,7 +46,8 @@ class Menu
 	int sizeOpcoesMenu = 0;			// tamanho do vetor com as opções
 								//	(pra não ficar chamando size() desnecessariamente, sem usar iteradores...)
 
-	// âncora X e base Y para as opções dos menus
+	// âncora X e base Y para o fundo e as opções dos menus
+	int xCentral, yCentral;
 	int xBase, yBase;				// usados nas coordenadas dos objetos texto nos menus principal e secundário
 	int xValores, yValores;			// usados nas coordenadas dos objetos texto em menus complexos
 
@@ -83,14 +86,14 @@ public:
 	~Menu();
 	void desenhar();
 	// inicializar para menu único iniciado de uma origem
-	void inicializar(vector<wstring> vetorOpcoes, wstring cabecalhoParam = L"", vector<int> cabecalhoXY = { 0 }, int selecaoPadrao = 0, \
-		int origemX = -1, int origemY = -1, int xEspacamento = 0, int yEspacamento = 11, vector<int> corNormalParam = { 0 }, \
-		vector<int> corDestaqueParam = { 0 }, string fonte = "fonteNormal", float espacoLinhas = 1.5f, int alinhamento = TEXTO_CENTRALIZADO);
+	void inicializar(vector<wstring> vetorOpcoes, wstring cabecalhoParam = L"", string fundilho = "img/fundos/fundo_MenuPrincipal01.png", vector<int> cabecalhoXY = { 0 }, \
+		int selecaoPadrao = 0, int origemX = -1, int origemY = -1, int xEspacamento = 0, int yEspacamento = 31, vector<int> corNormalParam = { 0 }, \
+		vector<int> corDestaqueParam = { 0 }, string fonte = "fonteGrandeSombra", float espacoLinhas = 1.5f, int alinhamento = TEXTO_CENTRALIZADO);
 	// inicializar (sobrecarregada/overloaded) para menu único com coordenadas x e y para cada elemento
 	// inicializar (sobrecarregada/overloaded) para menu duplo desenhado de uma origem
-	void inicializar(vector<wstring> vetorOpcoes, vector<vector<wstring>> vetorValores, wstring cabecalhoParam = L"", vector<int> cabecalhoXY = { 0 }, \
-		int selecaoPadrao = 0, vector<int> valoresPadrao = { 0 }, int origemX = -1, int origemY = -1, int xEspacamento = 0, \
-		int yEspacamento = 27, int origemXValores = -1, int origemYValores = -1, int xEspacamentoValores = 21, int yEspacamentoValores = 0,\
+	void inicializar(vector<wstring> vetorOpcoes, vector<vector<wstring>> vetorValores, wstring cabecalhoParam = L"", string fundilho = "img/fundos/fundo_MenuPrincipal01.png",\
+		vector<int> cabecalhoXY = { 0 }, int selecaoPadrao = 0, vector<int> valoresPadrao = { 0 }, int origemX = -1, int origemY = -1, int xEspacamento = 0, \
+		int yEspacamento = 27, int origemXValores = -1, int origemYValores = -1, int xEspacamentoValores = 11, int yEspacamentoValores = 0,\
 		int xEspacamentoValoresOpcoes = 1, int yEspacamentoValoresOpcoes = 0, vector<int> corNormalParam = { 0 }, \
 		vector<int> corDestaqueParam = { 0 }, vector<int> corNormalValoresParam = { 0 }, vector<int> corDestaqueValoresParam = { 0 }, \
 		string fonte = "fonteNormal", float espacoLinhas = 1.5f, int alinhamento = TEXTO_CENTRALIZADO);

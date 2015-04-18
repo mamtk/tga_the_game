@@ -1,13 +1,25 @@
-#pragma once
+﻿#pragma once
 #include "Menu.h"
 #include "Halterofilismo.h"
 #include "libUnicornio.h"
 
-enum EstadoDoJogo { menuPrincipal, menuJogos, menuOpcoes, menuAjuda, menuCreditos, menuHalterofilismo, jogoHalterofilismo };
+#include <ctime>	// nem precisaria
+#include <stdlib.h>	// seria random, mas quem ia explicar depois?
 
 class Jogo
 {
+	// estado do jogo, valores pretendem ser universais (entre as classes)
+	enum EstadoDoJogo {
+		menuPrincipal, menuJogos, menuOpcoes, menuAjuda, menuCreditos, menuHalterofilismo, jogoHalterofilismoCampanha, \
+		jogoHalterofilismoSandbox, jogoTirofilismoCampanha, jogoTirofilismoSandbox
+	};
+
+	// opções dos menus
 	enum OpcoesMenuPrincipal { escolhaJogar, escolhaOpcoes, escolhaAjuda, escolhaCreditos, escolhaSair };
+	enum OpcoesMenuSecundario { escolhaHalterCampanha, escolhaHalterSandbox, escolhaTiroCampanha, escolhaTiroSandbox, Retornar };
+
+	// valores dos menus
+	enum ValoresMenuOpcoes { valorDificuldade, valorDesativarEventos, valorDesativarFatality, valorDesativarSom, valorDesativarMusicas, valorDesativarHistoria };
 
 	Texto texto;
 	Menu principal;
@@ -24,6 +36,7 @@ class Jogo
 
 	void gerenciarEstado();
 	void gerenciarMenuPrincipal();
+	void gerenciarMenuSecundario();
 public:
 	Jogo();
 	~Jogo();

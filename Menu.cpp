@@ -9,27 +9,35 @@
 // inicializar menu unitário com espaçamento fixo (i.e. sem especificar a posição de cada item no menu)
 Menu::Menu()
 {
+	fundoEsmaecer.setEscala(700, 100);
+	fundoEsmaecer.setVelocidadeAnimacao(50);
 
 }
 
 // inicializar menu único (fazemos as coisas aqui por que setFonte exige um tipo completo para a classe Jogo)
 // TODO: versão com origemX|Y em vetores, verificar tamanho, e usar regras de espaçamento pras opções que restarem
-void Menu::inicializar(vector<wstring> vetorOpcoes, wstring cabecalhoParam, vector<int> cabecalhoXY, int selecaoPadrao, int origemX, int origemY, \
+void Menu::inicializar(vector<wstring> vetorOpcoes, wstring cabecalhoParam, string fundilho, vector<int> cabecalhoXY, int selecaoPadrao, int origemX, int origemY, \
 	int xEspacamento, int yEspacamento, vector<int> corNormalParam, vector<int> corDestaqueParam, string fonte, float espacoLinhas, int alinhamento)
 {
+	// sprite para efeito esmaecer dessa calsse
+	fundoEsmaecer.setSpriteSheet("fx_Esmaecer");
+	fundo.setSpriteSheet(fundilho);
+
 	// inicializar menu unico
 	tipoMenu = unico;
+	xCentral = janela.getLargura() * .5;
+	yCentral = janela.getAltura() * .5;
 	stringsOpcoesMenu = vetorOpcoes;
 	espacamentoOpcoesX = xEspacamento;
 	espacamentoOpcoesY = yEspacamento;
 	if (corNormalParam.size() == 4)			// verificar se cor destaque possui 4 elementos
 		corNormal = corNormalParam;
 	else
-		corNormal = { 0, 255, 0, 255 };		// do contrário usar a padrão
-	if (corDestaqueParam.size() == 4)		// verificar se cor normal possui 4 elementos
+		corNormal = { 0, 91, 255, 255 };		// do contrário usar a padrão
+	if (corDestaqueParam.size() == 4)			// verificar se cor normal possui 4 elementos
 		corDestaque = corDestaqueParam;
 	else
-		corDestaque = { 255, 255, 0, 255 };	// do contrário usar a padrão
+		corDestaque = { 0, 200, 255, 255 };	// do contrário usar a padrão
 
 	// setamos o cabeçalho, se existir
 	if (cabecalhoParam.size() > 1) {
@@ -58,13 +66,10 @@ void Menu::inicializar(vector<wstring> vetorOpcoes, wstring cabecalhoParam, vect
 	xOpcoesMenu.resize(sizeOpcoesMenu);	// iniciamos a memória, pois já sabemos o que vamos utilizar
 	yOpcoesMenu.resize(sizeOpcoesMenu);	// iniciamos a memória, pois já sabemos o que vamos utilizar
 
-	// x ou y == -1, significa centro da tela
-	int xCentral = janela.getLargura() * .5;
-	int yCentral = janela.getAltura() * .5;
-
 	nomeFonte = fonte;
 
 	// inicializar objetos Texto para cada uma das opções do menu único (antes das coordenadas pra poder usar largura/altura)
+	// x ou y == -1, significa centro da tela
 	for (int i = 0; i < sizeOpcoesMenu; i++) {
 		textosMenu[i].setCor(corNormal[0], corNormal[1], corNormal[2], corNormal[3]);
 		textosMenu[i].setAlinhamento((TipoAlinhamentoTexto)alinhamento);
@@ -157,13 +162,20 @@ void Menu::inicializar(vector<wstring> vetorOpcoes, wstring cabecalhoParam, vect
 
 // inicializar menu duplos (fazemos as coisas aqui por que setFonte exige um tipo completo para a classe Jogo)
 // TODO: versão com origemX|Y em vetores, verificar tamanho, e usar regras de espaçamento pras opções que restarem
-void Menu::inicializar(vector<wstring> vetorOpcoes, vector<vector<wstring>> vetorValores, wstring cabecalhoParam, vector<int> cabecalhoXY, int selecaoPadrao, 
-	vector<int> valoresPadrao, int origemX, int origemY, int xEspacamento, int yEspacamento, int origemXValores, int origemYValores, int xEspacamentoValores,
-	int yEspacamentoValores, int xEspacamentoValoresOpcoes, int yEspacamentoValoresOpcoes, vector<int> corNormalParam, \
+void Menu::inicializar(vector<wstring> vetorOpcoes, vector<vector<wstring>> vetorValores, wstring cabecalhoParam, string fundilho, vector<int> cabecalhoXY, \
+	int selecaoPadrao, vector<int> valoresPadrao, int origemX, int origemY, int xEspacamento, int yEspacamento, int origemXValores, int origemYValores, \
+	int xEspacamentoValores, int yEspacamentoValores, int xEspacamentoValoresOpcoes, int yEspacamentoValoresOpcoes, vector<int> corNormalParam, \
 	vector<int> corDestaqueParam, vector<int> corNormalValoresParam, vector<int> corDestaqueValoresParam, string fonte, float espacoLinhas, int alinhamento)
 {
+	// sprite para efeito esmaecer dessa calsse
+	//fundo.setSpriteSheet(fundilho);
+	fundoEsmaecer.setSpriteSheet("fx_Esmaecer");
+
 	// inicializar menu unico
 	tipoMenu = duplo;
+	xCentral = janela.getLargura() * .5;
+	yCentral = janela.getAltura() * .5;
+	fundo.setSpriteSheet(fundilho);
 	stringsOpcoesMenu = vetorOpcoes;
 	stringValoresMenu = vetorValores;
 	espacamentoOpcoesX = xEspacamento;
@@ -239,8 +251,8 @@ void Menu::inicializar(vector<wstring> vetorOpcoes, vector<vector<wstring>> veto
 	}
 
 	// x ou y == -1, significa padrão
-	int xCentral = janela.getLargura() * .25;
-	int yCentral = janela.getAltura() * .3;
+	int xPadrao = janela.getLargura() * .25;
+	int yPadrao = janela.getAltura() * .3;
 
 	nomeFonte = fonte;
 
@@ -277,7 +289,7 @@ void Menu::inicializar(vector<wstring> vetorOpcoes, vector<vector<wstring>> veto
 			// elemento zero: y = centro da tela
 			for (int i = 0; i < sizeOpcoesMenu; i++) {
 				// y = centro da tela
-				xOpcoesMenu[i] = xCentral;
+				xOpcoesMenu[i] = xPadrao;
 			}
 		}
 		else {
@@ -291,7 +303,7 @@ void Menu::inicializar(vector<wstring> vetorOpcoes, vector<vector<wstring>> veto
 	else {
 		if (origemX == -1) {
 			// elemento zero: x = centro da tela
-			xOpcoesMenu[0] = xCentral;
+			xOpcoesMenu[0] = xPadrao;
 			for (int i = 1; i < sizeOpcoesMenu; i++) {
 				// x = centro da tela + (SOMA(largura de cada opção anterior * .5)) + (espaçamento fornecido * numero da opcao)
 				int soma = 0;
@@ -319,7 +331,7 @@ void Menu::inicializar(vector<wstring> vetorOpcoes, vector<vector<wstring>> veto
 			// elemento zero: y = centro da tela
 			for (int i = 0; i < sizeOpcoesMenu; i++) {
 				// y = centro da tela
-				yOpcoesMenu[i] = yCentral;
+				yOpcoesMenu[i] = yPadrao;
 			}
 		}
 		else {
@@ -333,10 +345,10 @@ void Menu::inicializar(vector<wstring> vetorOpcoes, vector<vector<wstring>> veto
 	else {
 		if (origemY == -1) {
 			// elemento zero: y = centro da tela
-			yOpcoesMenu[0] = yCentral;
+			yOpcoesMenu[0] = yPadrao;
 			for (int i = 1; i < sizeOpcoesMenu; i++) {
 				// y = centro da tela + (i * altura da opção anterior * .5) + (espaçamento fornecido * numero da opcao)
-				yOpcoesMenu[i] = yCentral + (i * textosMenu[i - 1].getAltura() * .5) + espacamentoOpcoesY * i;
+				yOpcoesMenu[i] = yPadrao + (i * textosMenu[i - 1].getAltura() * .5) + espacamentoOpcoesY * i;
 			}
 		}
 		else {
@@ -446,11 +458,15 @@ void Menu::desenhar()
 	uniDepurar("Y[ativo]", yOpcoesMenu[ativo]);
 	uniDepurar("X[ativo]", xOpcoesMenu[ativo]);
 
+	// primeiro desenhar o fundo (antes de tudo)
+	fundo.desenhar(xCentral, yCentral);
+
 	if (possuiCabecalho)	// aqui desenhamos o cabecalho, se existir
 		cabecalho.desenhar(xyCabecalho[0], xyCabecalho[1]);
 
 	switch (tipoMenu) { // aqui senhamos as opções
 	case unico:
+
 		for (int i = 0; i < sizeOpcoesMenu; i++) {	// iteramos pelas opções principais
 			textosMenu[i].desenhar(xOpcoesMenu[i], yOpcoesMenu[i]);		// desenhamos cada opção principal
 			int tamanhoTexto = textosMenu[i].getWstring().size();	// usamos o tamanho do texto para determinar suas coordenadas máximas no eixo x
@@ -459,7 +475,7 @@ void Menu::desenhar()
 			}
 		}
 
-		if (teclado.soltou[TECLA_CIMA] || teclado.soltou[TECLA_W]) {				// vai cima ao apertar ↑ ou W
+		if (teclado.soltou[TECLA_CIMA] || teclado.soltou[TECLA_W]) {			// vai cima ao apertar ↑ ou W
 			vaiCima();
 		}
 		else if (teclado.soltou[TECLA_BAIXO] || teclado.soltou[TECLA_S]) {		// vai baixo ao apertar ↓ ou S
@@ -472,8 +488,7 @@ void Menu::desenhar()
 			vaiTopo();
 		}
 		else if (teclado.soltou[TECLA_ENTER] || teclado.soltou[TECLA_ESPACO] || mouse.pressionou[0]) {	// [0] = primeiro botao do mouse
-			// executa opção ao pertar enter ou espaço
-			vaiOpcao();
+			vaiOpcao();	// a escolha foi feita!
 		}
 		break;
 	case duplo:
@@ -492,13 +507,13 @@ void Menu::desenhar()
 			}
 		}
 
-		if (teclado.soltou[TECLA_CIMA] || teclado.soltou[TECLA_W]) {				// vai cima ao apertar ↑ ou W
+		if (teclado.soltou[TECLA_CIMA] || teclado.soltou[TECLA_W]) {			// vai cima ao apertar ↑ ou W
 			vaiCima();
 		}
 		else if (teclado.soltou[TECLA_BAIXO] || teclado.soltou[TECLA_S]) {		// vai baixo ao apertar ↓ ou S
 			vaiBaixo();
 		}
-		else if (teclado.soltou[TECLA_DIR] || teclado.soltou[TECLA_D]) {				// vai cima ao apertar ↑ ou W
+		else if (teclado.soltou[TECLA_DIR] || teclado.soltou[TECLA_D]) {		// vai cima ao apertar ↑ ou W
 			vaiDireita();
 		}
 		else if (teclado.soltou[TECLA_ESQ] || teclado.soltou[TECLA_A]) {		// vai baixo ao apertar ↓ ou S
@@ -510,9 +525,8 @@ void Menu::desenhar()
 		else if (teclado.soltou[TECLA_HOME] || teclado.soltou[TECLA_PAGEUP]) {	// vai topo ao apertar home
 			vaiTopo();
 		}
-		else if (teclado.soltou[TECLA_ENTER] || teclado.soltou[TECLA_ESPACO]) { // mouse.pressionou[0]) // ficaria confuso cliclar e voltar
-			// executa opção ao pertar enter ou espaço
-			vaiOpcao();
+		else if (teclado.soltou[TECLA_ENTER] || teclado.soltou[TECLA_ESPACO]) { // mouse.pressionou[0]) // ficaria confuso clicar e voltar em menu duplo
+			vaiOpcao();	// a escolha foi feita!
 		}
 		break;
 	}
@@ -622,8 +636,10 @@ bool Menu::finalizado()
 
 bool Menu::mouseSobre(Texto objetoTexto, int x, int y)	// eu usaria referência pro const, mas quem explicaria tal coisa?
 {
-	if (mouse.y >= (y - 15) && mouse.y <= (y + objetoTexto.getAlturaLinha(0)) &&	// se o ponteiro está verticalmente próximo a esse objeto texto
-		(mouse.x >= (x - 15) && (mouse.x <= (x + objetoTexto.getLargura())))) {	// também verificar se ele está horizontalmente próximo
+	int metadeAltura = objetoTexto.getAltura() * .5;
+	int metadeLargura = objetoTexto.getLargura() * .5;
+	if (mouse.y >= (y - metadeAltura) && mouse.y <= (y + metadeAltura) &&	// se o ponteiro está verticalmente próximo a esse objeto texto
+		(mouse.x >= (x - metadeLargura) && (mouse.x <= (x + metadeLargura)))) {	// também verificar se ele está horizontalmente próximo
 		// caso positivo, o ponteiro provavelmente está sobre a opção atual (textosMenuPrincipal[i])
 		return true;	//	então usamos a função vaiIndice com a opção atual (i) como argumento, para destacá-la
 	}

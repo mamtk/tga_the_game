@@ -2,6 +2,8 @@
 
 Jogo::Jogo()
 {
+	// inicializar o rand no construtor, já que ele tem menos chances de rodar de novo que o inicializar()
+	srand(time(time_t()));	// isso aqui o professor não explicou, mas pelo menos ele já disse pra usar
 }
 
 Jogo::~Jogo()
@@ -17,47 +19,74 @@ void Jogo::inicializar()
 	//	1)	Carregar as fontes (passando o tamanho da fonte como parametro)
 	/* tentaremos uma nomenclatura padronizada --- edit 01
 		fonte*		-	para fontes, ex. fonteNormal
-		fundo_\1\2	-	para fundos, \1 é o jogo, \2 QUALQUER identificador; ex. fundo_Halter01, fundo_HalterCenaLago, ...
+		fundo_\1\2	-	para fundos, \1 é o jogo/classe, \2 QUALQUER identificador; ex. fundo_Halter01, fundo_HalterCenaLago, ...
 		per_\1\2	-	para personagens (tudo que age/tem vontade), ex. per_HalterMosca1, per_TiroPato, ...
 		obj_\1\2	-	para objetos (mesmo com animação), ex. obj_HalterRochaDoLago, obj_JudoAnelDeFogo, ...
 		fx_\1\2		-	para imateriais/efeitos, ex. fx_TiroFumaca, fx_ArcoSangue, ...
 	*/
+	// fontes
 	recursos.carregarFonte("fonteNormal", "UbuntuMono-R.ttf", 17);
+	recursos.carregarFonte("fonteNormalSombra", "UbuntuMono-B.ttf", 19);
+	recursos.carregarFonte("fonteGrande", "UbuntuMono-R.ttf", 27);
+	recursos.carregarFonte("fonteGrandeSombra", "UbuntuMono-B.ttf", 29);
+	recursos.carregarSpriteSheet("fx_Esmaecer", "img/fx/fx_esmaecer.png", 1, 100);
+	// menuPrincipal
+	recursos.carregarSpriteSheet("fundo_MenuPrincipal01", "img/fundos/fundo_MenuPrincipal01.png");
+	recursos.carregarSpriteSheet("fundo_MenuPrincipal02", "img/fundos/fundo_MenuPrincipal02.png");
+	recursos.carregarSpriteSheet("fundo_MenuPrincipal03", "img/fundos/fundo_MenuPrincipal03.png");
+	recursos.carregarSpriteSheet("fundo_MenuPrincipal04", "img/fundos/fundo_MenuPrincipal04.png");
+	recursos.carregarSpriteSheet("fundo_MenuPrincipal05", "img/fundos/fundo_MenuPrincipal05.png");
+	// menuOpcoes
+	recursos.carregarSpriteSheet("fundo_MenuOpcoes", "img/fundos/fundo_MenuOpcoes.png");
 	// halterofilismo
 	recursos.carregarSpriteSheet("fundo_Halter01", "img/fundos/halter_01.png");
 	recursos.carregarSpriteSheet("per_Halter01", "img/per/lucas1.png", 3, 9);
+	recursos.carregarSpriteSheet("per_HalterMosca", "img/per/per_HalterMosca.png", 3, 9);
+	recursos.carregarSpriteSheet("obj_HalterBarra", "img/obj/obj_HalterBarraFofa.png", 1, 100);
 	recursos.carregarSpriteSheet("fx_HalterBarra", "img/fx/fx_HalterBar.png", 1, 11);
 	// especificar numeros de frames diferentes do maior
 	recursos.getSpriteSheet("per_Halter01")->setNumFramesDaAnimacao(0, 3);
 	recursos.getSpriteSheet("per_Halter01")->setNumFramesDaAnimacao(1, 8);
 
-	// inicializar menus
+	//********* MENUS
+	// inicializar menu principal
+	vector<string> fundosPrincipal = { "fundo_MenuPrincipal01", "fundo_MenuPrincipal02", "fundo_MenuPrincipal03", "fundo_MenuPrincipal04", "fundo_MenuPrincipal05" };
+	int fundoMaisBom = rand() % fundosPrincipal.size();
 	vector<wstring> opcoesPrincipais = { L"Iniciar Jogo", L"Opções", L"Ajuda", L"Créditos", L"Sair" };
-	principal.inicializar(opcoesPrincipais, L"TESTE TESTE TESTE TESTE TESTE TESTE "); // algumas funções não podem ser executadas no construtor daquela classe (pois jogo ainda possui tipo incompleto)
+	principal.inicializar(opcoesPrincipais, L"Algoritmos e C++ (2015/1) - Professor Pinho Marson", fundosPrincipal[fundoMaisBom]); // algumas funções não podem ser executadas no construtor daquela classe (pois jogo ainda possui tipo incompleto)
 
+	// inicializar menu de seleção de tipo de jogo
+	vector<wstring> textoSecundario = { L"Halterofilismo (campanha)", L"Halterofilismo (sandbox)", \
+		L"Tiro (campanha)", L"Tiro (sandbox)", L"Voltar" };
+	secundario.inicializar(textoSecundario);
+
+	// inicializar menu de créditos
 	vector<wstring> opcoesSecundarias = { L"Halterofilismo (Campanha)", L"Halterofilismo (Sandbox)", L"Tiro (Campanha)", L"Tiro (Sandbox)", L"Voltar" };
 	vector<wstring> opcoesCreditos = { L"TGA - The Game é um jogo sério, muito sério; mas não deve ser levado a sério, \
 	já que é apenas um jogo.\n\nCriado por Jean Lucca, Mattheus Menezes, Morris.\nSão Leopoldo, abril de 2015." };
 	wstring cabecalhoCreditos = L"Aperte [ENTER], [ESPAÇO] ou clique com o botão esquerdo para voltar.";
 	creditos.inicializar(opcoesCreditos, cabecalhoCreditos);
 	
+	// inicializar menu de ajuda
 	vector<wstring> textoAjuda = { L"blablabla\n\n\nParabéns! Você está pronto para ir para a próxima página!" };
 	wstring cabecalhoAjuda = L"Aperte D ou -> para prosseguir, ou aperte [ENTER], [ESPAÇO] ou clique esquerdo para voltar.";
 	ajuda.inicializar(textoAjuda, cabecalhoAjuda);
 
-	wstring textoCabecalhoOpcoes = L"Pressione [CIMA] ou [BAIXO], ou [W] ou [S], ou coloque o mouse em cima, para mudar a opção destacada.\n\
-	Pressione <- e -> para alterar os valores da opção destacada.\n\
-	\nPressione [ESPAÇO] para voltar. Todas as opções destacadas serão ativadas.";
+	// inicializar menu de opções
+	wstring textoCabecalhoOpcoes = L"Pressione [CIMA] ou [BAIXO], ou [W] ou [S], ou passe o mouse, para mudar a opção destacada.\n\
+	Pressione <- e ->, ou passe o mouse para alterar os valores da opção destacada.\n\
+	\nPressione [ESPAÇO] para voltar. Todas os valores destacades serão armazenados.";
 	vector<wstring> textoOpcoes = { L"Nível de dificuldade:", // [0]
 		L"Desativar eventos aleatórios:",	// [1]
 		L"Desativar fatality:", // [2]
 		L"Desativar som:", // [3]
-		//L"Pular história:", // [4]
+		L"Desativar musicas:", // [4]
+		L"Pular história:", // [5]
 	};
 	int sizeTextoOpcoes = textoOpcoes.size();
 	vector<vector<wstring>> stringsValores;
 	stringsValores.resize(sizeTextoOpcoes);
-
+	// inicializar valores para cada nível de opção
 	for (int nivel = 0; nivel < sizeTextoOpcoes; nivel++) {	// aqui setamos os valores possíveis para cada uma das opções (níveis)
 		switch (nivel) { // talvez fique mais fácil de entender se eu usar um loop for (embora fique mais lento, só roda uma vez)
 		case 0: // variáveis possíveis para a opção [0] do textoOpcoes
@@ -72,9 +101,17 @@ void Jogo::inicializar()
 		case 3: // variáveis possíveis para a opção [2] do textoOpcoes
 			stringsValores[nivel] = { L"Não", L"Sim" }; // opções para [3] (desativar som)
 			break;
+		case 4: // variáveis possíveis para a opção [2] do textoOpcoes
+			stringsValores[nivel] = { L"Não", L"Sim" }; // opções para [4] (desativar musicas)
+			break;
+		case 5: // variáveis possíveis para a opção [2] do textoOpcoes
+			stringsValores[nivel] = { L"Não", L"Sim" }; // opções para [5] (pular história)
+			break;
 		}
 	}
-	opcoes.inicializar(textoOpcoes, stringsValores, textoCabecalhoOpcoes, { 0 }, 0, { 0 }, -1, -1, 0, 27, 550, -1, 21);
+	opcoes.inicializar(textoOpcoes, stringsValores, textoCabecalhoOpcoes, "fundo_MenuOpcoes", { 0 }, 0, { 0 }, -1, -1, 0, 27, 550, -1, 21);
+
+	//********* JOGOS
 }
 
 void Jogo::finalizar()
@@ -88,6 +125,9 @@ void Jogo::finalizar()
 
 void Jogo::executar()
 {
+	// antes de iniciar o jogo fazemos nossa intro estilosa
+	//	detalhe que isso tá errado, era pra ser orientado a objeto, mas quem ia explicar as refs?
+	// TODO
 	while(!teclado.soltou[TECLA_ESC] && !aplicacao.sair)
 	{
 		uniIniciarFrame();
@@ -105,8 +145,15 @@ void Jogo::gerenciarEstado()
 	switch (estado) {
 		case menuPrincipal:
 			principal.desenhar();	// desenhar o menu? a verdade é que o menu se desenha sozinho! haha, piada idiota.
-			if (principal.finalizado()) {	// verificar se o jogador já fez a sua escolha
+			if (principal.finalizado()) {	// verificar se o jogador fez uma escolha
+				opcoesDeJogo = opcoes.getValores();	// melhor pegar a mais, do que a menos
 				gerenciarMenuPrincipal();
+			}
+			break;
+		case menuJogos:
+			secundario.desenhar();	// desenhar o menu? a verdade é que o menu se desenha sozinho! haha, piada idiota.
+			if (secundario.finalizado()) {	// verificar se o jogador decidiu
+				gerenciarMenuSecundario();
 			}
 			break;
 		case menuOpcoes:
@@ -133,7 +180,7 @@ void Jogo::gerenciarEstado()
 				estado = menuPrincipal;
 			}
 			break;
-		case jogoHalterofilismo:
+		case jogoHalterofilismoCampanha:
 			halterofilia.desenhar();
 			break;
 	}
@@ -162,6 +209,27 @@ void Jogo::gerenciarMenuPrincipal()
 		break;
 	}
 
-	// resetar estado do menu principal (para que a opção destacada volte para o padrão)
+	// resetar estado do menu principal (se não ele não desenha)
 	principal.resetarMenu();
+}
+
+void Jogo::gerenciarMenuSecundario()
+{
+	int opcaoEscolhida = secundario.getOpcao(); // ober opção escolhida
+
+	// mudar estado do jogo, ou sair
+	switch (opcaoEscolhida) {
+	case escolhaHalterCampanha:
+		estado = jogoHalterofilismoCampanha;
+		halterofilia.inicializar(estado, opcoesDeJogo);
+		break;
+	default:
+		estado = menuPrincipal;
+		break;
+	}
+
+	// resetar estado do menu principal (se não ele não desenha mais)
+	principal.resetarMenu();
+	// resetar menu secundário (se não ele não desenha mais)
+	secundario.resetarMenu();
 }
