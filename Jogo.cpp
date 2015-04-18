@@ -45,7 +45,7 @@ void Jogo::inicializar()
 	wstring cabecalhoAjuda = L"Aperte D ou -> para prosseguir, ou aperte [ENTER], [ESPAÇO] ou clique esquerdo para voltar.";
 	ajuda.inicializar(textoAjuda, cabecalhoAjuda);
 
-	wstring textoCabecalhoOpcoes = L"Pressione ↑ ou ↓, ou coloque o mouse em cima, para mudar a opção destacada.\n\
+	wstring textoCabecalhoOpcoes = L"Pressione [CIMA] ou [BAIXO], ou [W] ou [S], ou coloque o mouse em cima, para mudar a opção destacada.\n\
 	Pressione <- e -> para alterar os valores da opção destacada.\n\
 	\nPressione [ESPAÇO] para voltar. Todas as opções destacadas serão ativadas.";
 	vector<wstring> textoOpcoes = { L"Nível de dificuldade:", // [0]
