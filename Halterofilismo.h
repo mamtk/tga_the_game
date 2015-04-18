@@ -16,8 +16,8 @@ class Halterofilismo
 	Sprite personagem;
 	Sprite barraProgresso;
 	// os vetores abaixo armazenam as coordenadas de âncora da sprite do personagem
-	std::vector<int> coordenadasX;	// vetor coordenadas X pra nunca mais no jogo precisarmos usar vetor de vetores
-	std::vector<int> coordenadasY;	// vetor coordenadas Y pra nunca mais no jogo precisarmos usar vetor de vetores
+	vector<int> coordenadasX;	// vetor coordenadas X pra nunca mais no jogo precisarmos usar vetor de vetores
+	vector<int> coordenadasY;	// vetor coordenadas Y pra nunca mais no jogo precisarmos usar vetor de vetores
 	float progresso = 0;	// progresso rumo aos _100%_ da "rep"
 	int cena = 0;	// o fundo a ser utilizado
 	int contadorTeclarA, contadorTeclarB, contadorTeclarMisc;	// conta o intervalo pressionar das teclas
