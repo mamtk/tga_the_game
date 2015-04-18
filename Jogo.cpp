@@ -74,7 +74,7 @@ void Jogo::inicializar()
 			break;
 		}
 	}
-	opcoes.inicializar(textoOpcoes, stringsValores, textoCabecalhoOpcoes, { 0 }, 0, { 0 }, -1, -1, 0, 27, 300);
+	opcoes.inicializar(textoOpcoes, stringsValores, textoCabecalhoOpcoes, { 0 }, 0, { 0 }, -1, -1, 0, 27, 550, -1, 21);
 }
 
 void Jogo::finalizar()
