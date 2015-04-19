@@ -23,6 +23,7 @@ void Halterofilismo::inicializar(int estado, vector<int> valoresOpcoesDeJogo)
 
 	// inicializar sprites
 	barra.setSpriteSheet("obj_HalterBarra");
+	barra.setEscala(5, 5);
 	fundo.setSpriteSheet("fundo_Halter01");
 	protagonista.setSpriteSheet("per_Halter01");
 	protagonista.setAnimacao(0);
@@ -96,16 +97,16 @@ void Halterofilismo::desenhar()
 	// iniciar jogo
 	fundo.desenhar(xCentro, yCentro);
 	protagonista.desenhar(xCentro, yCentro);
-	barra.desenhar(xCentro, yCentro);
-	barra.setEscala(5, 5);
 	progressoMaximo = sizeBarraProgressoFrames - 1;	// reduzimos 1, pois: indice ultimo elemento = total - 1
 	if (!inicioLevantamento) // equivale a if( == 0), então o levantamento começou agora
 		inicioLevantamento = clock();	// clock nos dá o "tick" atual, equivale a dizer que armazenamos o tempo atual
 	if (passouTempo(fatorDificuldade))
 		dificultar();
 	setarTemporizador(60);	// 60 segundos
+	// desenhamos a barra antes apenas das pragas e do hud
+	barra.desenhar(xCentro, yCentro);
+	// desenhamos o hud antes apenas das pragas
 	desenharHUD();
-	uniDepurar("inicioLevantamento", inicioLevantamento);
 	gerenciarPragas();
 	gerenciarLevantamento();	// temporizador, progresso, eventos
 }
@@ -148,7 +149,7 @@ void Halterofilismo::desenharHUD()
 }
 
 // aqui oferecemos opções de jogo ao usuário: incluem cenário (slider, incluindo opção pseudoaleatório),
-//	dificuldade inicial (slider + personalizada), sexo do protagonista, 
+//	dificuldade inicial (slider + personalizada), sexo do protagonista, tipo do levantamento, 
 void Halterofilismo::preparaSandbox()
 {
 

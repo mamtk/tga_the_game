@@ -42,7 +42,7 @@ void Jogo::inicializar()
 	recursos.carregarSpriteSheet("fundo_Halter01", "img/fundos/halter_01.png");
 	recursos.carregarSpriteSheet("per_Halter01", "img/per/lucas1.png", 3, 9);
 	recursos.carregarSpriteSheet("per_HalterMosca", "img/per/per_HalterMosca.png", 3, 9);
-	recursos.carregarSpriteSheet("obj_HalterBarra", "img/obj/obj_HalterBarraFofa.png", 1, 100);
+	recursos.carregarSpriteSheet("obj_HalterBarra", "img/obj/obj_HalterBarraFofa.png");
 	recursos.carregarSpriteSheet("fx_HalterBarra", "img/fx/fx_HalterBar.png", 1, 11);
 	// especificar numeros de frames diferentes do maior
 	recursos.getSpriteSheet("per_Halter01")->setNumFramesDaAnimacao(0, 3);

@@ -13,7 +13,7 @@ int modulo(int a, int b)
 }
 
 /*
-Isso aqui deu errado de uma formal tal que é difícil até de imaginar.
+Isso aqui deu errado de uma forma tal que é difícil até de imaginar.
 Parece que a função desenhar é responsável por atualizar a animação, o que
 	significa que quando eu desenho uma cópia do objeto, a animação no objeto
 	original não é atualizada. Resumindo, vou ter que fazer isso na mão em cada
