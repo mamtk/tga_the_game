@@ -100,14 +100,16 @@
     <ClCompile Include="Halterofilismo.cpp" />
     <ClCompile Include="Jogo.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="MenuPrincipal.cpp" />
+    <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Protagonista.cpp" />
+    <ClCompile Include="Temporizador.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Halterofilismo.h" />
     <ClInclude Include="Jogo.h" />
-    <ClInclude Include="MenuPrincipal.h" />
+    <ClInclude Include="Menu.h" />
     <ClInclude Include="Protagonista.h" />
+    <ClInclude Include="Temporizador.h" />
     <ClInclude Include="util.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
