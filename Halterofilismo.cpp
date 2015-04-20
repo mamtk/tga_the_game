@@ -34,6 +34,7 @@ void Halterofilismo::inicializar(int estado, vector<int> valoresOpcoesDeJogo)
 	barraProgresso.setSpriteSheet("fx_HalterBarra");
 	barraProgresso.setVelocidadeAnimacao(5);
 	sizeBarraProgressoFrames = barraProgresso.getSpriteSheet()->getNumFramesDaAnimacao(0);
+	progressoMaximo = sizeBarraProgressoFrames - 1;	// reduzimos 1, pois: indice ultimo elemento = total - 1
 	xyLinhasObjetivo.resize(sizeBarraProgressoFrames);	// iniciar memória, antes de utilizá-la
 
 	// inicializar valores xy da linha de progresso para cada frame da sprite
@@ -68,12 +69,12 @@ void Halterofilismo::inicializar(int estado, vector<int> valoresOpcoesDeJogo)
 	temporizadorSombra.setWstring(L"2:35");
 
 	// inicializar ponto no tempo para função dificultar
-	pontoTempoDificuldade = clock();	// retorna o "tick" atual, pode-se dizer que vamos armazenar o "tempo" atual
+	temporizadorDificultar = clock();	// retorna o "tick" atual, pode-se dizer que vamos armazenar o "tempo" atual
 
 	// a parte complicada de escolher o multiplicador da dificuldade é tornar a progressão gradual, por causa do sandbox (modo contínuo)
 	switch (valoresOpcoesDeJogo[valorDificuldade]) {	// por isso aqui definimos valores com uma distância cada vez menor
 	case 0:	// medio
-		dificuldade = 7;	// 7
+		dificuldade = 1;	// 7
 		chancePraga = 60;	// 1 chance em 60 (por segundo)
 		break;
 	case 1:	// difícil
@@ -116,30 +117,37 @@ void Halterofilismo::desenhar()
 	// preparar
 	
 	// iniciar jogo
-	fundo.desenhar(xCentro, yCentro);
-	protagonista.desenhar(xCentro, yCentro);
-	
-	/****/
-	// isso aqui será definido em outra função ou num dos preparar ou em sandbox ou em campanha
-	progressoMaximo = sizeBarraProgressoFrames - 1;	// reduzimos 1, pois: indice ultimo elemento = total - 1
-	if (!inicioLevantamento) // equivale a if( == 0), então o levantamento começou agora
-		inicioLevantamento = clock();	// clock nos dá o "tick" atual, equivale a dizer que armazenamos o tempo atual
-	if (passouTempoDificultar(fatorDificuldade)) {
-		dificultar();
+	if (barraProgresso.getFrameAtual() >= progressoMaximo) {
+		textoTemporizador.setWstring(L"Parabéns, você ganhou!");
+		textoTemporizador.desenhar(xCentro, yCentro);
+		// fadeout de ~5s, depois menu de vitória baseado no tipo de jogo
 	}
-	if (passouTempo(10000))
-		pragaAlada();
-	temporizador.setTempo(60);	// 60 segundos
-	/****/
+	else {
+		fundo.desenhar(xCentro, yCentro);
+		protagonista.desenhar(xCentro, yCentro);
 
-	// primeiro gerenciamos o progresso (pois se terminou queremos exibir menu, etc antes de desenhar algo)
-	//gerenciarProgresso();
-	// desenhamos a barra antes apenas das pragas e do hud
-	barra.desenhar(xBarra, yBarra);
-	// desenhamos o hud antes apenas das pragas
-	desenharHUD();
-	gerenciarPragas();
-	gerenciarLevantamento();	// temporizador, progresso, eventos
+		/****/
+		// isso aqui será definido em outra função ou num dos preparar ou em sandbox ou em campanha
+		progressoMaximo = sizeBarraProgressoFrames - 1;	// reduzimos 1, pois: indice ultimo elemento = total - 1
+		if (!inicioLevantamento) // equivale a if( == 0), então o levantamento começou agora
+			inicioLevantamento = clock();	// clock nos dá o "tick" atual, equivale a dizer que armazenamos o tempo atual
+		if (passouTempoDificultar(fatorDificuldade)) {
+			dificultar();
+		}
+		if (passouTempo(10000))
+			pragaAlada();
+		temporizador.setTempo(60);	// 60 segundos
+		/****/
+
+		// primeiro gerenciamos o progresso (pois se terminou queremos exibir menu, etc antes de desenhar algo)
+		//gerenciarProgresso();
+		// desenhamos a barra antes apenas das pragas e do hud
+		barra.desenhar(xBarra, yBarra);
+		// desenhamos o hud antes apenas das pragas
+		desenharHUD();
+		gerenciarPragas();
+		gerenciarLevantamento();	// temporizador, progresso, eventos
+	}
 }
 // aqui desenhamos na tela os elementos necessários pela mecânica do jogo
 void Halterofilismo::desenharHUD()
@@ -253,6 +261,7 @@ bool Halterofilismo::passouTempoDificultar(int milissegundos)
 	return false;
 }
 
+// TODO: passar isso para temporizador genérico (criar overloaded type, que ao passar do ponto reseta sozinho)
 bool Halterofilismo::passouTempo(int milissegundos)
 {
 	if ((clock() - pontoTempo) >= milissegundos) {
