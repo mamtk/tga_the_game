@@ -4,11 +4,13 @@
 Temporizador::Temporizador()
 {
 	autoReset = false;
+	pontoZero = clock();
 }
 
 Temporizador::Temporizador(bool autoreset)
 {
 	autoReset = autoreset;
+	pontoZero = clock();
 }
 
 Temporizador::~Temporizador()
@@ -35,6 +37,33 @@ int Temporizador::getTempo()
 		reset();
 
 	return tempoRestante;
+}
+
+
+bool Temporizador::passouTempoMS(int milissegundos)
+{
+	float tempoAtualMS = clock() - pontoZero;
+	float tempoRestanteMS = milissegundos - tempoAtualMS;
+
+	if (tempoRestanteMS < 0) {
+		reset();
+		return true;
+	}
+
+	return false;
+}
+
+bool Temporizador::passouTempo(int segundos)
+{
+	int tempoAtualSegundos = (clock() - pontoZero) / CLOCKS_PER_SEC; // CLOCKS_PER_SEC é definido no <time.h>
+	int tempoRestante = segundos - tempoAtualSegundos;
+
+	if (tempoRestante < 0) {
+		reset();
+		return true;
+	}
+
+	return false;
 }
 
 std::string Temporizador::getTempoFormatado()

@@ -35,7 +35,7 @@ class Halterofilismo
 	// menus de derrota
 	Menu derrota, derrotaFatality;	// fatality não elimina
 
-	Temporizador temporizador, temporizadorDificultar;
+	Temporizador temporizador, tempoDificultar, tempoPragas;
 
 	// os vetores abaixo armazenam as coordenadas de âncora da sprite do personagem
 	vector<int> coordenadasX;	// vetor coordenadas X pra nunca mais no jogo precisarmos usar vetor de vetores
@@ -66,7 +66,6 @@ class Halterofilismo
 	int progressoMaximo;	// progresso máximo de um levantamento, pode variar de (0, ..., sizeBarraProgressoFrames - 1)
 	int chancePraga;		// chance de uma nova pragaAlada aparecer (aumenta com a dificuldade)
 
-	int tempoMaximo, minutosMaximos, segundosMaximos, tempoRestante;	// usado para calcular o tempo no temporizador
 	int sizeBarraProgressoFrames;
 
 	bool barraSobe = true;
@@ -80,9 +79,6 @@ class Halterofilismo
 	void preparaSandbox();
 
 	// utilidades
-	bool passouTempoDificultar(int milissegundos); // usado para limitar a taxa de chamada da função dificuldade
-	bool passouTempo(int milissegundos); // usado para limitar a taxa de chamada da função dificuldade
-	void setarTemporizador(int segundos);
 	void desenharHUD();
 	void gerenciarLevantamento();
 	void moverBarra();

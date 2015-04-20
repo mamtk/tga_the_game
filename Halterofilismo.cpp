@@ -69,7 +69,7 @@ void Halterofilismo::inicializar(int estado, vector<int> valoresOpcoesDeJogo)
 	temporizadorSombra.setWstring(L"2:35");
 
 	// inicializar ponto no tempo para função dificultar
-	temporizadorDificultar = clock();	// retorna o "tick" atual, pode-se dizer que vamos armazenar o "tempo" atual
+	pontoTempoDificuldade = clock();	// retorna o "tick" atual, pode-se dizer que vamos armazenar o "tempo" atual
 
 	// a parte complicada de escolher o multiplicador da dificuldade é tornar a progressão gradual, por causa do sandbox (modo contínuo)
 	switch (valoresOpcoesDeJogo[valorDificuldade]) {	// por isso aqui definimos valores com uma distância cada vez menor
@@ -131,10 +131,11 @@ void Halterofilismo::desenhar()
 		progressoMaximo = sizeBarraProgressoFrames - 1;	// reduzimos 1, pois: indice ultimo elemento = total - 1
 		if (!inicioLevantamento) // equivale a if( == 0), então o levantamento começou agora
 			inicioLevantamento = clock();	// clock nos dá o "tick" atual, equivale a dizer que armazenamos o tempo atual
-		if (passouTempoDificultar(fatorDificuldade)) {
+		fatorDificuldade = 5000;
+		if (tempoDificultar.passouTempoMS(fatorDificuldade)) {
 			dificultar();
 		}
-		if (passouTempo(10000))
+		if (tempoPragas.passouTempoMS(10000))
 			pragaAlada();
 		temporizador.setTempo(60);	// 60 segundos
 		/****/
@@ -243,32 +244,6 @@ void Halterofilismo::moverBarra()
 		barraSobe = true;
 		yBarra -= 10;
 	}
-}
-
-void Halterofilismo::setarTemporizador(int milissegundos)
-{
-	tempoMaximo = milissegundos;
-	minutosMaximos = milissegundos * 0.01666666666666666667;	// dividimos por 60 pra obter os minutos
-	segundosMaximos = tempoMaximo - (minutosMaximos * 60);		// subtraimos os minutos dos segundos totais
-}
-
-bool Halterofilismo::passouTempoDificultar(int milissegundos)
-{
-	if ((clock() - pontoTempoDificuldade) >= milissegundos) {
-		pontoTempoDificuldade = clock();
-		return true;
-	}
-	return false;
-}
-
-// TODO: passar isso para temporizador genérico (criar overloaded type, que ao passar do ponto reseta sozinho)
-bool Halterofilismo::passouTempo(int milissegundos)
-{
-	if ((clock() - pontoTempo) >= milissegundos) {
-		pontoTempo = clock();
-		return true;
-	}
-	return false;
 }
 
 void Halterofilismo::dificultar()

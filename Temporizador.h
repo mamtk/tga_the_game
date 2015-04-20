@@ -19,8 +19,8 @@ public:
 	float getTempoMS();					// milissegundos
 	int getTempo();						// segundos
 	std::string getTempoFormatado();	// horas:minutos:segundos
-	int passouTempo(int milissegundos);
-	float passouTempoMS(int milissegundos);
+	bool passouTempo(int segundos);		// automaticamente reseta o pontoZero se passou do limite
+	bool passouTempoMS(int milissegundos);	// automaticamente reseta o pontoZero se passou do limite
 	void setTempo(int segundos);		// segundos
 	void setTempoMS(int milissegundos);	// milissegundos
 	void reset();						// pontoZero = clock();
