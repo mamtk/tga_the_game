@@ -35,7 +35,7 @@ class Halterofilismo
 	// menus de derrota
 	Menu derrota, derrotaFatality;	// fatality não elimina
 
-	Temporizador temporizador;
+	Temporizador temporizador, temporizadorDificultar;
 
 	// os vetores abaixo armazenam as coordenadas de âncora da sprite do personagem
 	vector<int> coordenadasX;	// vetor coordenadas X pra nunca mais no jogo precisarmos usar vetor de vetores

@@ -9,14 +9,18 @@ class Temporizador
 	int tempoMaximoSegundos;	// segundos
 
 	int horasMaximas, minutosMaximos, segundosMaximos;	// pra não calcular toda hora
+	bool autoReset;
 
 public:
 	Temporizador();
+	Temporizador(bool autoresetParam);
 	~Temporizador();
 	
 	float getTempoMS();					// milissegundos
 	int getTempo();						// segundos
 	std::string getTempoFormatado();	// horas:minutos:segundos
+	int passouTempo(int milissegundos);
+	float passouTempoMS(int milissegundos);
 	void setTempo(int segundos);		// segundos
 	void setTempoMS(int milissegundos);	// milissegundos
 	void reset();						// pontoZero = clock();

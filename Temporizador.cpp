@@ -3,8 +3,13 @@
 
 Temporizador::Temporizador()
 {
+	autoReset = false;
 }
 
+Temporizador::Temporizador(bool autoreset)
+{
+	autoReset = autoreset;
+}
 
 Temporizador::~Temporizador()
 {
@@ -14,6 +19,10 @@ float Temporizador::getTempoMS()
 {
 	float tempoAtualMS = clock() - pontoZero;
 	float tempoRestanteMS = tempoMaximoMS - tempoAtualMS;
+
+	if (tempoRestanteMS < 0 && autoReset == true)
+		reset();
+
 	return tempoRestanteMS;
 }
 
@@ -21,6 +30,10 @@ int Temporizador::getTempo()
 {
 	int tempoAtualSegundos = (clock() - pontoZero) / CLOCKS_PER_SEC; // CLOCKS_PER_SEC é definido no <time.h>
 	int tempoRestante = tempoMaximoSegundos - tempoAtualSegundos;
+
+	if (tempoRestante < 0 && autoReset == true)
+		reset();
+
 	return tempoRestante;
 }
 
