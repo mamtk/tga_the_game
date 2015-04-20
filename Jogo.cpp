@@ -73,7 +73,7 @@ void Jogo::inicializar()
 	
 	// inicializar menu de ajuda
 	vector<wstring> textoAjuda = { L"blablabla\n\n\nParabéns! Você está pronto para ir para a próxima página!", \
-		L"Halterofilismo\nPressione alternadamente as teclas W,S ou Cima,Baixo.\nFaça isso o mais rápido que puder.\n\nO objetivo é completar o levantamento dentro do tempo.\n \
+		L"Halterofilismo\nPressione alternadamente as teclas W,S e Cima,Baixo.\nFaça isso o mais rápido que puder.\n\nO objetivo é completar o levantamento dentro do tempo.\n \
 		No entanto algumas dificuldades podem surgir." };
 	wstring cabecalhoAjuda = L"Aperte D ou -> para prosseguir,\nou aperte [ENTER], [ESPAÇO] ou clique esquerdo para voltar.";
 	// TODO: a classe menu precisa de uma forma de desativar a seleção com o mouse, e de setar a cor do cabeçalho
