@@ -53,9 +53,9 @@ void Menu::inicializar(vector<wstring> vetorOpcoes, wstring cabecalhoParam, stri
 
 		if (cabecalhoXY.size() == 2)			// verificar se cabecalhoXY possui 2 elementos
 			xyCabecalho = cabecalhoXY;
-		else {									// do contrário usar x, y padrão (50%, 90%)
+		else {									// do contrário usar x, y padrão (50%, 95%)
 			int x = janela.getLargura() * .5;
-			int y = janela.getAltura() * .9;
+			int y = janela.getAltura() * .95;
 			xyCabecalho = { x, y };
 		}
 	}
@@ -84,16 +84,16 @@ void Menu::inicializar(vector<wstring> vetorOpcoes, wstring cabecalhoParam, stri
 	// setamos as coordenadas de acordo com os parametros dados; origemX|Y == -1 significa centro da tela
 	if (espacamentoOpcoesX == 0) {	// não queremos espaçamento no vetor x
 		if (origemY == -1) {
-			// elemento zero: y = centro da tela
+			// elemento zero: x = centro da tela
 			for (int i = 0; i < sizeOpcoesMenu; i++) {
-				// y = centro da tela
+				// x = centro da tela
 				xOpcoesMenu[i] = xCentral;
 			}
 		}
 		else {
-			// elemento zero: y = centro da tela
+			// elemento zero: x é fornecido
 			for (int i = 0; i < sizeOpcoesMenu; i++) {
-				// y = centro da tela
+				// x = x fornecido
 				xOpcoesMenu[i] = origemX;
 			}
 		}

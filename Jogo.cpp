@@ -41,7 +41,8 @@ void Jogo::inicializar()
 	// halterofilismo
 	recursos.carregarSpriteSheet("fundo_Halter01", "img/fundos/halter_01.png");
 	recursos.carregarSpriteSheet("per_Halter01", "img/per/lucas1.png", 3, 9);
-	recursos.carregarSpriteSheet("per_HalterMosca", "img/per/per_HalterMosca.png", 3, 9);
+	recursos.carregarSpriteSheet("per_HalterMosca", "img/per/per_HalterMosca.png");
+	//recursos.carregarSpriteSheet("per_HalterPomba", "img/per/per_HalterMosca.png");
 	recursos.carregarSpriteSheet("obj_HalterBarra", "img/obj/obj_HalterBarraFofa.png");
 	recursos.carregarSpriteSheet("fx_HalterBarra", "img/fx/fx_HalterBar.png", 1, 11);
 	// especificar numeros de frames diferentes do maior
@@ -53,7 +54,10 @@ void Jogo::inicializar()
 	vector<string> fundosPrincipal = { "fundo_MenuPrincipal01", "fundo_MenuPrincipal02", "fundo_MenuPrincipal03", "fundo_MenuPrincipal04", "fundo_MenuPrincipal05" };
 	int fundoMaisBom = rand() % fundosPrincipal.size();
 	vector<wstring> opcoesPrincipais = { L"Iniciar Jogo", L"Opções", L"Ajuda", L"Créditos", L"Sair" };
-	principal.inicializar(opcoesPrincipais, L"Algoritmos e C++ (2015/1) - Professor Pinho Marson", fundosPrincipal[fundoMaisBom]); // algumas funções não podem ser executadas no construtor daquela classe (pois jogo ainda possui tipo incompleto)
+	int xCabecalho = janela.getLargura() * .5;
+	int yCabecalho = janela.getAltura() * .97;
+	// algumas funções não podem ser executadas no construtor daquela classe (pois jogo ainda possui tipo incompleto), por isso inicializamos aqui
+	principal.inicializar(opcoesPrincipais, L"Algoritmos e C++ (2015/1) - Professor Pinho Marson", fundosPrincipal[fundoMaisBom], { xCabecalho , yCabecalho });
 
 	// inicializar menu de seleção de tipo de jogo
 	vector<wstring> textoSecundario = { L"Halterofilismo (campanha)", L"Halterofilismo (sandbox)", \
@@ -62,15 +66,18 @@ void Jogo::inicializar()
 
 	// inicializar menu de créditos
 	vector<wstring> opcoesSecundarias = { L"Halterofilismo (Campanha)", L"Halterofilismo (Sandbox)", L"Tiro (Campanha)", L"Tiro (Sandbox)", L"Voltar" };
-	vector<wstring> opcoesCreditos = { L"TGA - The Game é um jogo sério, muito sério; mas não deve ser levado a sério, \
-	já que é apenas um jogo.\n\nCriado por Jean Lucca, Mattheus Menezes, Morris.\nSão Leopoldo, abril de 2015." };
+	vector<wstring> opcoesCreditos = { L"TGA - The Game é um jogo sério, muito sério;\n mas não deve ser levado muito a sério, \
+	já que é um jogo.\n\nCriado por Jean Lucca, Mattheus Menezes, Morris.\nSão Leopoldo, abril de 2015." };
 	wstring cabecalhoCreditos = L"Aperte [ENTER], [ESPAÇO] ou clique com o botão esquerdo para voltar.";
 	creditos.inicializar(opcoesCreditos, cabecalhoCreditos);
 	
 	// inicializar menu de ajuda
-	vector<wstring> textoAjuda = { L"blablabla\n\n\nParabéns! Você está pronto para ir para a próxima página!" };
-	wstring cabecalhoAjuda = L"Aperte D ou -> para prosseguir, ou aperte [ENTER], [ESPAÇO] ou clique esquerdo para voltar.";
-	ajuda.inicializar(textoAjuda, cabecalhoAjuda);
+	vector<wstring> textoAjuda = { L"blablabla\n\n\nParabéns! Você está pronto para ir para a próxima página!", \
+		L"Halterofilismo\nPressione alternadamente as teclas W,S ou Cima,Baixo.\nFaça isso o mais rápido que puder.\n\nO objetivo é completar o levantamento dentro do tempo.\n \
+		No entanto algumas dificuldades podem surgir." };
+	wstring cabecalhoAjuda = L"Aperte D ou -> para prosseguir,\nou aperte [ENTER], [ESPAÇO] ou clique esquerdo para voltar.";
+	// TODO: a classe menu precisa de uma forma de desativar a seleção com o mouse, e de setar a cor do cabeçalho
+	ajuda.inicializar(textoAjuda, cabecalhoAjuda, "", { 0 }, 0, -1, -1, 0, 0, { 0, 0, 0, 0 });
 
 	// inicializar menu de opções
 	wstring textoCabecalhoOpcoes = L"Pressione [CIMA] ou [BAIXO], ou [W] ou [S], ou passe o mouse, para mudar a opção destacada.\n\
@@ -78,7 +85,7 @@ void Jogo::inicializar()
 	\nPressione [ESPAÇO] para voltar. Todas os valores destacades serão armazenados.";
 	vector<wstring> textoOpcoes = { L"Nível de dificuldade:", // [0]
 		L"Desativar eventos aleatórios:",	// [1]
-		L"Desativar fatality:", // [2]
+		L"Desativar desafios:", // [2]
 		L"Desativar som:", // [3]
 		L"Desativar musicas:", // [4]
 		L"Pular história:", // [5]
