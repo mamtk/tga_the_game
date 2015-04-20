@@ -11,7 +11,7 @@ Halterofilismo::~Halterofilismo()
 }
 
 // não é possível fazer isso no construtor, pois a classe Halterofilismo é parte da classe Jogo
-//	então o construtor dessa classe é executado antes da classe Jogo ter um tipo completo
+//	então o construtor dessa classe é executado antes da classe Jogo ter um tipo completo.
 void Halterofilismo::inicializar(int estado, vector<int> valoresOpcoesDeJogo)
 {
 	tipo = levantamentoNormal;
