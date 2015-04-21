@@ -93,6 +93,7 @@ class Halterofilismo
 	void preparaSandbox();
 
 	// utilidades
+	int Halterofilismo::traduzLetraFrame(char letra);
 	void desenharHUD();
 	void gerenciarLevantamento();
 	void moverBarra();

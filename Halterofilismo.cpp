@@ -162,7 +162,7 @@ void Halterofilismo::desenhar()
 		// primeiro gerenciamos o progresso (pois se terminou queremos exibir menu, etc antes de desenhar algo)
 		//gerenciarProgresso();
 		fundo.desenhar(xCentro, yCentro);
-		protagonista.setCor(100, 255, 9);
+		protagonista.setCor(50, 50, 50);	// TODO: usar isso para escurecer fundos do tiro em dias de chuva
 		protagonista.desenhar(xCentro, yCentro);
 		// desenhamos a barra antes apenas das pragas e do hud
 		barra.desenhar(xBarra, yBarra);
@@ -419,80 +419,7 @@ void Halterofilismo::assoviarPalavras()
 				letrasAladas[i].setSpriteSheet("fx_Letras");
 				letrasAladas[i].setEscala(.7, .7);
 				// decidir frame
-				switch (fraseAssovio[i]) {
-				case 'a':
-					letrasAladas[i].setFrame(letraA);
-					break;
-				case 'b':
-					letrasAladas[i].setFrame(letraB);
-					break;
-				case 'c':
-					letrasAladas[i].setFrame(letraC);
-					break;
-				case 'd':
-					letrasAladas[i].setFrame(letraD);
-					break;
-				case 'e':
-					letrasAladas[i].setFrame(letraE);
-					break;
-				case 'f':
-					letrasAladas[i].setFrame(letraF);
-					break;
-				case 'g':
-					letrasAladas[i].setFrame(letraG);
-					break;
-				case 'h':
-					letrasAladas[i].setFrame(letraH);
-					break;
-				case 'i':
-					letrasAladas[i].setFrame(letraI);
-					break;
-				case 'j':
-					letrasAladas[i].setFrame(letraJ);
-					break;
-				case 'l':
-					letrasAladas[i].setFrame(letraL);
-					break;
-				case 'm':
-					letrasAladas[i].setFrame(letraM);
-					break;
-				case 'n':
-					letrasAladas[i].setFrame(letraN);
-					break;
-				case 'o':
-					letrasAladas[i].setFrame(letraO);
-					break;
-				case 'p':
-					letrasAladas[i].setFrame(letraP);
-					break;
-				case 'q':
-					letrasAladas[i].setFrame(letraQ);
-					break;
-				case 'r':
-					letrasAladas[i].setFrame(letraR);
-					break;
-				case 's':
-					letrasAladas[i].setFrame(letraS);
-					break;
-				case 't':
-					letrasAladas[i].setFrame(letraT);
-					break;
-				case 'u':
-					letrasAladas[i].setFrame(letraU);
-					break;
-				case 'v':
-					letrasAladas[i].setFrame(letraV);
-					break;
-				case 'x':
-					letrasAladas[i].setFrame(letraX);
-					break;
-				case 'z':
-					letrasAladas[i].setFrame(letraZ);
-					break;
-				case ',':
-					letrasAladas[i].setFrame(letraVirgulina);
-					break;
-				}
+				letrasAladas[i].setFrame(traduzLetraFrame(fraseAssovio[i]));
 			}
 		}
 	}
@@ -508,4 +435,85 @@ void Halterofilismo::assoviarPalavras()
 	for (int i = primeiroAposVirgula; i < letrasAladas.size(); i++) {
 		letrasAladas[i].desenhar(letrasXYOriginal[i][0] - (primeiroAposVirgula * 27), letrasXYOriginal[i][1]+100);
 	}
+}
+
+int Halterofilismo::traduzLetraFrame(char letra)	// se não vai ficar cheio de linha sem significância
+{
+	switch (letra) {
+	case 'a':
+		return letraA;
+		break;
+	case 'b':
+		return letraB;
+		break;
+	case 'c':
+		return letraC;
+		break;
+	case 'd':
+		return letraD;
+		break;
+	case 'e':
+		return letraE;
+		break;
+	case 'f':
+		return letraF;
+		break;
+	case 'g':
+		return letraG;
+		break;
+	case 'h':
+		return letraH;
+		break;
+	case 'i':
+		return letraI;
+		break;
+	case 'j':
+		return letraJ;
+		break;
+	case 'l':
+		return letraL;
+		break;
+	case 'm':
+		return letraM;
+		break;
+	case 'n':
+		return letraN;
+		break;
+	case 'o':
+		return letraO;
+		break;
+	case 'p':
+		return letraP;
+		break;
+	case 'q':
+		return letraQ;
+		break;
+	case 'r':
+		return letraR;
+		break;
+	case 's':
+		return letraS;
+		break;
+	case 't':
+		return letraT;
+		break;
+	case 'u':
+		return letraU;
+		break;
+	case 'v':
+		return letraV;
+		break;
+	case 'x':
+		return letraX;
+		break;
+	case 'z':
+		return letraZ;
+		break;
+	case ',':
+		return letraVirgulina;
+		break;
+	default:
+		return 0;
+	}
+	return 0;
 }
