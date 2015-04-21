@@ -30,6 +30,7 @@ class Menu
 	// cores das opções
 	vector<int> corDestaque;
 	vector<int> corNormal;
+	vector<int> corCabecalho;
 	vector<int> corDestaqueValores;
 	vector<int> corNormalValores;
 
@@ -50,6 +51,7 @@ class Menu
 	int xCentral, yCentral;
 	int xBase, yBase;				// usados nas coordenadas dos objetos texto nos menus principal e secundário
 	int xValores, yValores;			// usados nas coordenadas dos objetos texto em menus complexos
+	int mouseX, mouseY;				// usados para determinar se o mouse se moveu
 
 	// espaçamentos hotizontal e vertical ( x|y = base + (numero da opcao * espacamento) )
 	int espacamentoOpcoesX = 27;		// espaçamento entre cada opção dos menus (valor totalmente arbritrário)
@@ -64,6 +66,8 @@ class Menu
 
 	bool possuiCabecalho = false;			// para não chamar desenhar() sem necessidade
 	bool menuDuplo = false;					// para não chamar desenhar() sem necessidade
+	bool mouseAtivo = true;
+	bool mouseMoveu = false;
 
 	// tantos vais não-genéricos poderiam ser evitados, mas quem explicaria tal coisa?
 	void vaiOpcao();
@@ -75,6 +79,7 @@ class Menu
 	void vaiEsquerda();
 	void vaiTopo();
 	void vaiBase();
+	bool mouseSeMoveu();
 	bool mouseSobre(Texto objetoTexto, int x, int y);
 	void destacar(int i);
 	void esmaecer(int i);
@@ -88,14 +93,15 @@ public:
 	// inicializar para menu único iniciado de uma origem
 	void inicializar(vector<wstring> vetorOpcoes, wstring cabecalhoParam = L"", string fundilho = "img/fundos/fundo_MenuPrincipal01.png", vector<int> cabecalhoXY = { 0 }, \
 		int selecaoPadrao = 0, int origemX = -1, int origemY = -1, int xEspacamento = 0, int yEspacamento = 31, vector<int> corNormalParam = { 0 }, \
-		vector<int> corDestaqueParam = { 0 }, string fonte = "fonteGrandeSombra", float espacoLinhas = 1.5f, int alinhamento = TEXTO_CENTRALIZADO);
+		vector<int> corDestaqueParam = { 0 }, vector<int> corCabecalhoParam = { 0 }, bool mouse = true, string fonte = "fonteGrandeSombra", float espacoLinhas = 1.5f, \
+		int alinhamento = TEXTO_CENTRALIZADO);
 	// inicializar (sobrecarregada/overloaded) para menu único com coordenadas x e y para cada elemento
 	// inicializar (sobrecarregada/overloaded) para menu duplo desenhado de uma origem
 	void inicializar(vector<wstring> vetorOpcoes, vector<vector<wstring>> vetorValores, wstring cabecalhoParam = L"", string fundilho = "img/fundos/fundo_MenuPrincipal01.png",\
 		vector<int> cabecalhoXY = { 0 }, int selecaoPadrao = 0, vector<int> valoresPadrao = { 0 }, int origemX = -1, int origemY = -1, int xEspacamento = 0, \
 		int yEspacamento = 27, int origemXValores = -1, int origemYValores = -1, int xEspacamentoValores = 11, int yEspacamentoValores = 0,\
-		int xEspacamentoValoresOpcoes = 1, int yEspacamentoValoresOpcoes = 0, vector<int> corNormalParam = { 0 }, \
-		vector<int> corDestaqueParam = { 0 }, vector<int> corNormalValoresParam = { 0 }, vector<int> corDestaqueValoresParam = { 0 }, \
+		int xEspacamentoValoresOpcoes = 1, int yEspacamentoValoresOpcoes = 0, vector<int> corNormalParam = { 0 }, vector<int> corDestaqueParam = { 0 }, \
+		vector<int> corNormalValoresParam = { 0 }, vector<int> corDestaqueValoresParam = { 0 }, vector<int> corCabecalhoParam = { 0 }, bool mouse = true, \
 		string fonte = "fonteNormal", float espacoLinhas = 1.5f, int alinhamento = TEXTO_CENTRALIZADO);
 	// inicializar (sobrecarregada/overloaded) para menu duplo com coordenadas x e y para cada elemento
 	void resetarMenu();

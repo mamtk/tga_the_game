@@ -17,7 +17,8 @@ Menu::Menu()
 // inicializar menu único (fazemos as coisas aqui por que setFonte exige um tipo completo para a classe Jogo)
 // TODO: versão com origemX|Y em vetores, verificar tamanho, e usar regras de espaçamento pras opções que restarem
 void Menu::inicializar(vector<wstring> vetorOpcoes, wstring cabecalhoParam, string fundilho, vector<int> cabecalhoXY, int selecaoPadrao, int origemX, int origemY, \
-	int xEspacamento, int yEspacamento, vector<int> corNormalParam, vector<int> corDestaqueParam, string fonte, float espacoLinhas, int alinhamento)
+	int xEspacamento, int yEspacamento, vector<int> corNormalParam, vector<int> corDestaqueParam, vector<int> corCabecalhoParam, bool mouse, string fonte, \
+	float espacoLinhas, int alinhamento)
 {
 	// sprite para efeito esmaecer dessa calsse
 	fundoEsmaecer.setSpriteSheet("fx_Esmaecer");
@@ -38,14 +39,18 @@ void Menu::inicializar(vector<wstring> vetorOpcoes, wstring cabecalhoParam, stri
 		corDestaque = corDestaqueParam;
 	else
 		corDestaque = { 0, 200, 255, 255 };	// do contrário usar a padrão
+	if (corCabecalhoParam.size() == 4)			// verificar se cor destaque possui 4 elementos
+		corCabecalho = corCabecalhoParam;
+	else
+		corCabecalho = { 0, 200, 255, 255 };		// do contrário usar a padrão
 
 	// setamos o cabeçalho, se existir
 	if (cabecalhoParam.size() > 1) {
 		stringCabecalho = cabecalhoParam;
 		possuiCabecalho = true;
 
-		// inicializar cabecalho
-		cabecalho.setCor(corNormal[0], corNormal[1], corNormal[2], corNormal[3]);
+		// inicializar cabecalho/rodape
+		cabecalho.setCor(corCabecalho[0], corCabecalho[1], corCabecalho[2], corCabecalho[3]);
 		cabecalho.setAlinhamento((TipoAlinhamentoTexto)alinhamento);
 		cabecalho.setEspacamentoLinhas(espacoLinhas);
 		cabecalho.setWstring(stringCabecalho);
@@ -67,6 +72,7 @@ void Menu::inicializar(vector<wstring> vetorOpcoes, wstring cabecalhoParam, stri
 	yOpcoesMenu.resize(sizeOpcoesMenu);	// iniciamos a memória, pois já sabemos o que vamos utilizar
 
 	nomeFonte = fonte;
+	mouseAtivo = mouse;
 
 	// inicializar objetos Texto para cada uma das opções do menu único (antes das coordenadas pra poder usar largura/altura)
 	// x ou y == -1, significa centro da tela
@@ -165,7 +171,8 @@ void Menu::inicializar(vector<wstring> vetorOpcoes, wstring cabecalhoParam, stri
 void Menu::inicializar(vector<wstring> vetorOpcoes, vector<vector<wstring>> vetorValores, wstring cabecalhoParam, string fundilho, vector<int> cabecalhoXY, \
 	int selecaoPadrao, vector<int> valoresPadrao, int origemX, int origemY, int xEspacamento, int yEspacamento, int origemXValores, int origemYValores, \
 	int xEspacamentoValores, int yEspacamentoValores, int xEspacamentoValoresOpcoes, int yEspacamentoValoresOpcoes, vector<int> corNormalParam, \
-	vector<int> corDestaqueParam, vector<int> corNormalValoresParam, vector<int> corDestaqueValoresParam, string fonte, float espacoLinhas, int alinhamento)
+	vector<int> corDestaqueParam, vector<int> corNormalValoresParam, vector<int> corDestaqueValoresParam, vector<int> corCabecalhoParam, bool mouse,\
+	string fonte, float espacoLinhas, int alinhamento)
 {
 	// sprite para efeito esmaecer dessa calsse
 	//fundo.setSpriteSheet(fundilho);
@@ -201,14 +208,18 @@ void Menu::inicializar(vector<wstring> vetorOpcoes, vector<vector<wstring>> veto
 		corDestaqueValores = corNormalValoresParam;
 	else
 		corDestaqueValores = { 255, 255, 0, 255 };	// do contrário usar a padrão
+	if (corCabecalhoParam.size() == 4)		// verificar se cor cabecalho possui 4 elementos
+		corCabecalho = corCabecalhoParam;
+	else
+		corCabecalho = { 255, 255, 0, 255 };	// do contrário usar a padrão
 
 	// setamos o cabeçalho, se existir
 	if (cabecalhoParam.size() > 1) {
 		stringCabecalho = cabecalhoParam;
 		possuiCabecalho = true;
 
-		// inicializar cabecalho
-		cabecalho.setCor(corNormal[0], corNormal[1], corNormal[2], corNormal[3]);
+		// inicializar cabecalho/rodape
+		cabecalho.setCor(corCabecalho[0], corCabecalho[1], corCabecalho[2], corCabecalho[3]);
 		cabecalho.setAlinhamento((TipoAlinhamentoTexto)alinhamento);
 		cabecalho.setEspacamentoLinhas(espacoLinhas);
 		cabecalho.setWstring(stringCabecalho);
@@ -255,6 +266,7 @@ void Menu::inicializar(vector<wstring> vetorOpcoes, vector<vector<wstring>> veto
 	int yPadrao = janela.getAltura() * .3;
 
 	nomeFonte = fonte;
+	mouseAtivo = mouse;
 
 	// inicializar objetos Texto para cada uma das opções do menu duplo (antes das coordenadas para poder usar o getAltura/Largura)
 	for (int i = 0; i < sizeOpcoesMenu; i++) {
@@ -463,14 +475,19 @@ void Menu::desenhar()
 
 	if (possuiCabecalho)	// aqui desenhamos o cabecalho, se existir
 		cabecalho.desenhar(xyCabecalho[0], xyCabecalho[1]);
+	
+	if (mouseAtivo)
+		mouseMoveu = mouseSeMoveu();	// precisamos saber se o mouse efetivamente se moveu, pra não bagunçar as opções
+	else
+		mouseMoveu = false;				// _não_ precisamos saber se o mouse efetivamente se moveu
 
 	switch (tipoMenu) { // aqui senhamos as opções
 	case unico:
-
 		for (int i = 0; i < sizeOpcoesMenu; i++) {	// iteramos pelas opções principais
 			textosMenu[i].desenhar(xOpcoesMenu[i], yOpcoesMenu[i]);		// desenhamos cada opção principal
 			int tamanhoTexto = textosMenu[i].getWstring().size();	// usamos o tamanho do texto para determinar suas coordenadas máximas no eixo x
-			if (mouseSobre(textosMenu[i], xOpcoesMenu[i], yOpcoesMenu[i])) {	// se o mouse estiver sobre a opção atual
+			if (mouseMoveu && mouseSobre(textosMenu[i], xOpcoesMenu[i], yOpcoesMenu[i])) {	// se o mouse se moveu, e agora está sobre a opção atual
+				// o compilador nos garante que se a primeira condição for falsa, a segunda não deve executar
 				vaiIndice(i);	//	então usamos a função vaiIndice com a opção atual (i) como argumento, para destacá-la
 			}
 		}
@@ -495,13 +512,13 @@ void Menu::desenhar()
 		for (int nivel = 0; nivel < sizeOpcoesMenu; nivel++) {	// iteramos pelas opções
 			textosMenu[nivel].desenhar(xOpcoesMenu[nivel], yOpcoesMenu[nivel]);		// desenhamos cada opção principal
 
-			if (mouseSobre(textosMenu[nivel], xOpcoesMenu[nivel], yOpcoesMenu[nivel])) {	// se o mouse estiver sobre a opção atual
+			if (mouseMoveu && mouseSobre(textosMenu[nivel], xOpcoesMenu[nivel], yOpcoesMenu[nivel])) {	// se o mouse estiver sobre a opção atual
 				vaiIndice(nivel);	//	então usamos a função vaiIndice com a opção atual (i) como argumento, para destacá-la
 			}
 			for (int elemento = 0; elemento < sizeValoresMenu[nivel]; elemento++) {
 				textosMenuValores[nivel][elemento].desenhar(xValoresMenu[nivel][elemento], yValoresMenu[nivel][elemento]);		// desenhamos cada opção principal
 
-				if (mouseSobre(textosMenuValores[nivel][elemento], xValoresMenu[nivel][elemento], yValoresMenu[nivel][elemento])) {	// se o mouse estiver sobre a opção atual
+				if (mouseMoveu && mouseSobre(textosMenuValores[nivel][elemento], xValoresMenu[nivel][elemento], yValoresMenu[nivel][elemento])) {	// se o mouse estiver sobre a opção atual
 					vaiIndiceValor(nivel, elemento);	//	então usamos a função vaiIndice com a opção atual (i) como argumento, para destacá-la
 				}
 			}
@@ -644,4 +661,20 @@ bool Menu::mouseSobre(Texto objetoTexto, int x, int y)	// eu usaria referência 
 		return true;	//	então usamos a função vaiIndice com a opção atual (i) como argumento, para destacá-la
 	}
 	return false;
+}
+
+bool Menu::mouseSeMoveu()	// para não bagunçar desnecessariamente o menu
+{
+	bool moveu;
+
+	if (mouse.x != mouseX || mouse.y != mouseY) {
+		mouseX = mouse.x;
+		mouseY = mouse.y;
+		moveu = true;
+	}
+	else {
+		moveu = false;
+	}
+
+	return moveu;
 }

@@ -29,7 +29,9 @@ void Jogo::inicializar()
 	recursos.carregarFonte("fonteNormalSombra", "UbuntuMono-B.ttf", 19);
 	recursos.carregarFonte("fonteGrande", "UbuntuMono-R.ttf", 27);
 	recursos.carregarFonte("fonteGrandeSombra", "UbuntuMono-B.ttf", 29);
+	// sprites
 	recursos.carregarSpriteSheet("fx_Esmaecer", "img/fx/fx_esmaecer.png", 1, 100);
+	recursos.carregarSpriteSheet("fx_Dot", "img/fx/fx_Dot.png", 1, 1);
 	// menuPrincipal
 	recursos.carregarSpriteSheet("fundo_MenuPrincipal01", "img/fundos/fundo_MenuPrincipal01.png");
 	recursos.carregarSpriteSheet("fundo_MenuPrincipal02", "img/fundos/fundo_MenuPrincipal02.png");
@@ -40,6 +42,8 @@ void Jogo::inicializar()
 	recursos.carregarSpriteSheet("fundo_MenuOpcoes", "img/fundos/fundo_MenuOpcoes.png");
 	// halterofilismo
 	recursos.carregarSpriteSheet("fundo_Halter01", "img/fundos/halter_01.png");
+	recursos.carregarSpriteSheet("fx_Letras", "img/fx/fx_Letras.png", 1, 30);
+	recursos.carregarSpriteSheet("fx_LetrasIluminadas", "img/fx/fx_LetrasIluminadas.png", 1, 30);
 	recursos.carregarSpriteSheet("per_Halter01", "img/per/lucas1.png", 3, 9);
 	recursos.carregarSpriteSheet("per_HalterMosca", "img/per/per_HalterMosca.png");
 	//recursos.carregarSpriteSheet("per_HalterPomba", "img/per/per_HalterMosca.png");
@@ -77,7 +81,8 @@ void Jogo::inicializar()
 		No entanto algumas dificuldades podem surgir." };
 	wstring cabecalhoAjuda = L"Aperte D ou -> para prosseguir,\nou aperte [ENTER], [ESPAÇO] ou clique esquerdo para voltar.";
 	// TODO: a classe menu precisa de uma forma de desativar a seleção com o mouse, e de setar a cor do cabeçalho
-	ajuda.inicializar(textoAjuda, cabecalhoAjuda, "", { 0 }, 0, -1, -1, 0, 0, { 0, 0, 0, 0 });
+	// { 0 } significa que queremos a cor padrão
+	ajuda.inicializar(textoAjuda, cabecalhoAjuda, "", { 0 }, 0, -1, -1, 0, 0, { 0, 0, 0, 0 }, { 0 }, { 255, 255, 255, 255 }, false);
 
 	// inicializar menu de opções
 	wstring textoCabecalhoOpcoes = L"Pressione [CIMA] ou [BAIXO], ou [W] ou [S], ou passe o mouse, para mudar a opção destacada.\n\
