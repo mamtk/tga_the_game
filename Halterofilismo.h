@@ -101,6 +101,15 @@ class Halterofilismo
 	void pragaAlada();
 	void gerenciarPragas();
 	void assoviarPalavras();
+	void inicializarPalavrasDoPoder();
+	void desenharPalavrasDoPoder();
+	bool pressionouErrado(char letra);
+	bool pressionouCerto(char letra);
+	void desativarLetra(int indice);
+	void ativarLetra(int indice);
+	void limparFrase();
+	void ativarEspantarMoscas();
+
 public:
 	Halterofilismo();
 	~Halterofilismo();

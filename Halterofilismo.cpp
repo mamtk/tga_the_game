@@ -386,52 +386,102 @@ void Halterofilismo::gerenciarPragas()
 		}
 		pragasAladas[i].desenhar(xyPragas[i][0], xyPragas[i][1]);
 	}
+	// se totalChegouPraga > 0
 	assoviarPalavras();
 }
 
-// aqui oferecemos a opção do jogador 
+// aqui gerenciamos o estado das letras, e desenhamos elas
 void Halterofilismo::assoviarPalavras()
 {
-	if (fraseAssovio.empty()) {	// se não está definida, inicializamos tudo
-		fraseAssovio = "queria ser ";
-		fraseAssovio += queriaPalavrasLista[rand() % queriaPalavrasLista.size()];
-		fraseAssovio += ", mas acabei ";
-		fraseAssovio += acabeiPalavrasEiro[rand() % acabeiPalavrasEiro.size()];
-		letrasAladas.resize(fraseAssovio.size()); // 5 sprites = espaços = não desenhadas
-		letrasXYOriginal.resize(letrasAladas.size());
-		letrasXYAtual.resize(letrasAladas.size());
-		letrasAtivadas.resize(letrasAladas.size());
-		
-		for (int i = 0; i < letrasAladas.size(); i++) {	// definimos os valores padrão
-			letrasAtivadas[i] = false;
-			if (fraseAssovio[i] == ' '/*espaço*/) {
-				letrasXYOriginal[i].resize(2);	// alocamos a memória que vamos utilizar
-				// iniciar coordenadas âncora em 0
-				letrasXYOriginal[i][0] = 0;	// 0 significará não desenhar
-				letrasXYOriginal[i][1] = 0;	// 0 significará não desenhar
-			}
-			else {
-				letrasXYOriginal[i].resize(2);	// alocamos a memória que vamos utilizar
-				// iniciar coordenadas âncora para desenho das letras
-				letrasXYOriginal[i][1] = yCentro * 0.5;	// y original de cada letra (10%)
-				letrasXYOriginal[i][0] = .3 * xCentro + (27 * i);	// x original de cada letra: 5% + 276 * i
+	// se não há frase definida, inicializamos tudo
+	if (fraseAssovio.empty())
+		inicializarPalavrasDoPoder();
 
-				// inicializar sprite
-				letrasAladas[i].setSpriteSheet("fx_Letras");
-				letrasAladas[i].setEscala(.7, .7);
-				// decidir frame
-				letrasAladas[i].setFrame(traduzLetraFrame(fraseAssovio[i]));
-			}
+	// gerenciar teclas pressionadas
+	// for loop a partir da primeira não ativa, se pressionou letra diferente (função dedicada, teclouErrado()), zera ativas, reseta sprites
+
+	// primeiro descobrimos qual a primeira letra das inativas
+	int sizeLetrasAtivadas = letrasAtivadas.size();
+	int primeiroInativo = -1;
+	for (int i = 0; i < sizeLetrasAtivadas; i++) {	// aqui descobrimos a posição da primeira letra não ativa
+		if (letrasAtivadas[i] == false) {
+			primeiroInativo = i;
+			break;
 		}
 	}
+	// se todas as letras ativas, limpar frase
+	if (primeiroInativo == -1) {
+		ativarEspantarMoscas();	// ativa o evento que faz as moscas irem embora (e impede que venham novas durante isso)
+		limparFrase();
+		return;	// mais nada para se fazer nessa função
+	}
+
+	// segundo verificamos se o jogador pressionou uma letra incorreta
+	if (pressionouErrado(fraseAssovio[primeiroInativo])) {	// se o jogador pressionou uma letra incorreta
+		for (int i = 0; i < sizeLetrasAtivadas; i++) {	// desativar tudo
+			desativarLetra(i);	// a função gerencia automaticamente o que for ou não espaço
+		}
+		primeiroInativo = 0;	// 0 é o novo primeiro inativo
+	}
+	// se soltou a letra inativa atual, mudar pra ativa, alterar sprite
+	if (pressionouCerto(fraseAssovio[primeiroInativo])) {	// se o jogador pressionou a letra correta atual
+		char letra = fraseAssovio[primeiroInativo];
+		ativarLetra(primeiroInativo);	// ativamos a letra
+	}
+	// por fim, desenhamos a frase do poder
+	desenharPalavrasDoPoder();
+}
+
+// aqui inicializamos a frase do poder
+void Halterofilismo::inicializarPalavrasDoPoder()
+{
+	fraseAssovio = "queria ser ";
+	fraseAssovio += queriaPalavrasLista[rand() % queriaPalavrasLista.size()];	// tudo bem usar size, pois o módulo nunca chega no número
+	fraseAssovio += ", mas acabei ";
+	fraseAssovio += acabeiPalavrasEiro[rand() % acabeiPalavrasEiro.size()];		// tudo bem usar size, pois o módulo nunca chega no número
+	letrasAladas.resize(fraseAssovio.size()); // 5 sprites = espaços = não desenhadas
+	int sizeLetrasAladas = letrasAladas.size();
+	letrasXYOriginal.resize(sizeLetrasAladas);
+	letrasXYAtual.resize(sizeLetrasAladas);
+	letrasAtivadas.resize(sizeLetrasAladas);
+
+	for (int i = 0; i < sizeLetrasAladas; i++) {	// definimos os valores padrão
+		if (fraseAssovio[i] == ' '/*espaço*/) {
+			letrasAtivadas[i] = true;	// espaços não precisam ser pressionados
+			letrasXYOriginal[i].resize(2);	// alocamos a memória que vamos utilizar
+			// iniciar coordenadas âncora em 0
+			letrasXYOriginal[i][0] = 0;	// 0 significará não desenhar
+			letrasXYOriginal[i][1] = 0;	// 0 significará não desenhar
+		}
+		else {
+			letrasAtivadas[i] = false;
+			letrasXYOriginal[i].resize(2);	// alocamos a memória que vamos utilizar
+			// iniciar coordenadas âncora para desenho das letras
+			letrasXYOriginal[i][1] = yCentro * 0.5;	// y original de cada letra (10%)
+			letrasXYOriginal[i][0] = .3 * xCentro + (27 * i);	// x original de cada letra: 5% + 276 * i
+
+			// inicializar sprite
+			letrasAladas[i].setSpriteSheet("fx_Letras");
+			letrasAladas[i].setEscala(.7, .7);
+			// decidir frame
+			letrasAladas[i].setFrame(traduzLetraFrame(fraseAssovio[i]));
+		}
+	}
+}
+
+// aqui desenhamos as letras da frase de poder
+void Halterofilismo::desenharPalavrasDoPoder()
+{
 	// TODO: desenhar só até a primeira virgula, depois que teclar tudo, desenhar a segunda parte
-	int primeiroAposVirgula, noise = 0;
-	for (int i = 0; i < letrasAladas.size(); i++) {
-		if (i > 0 && letrasAladas[i - 1].getFrameAtual() == letraVirgulina) {	// se o anterior foi uma vírgula, saltar fora
+	int primeiroAposVirgula = 0, noise = 0;
+	int sizeLetrasAladas = letrasAladas.size();
+	// desenhar apenas até a primeira virgula nas coordenadas originais
+	for (int i = 0; i < sizeLetrasAladas; i++) {
+		if (i > 0 && fraseAssovio[i - 1] == ',') {	// se o anterior foi uma vírgula, saltar fora
 			primeiroAposVirgula = i;
 			break;
 		}
-		if (!(rand() % 31)) {	// horrível de feio, mas funciona!
+		if (!(rand() % 31)) {	// horrível de feio, mas funciona sem criar classes que usem ponteiros que quem ia explicar!
 			noise = rand() % 7;
 			letrasAladas[i].desenhar(letrasXYOriginal[i][0], letrasXYOriginal[i][1] + noise);
 		}
@@ -439,8 +489,8 @@ void Halterofilismo::assoviarPalavras()
 			letrasAladas[i].desenhar(letrasXYOriginal[i][0], letrasXYOriginal[i][1]);
 		}
 	}
-	for (int i = primeiroAposVirgula; i < letrasAladas.size(); i++) {
-		if (!(rand() % 31)) {	// horrível de feio, mas funciona!
+	for (int i = primeiroAposVirgula; i < sizeLetrasAladas; i++) {
+		if (!(rand() % 31)) {	// horrível de feio, mas funciona sem criar classes que usem ponteiros que quem ia explicar!
 			noise = rand() % 7;
 			letrasAladas[i].desenhar(letrasXYOriginal[i][0] - (primeiroAposVirgula * 27), letrasXYOriginal[i][1] + 100 + noise);
 		}
@@ -450,7 +500,202 @@ void Halterofilismo::assoviarPalavras()
 	}
 }
 
-int Halterofilismo::traduzLetraFrame(char letra)	// se não vai ficar cheio de linha sem significância
+// aqui testamos exaustivamente por teclas pressionadas erroneamente
+bool Halterofilismo::pressionouErrado(char letra)
+{
+	if (teclado.soltou[TECLA_A] && letra != 'a')
+		return true;
+	if (teclado.soltou[TECLA_B] && letra != 'b')
+		return true;
+	if (teclado.soltou[TECLA_C] && letra != 'c')
+		return true;
+	if (teclado.soltou[TECLA_D] && letra != 'd')
+		return true;
+	if (teclado.soltou[TECLA_E] && letra != 'e')
+		return true;
+	if (teclado.soltou[TECLA_F] && letra != 'f')
+		return true;
+	if (teclado.soltou[TECLA_G] && letra != 'g')
+		return true;
+	if (teclado.soltou[TECLA_H] && letra != 'h')
+		return true;
+	if (teclado.soltou[TECLA_I] && letra != 'i')
+		return true;
+	if (teclado.soltou[TECLA_J] && letra != 'j')
+		return true;
+	if (teclado.soltou[TECLA_K] && letra != 'k')
+		return true;
+	if (teclado.soltou[TECLA_L] && letra != 'l')
+		return true;
+	if (teclado.soltou[TECLA_M] && letra != 'm')
+		return true;
+	if (teclado.soltou[TECLA_N] && letra != 'n')
+		return true;
+	if (teclado.soltou[TECLA_O] && letra != 'o')
+		return true;
+	if (teclado.soltou[TECLA_P] && letra != 'p')
+		return true;
+	if (teclado.soltou[TECLA_Q] && letra != 'q')
+		return true;
+	if (teclado.soltou[TECLA_R] && letra != 'r')
+		return true;
+	if (teclado.soltou[TECLA_T] && letra != 't')
+		return true;
+	if (teclado.soltou[TECLA_U] && letra != 'u')
+		return true;
+	if (teclado.soltou[TECLA_V] && letra != 'v')
+		return true;
+	if (teclado.soltou[TECLA_X] && letra != 'x')
+		return true;
+	if (teclado.soltou[TECLA_Y] && letra != 'y')
+		return true;
+	if (teclado.soltou[TECLA_Z] && letra != 'z')
+		return true;
+	if (teclado.soltou[TECLA_VIRGULA] && letra != ',')
+		return true;
+	return false;
+}
+// aqui testamos pela tecla correta
+bool Halterofilismo::pressionouCerto(char letra)
+{
+	switch (letra) {
+	case 'a':
+		if (teclado.soltou[TECLA_A])
+			return true;
+		break;
+	case 'b':
+		if (teclado.soltou[TECLA_B])
+			return true;
+		break;
+	case 'c':
+		if (teclado.soltou[TECLA_C])
+			return true;
+		break;
+	case 'd':
+		if (teclado.soltou[TECLA_D])
+			return true;
+		break;
+	case 'e':
+		if (teclado.soltou[TECLA_E])
+			return true;
+		break;
+	case 'f':
+		if (teclado.soltou[TECLA_F])
+			return true;
+		break;
+	case 'g':
+		if (teclado.soltou[TECLA_G])
+			return true;
+		break;
+	case 'h':
+		if (teclado.soltou[TECLA_H])
+			return true;
+		break;
+	case 'i':
+		if (teclado.soltou[TECLA_I])
+			return true;
+		break;
+	case 'j':
+		if (teclado.soltou[TECLA_J])
+			return true;
+		break;
+	case 'l':
+		if (teclado.soltou[TECLA_L])
+			return true;
+		break;
+	case 'm':
+		if (teclado.soltou[TECLA_M])
+			return true;
+		break;
+	case 'n':
+		if (teclado.soltou[TECLA_N])
+			return true;
+		break;
+	case 'o':
+		if (teclado.soltou[TECLA_O])
+			return true;
+		break;
+	case 'p':
+		if (teclado.soltou[TECLA_P])
+			return true;
+		break;
+	case 'q':
+		if (teclado.soltou[TECLA_Q])
+			return true;
+		break;
+	case 'r':
+		if (teclado.soltou[TECLA_R])
+			return true;
+		break;
+	case 's':
+		if (teclado.soltou[TECLA_S])
+			return true;
+		break;
+	case 't':
+		if (teclado.soltou[TECLA_T])
+			return true;
+		break;
+	case 'u':
+		if (teclado.soltou[TECLA_U])
+			return true;
+		break;
+	case 'v':
+		if (teclado.soltou[TECLA_V])
+			return true;
+		break;
+	case 'x':
+		if (teclado.soltou[TECLA_X])
+			return true;
+		break;
+	case 'z':
+		if (teclado.soltou[TECLA_Z])
+			return true;
+		break;
+	case ',':
+		if (teclado.soltou[TECLA_VIRGULA])
+			return true;
+		break;
+	}
+	return false;
+}
+void Halterofilismo::desativarLetra(int indice)
+{
+	if (fraseAssovio[indice] == ' ')	// se for um espaço, nada fazer
+		return;
+	// setar sprite
+	letrasAladas[indice].setSpriteSheet("fx_Letras");
+	letrasAladas[indice].setEscala(.7, .7);
+	// decidir frame
+	letrasAladas[indice].setFrame(traduzLetraFrame(fraseAssovio[indice]));
+	// marcar como inativa
+	letrasAtivadas[indice] = false;
+}
+void Halterofilismo::ativarLetra(int indice)
+{
+	// setar sprite
+	letrasAladas[indice].setSpriteSheet("fx_LetrasIluminadas");
+	letrasAladas[indice].setEscala(.7, .7);
+	// decidir frame
+	letrasAladas[indice].setFrame(traduzLetraFrame(fraseAssovio[indice]));
+	// marcar como ativa
+	letrasAtivadas[indice] = true;
+}
+
+void Halterofilismo::ativarEspantarMoscas()
+{
+
+}
+void Halterofilismo::limparFrase()
+{
+	fraseAssovio = "";
+	letrasAladas.resize(0);
+	letrasXYOriginal.resize(0);
+	letrasXYAtual.resize(0);
+	letrasAtivadas.resize(0);
+
+}
+
+int Halterofilismo::traduzLetraFrame(char letra)	// se não for função, vai ficar cheio de linha sem significância
 {
 	switch (letra) {
 	case 'a':
