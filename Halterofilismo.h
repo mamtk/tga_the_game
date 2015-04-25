@@ -39,7 +39,7 @@ class Halterofilismo
 	// menus de derrota
 	Menu derrota, derrotaFatality;	// fatality não elimina
 
-	Temporizador temporizador, tempoDificultar, tempoPragas, tempoAvisoPragas;
+	Temporizador temporizador, tempoDificultar, tempoPragas, tempoAvisoPragas, tempoMovimentoLetras;
 
 	// os vetore abaixo serão usados na combinação (a ser digitada) para espantar as moscas
 	vector<string> queriaPalavrasLista;	// formato: queria palavraLista, acabei palavraEiro

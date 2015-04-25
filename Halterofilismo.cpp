@@ -425,16 +425,28 @@ void Halterofilismo::assoviarPalavras()
 		}
 	}
 	// TODO: desenhar só até a primeira virgula, depois que teclar tudo, desenhar a segunda parte
-	int primeiroAposVirgula;
+	int primeiroAposVirgula, noise = 0;
 	for (int i = 0; i < letrasAladas.size(); i++) {
 		if (i > 0 && letrasAladas[i - 1].getFrameAtual() == letraVirgulina) {	// se o anterior foi uma vírgula, saltar fora
 			primeiroAposVirgula = i;
 			break;
 		}
-		letrasAladas[i].desenhar(letrasXYOriginal[i][0], letrasXYOriginal[i][1]);
+		if (!(rand() % 31)) {	// horrível de feio, mas funciona!
+			noise = rand() % 7;
+			letrasAladas[i].desenhar(letrasXYOriginal[i][0], letrasXYOriginal[i][1] + noise);
+		}
+		else {
+			letrasAladas[i].desenhar(letrasXYOriginal[i][0], letrasXYOriginal[i][1]);
+		}
 	}
 	for (int i = primeiroAposVirgula; i < letrasAladas.size(); i++) {
-		letrasAladas[i].desenhar(letrasXYOriginal[i][0] - (primeiroAposVirgula * 27), letrasXYOriginal[i][1]+100);
+		if (!(rand() % 31)) {	// horrível de feio, mas funciona!
+			noise = rand() % 7;
+			letrasAladas[i].desenhar(letrasXYOriginal[i][0] - (primeiroAposVirgula * 27), letrasXYOriginal[i][1] + 100 + noise);
+		}
+		else {
+			letrasAladas[i].desenhar(letrasXYOriginal[i][0] - (primeiroAposVirgula * 27), letrasXYOriginal[i][1] + 100);
+		}
 	}
 }
 
