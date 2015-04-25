@@ -139,7 +139,7 @@ void Jogo::executar()
 {
 	// antes de iniciar o jogo fazemos nossa intro estilosa
 	//	detalhe que isso tá errado, era pra ser orientado a objeto, mas quem ia explicar as refs?
-	// TODO
+	// TODO: abrir menu ao apertar esc (Continuar Jogo, Voltar ao Menu Principal, Fechar Jogo), talvez permitir mudar opções durante o jogo tb
 	while(!teclado.soltou[TECLA_ESC] && !aplicacao.sair)
 	{
 		uniIniciarFrame();

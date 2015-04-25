@@ -121,10 +121,11 @@ void Halterofilismo::inicializar(int estado, vector<int> valoresOpcoesDeJogo)
 	derrotaFatality.inicializar(derrotaFatalityStr);
 
 	// inicializar palavras do poder de espantar pragas
-	queriaPalavrasLista = { "biblista", "carlista", "fabulista", "fossilista", "gaullista", "oculista", "simplista", "mobilista", "paulista", \
-		"niilista", "psicanalista", "pugilista" };
-	acabeiPalavrasEiro = { "agosteiro", "agoureiro", "aguaceiro", "assadeiro", "banheiro", "barulheiro", "benzedeiro", "careiro", "chiqueiro", \
-		"coqueiro", "dinheiro", "dianteiro", "esterqueiro", "faqueiro", "fogareiro", "inteiro", "isqueiro", "letreiro", "milagreiro" };
+	queriaPalavrasLista = { "aulista", "bulista", "selista", "biblista", "coralista", "violista", "gaulista", "oculista", "simplista", "cafelista", "paulista", \
+		"niilista", "noelista", "pugilista" };
+	acabeiPalavrasEiro = { "aneiro", "boeiro", "bueiro", "geeiro", "nieiro", "oveiro", "rueiro", "useiro", "agosteiro", \
+		"capeiro", "careiro", "coreiro", "dureiro", "fateiro", "fiteiro", "foreiro", "guieiro", "sineiro", "mineiro",
+		"agoureiro", "assadeiro", "barulheiro", "benzedeiro", "faqueiro", "fogareiro", "letreiro", "milagreiro" };
 
 	// iniciar temporizador
 	temporizador.reset();
