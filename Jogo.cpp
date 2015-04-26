@@ -18,20 +18,41 @@ void Jogo::inicializar()
 	//	...
 	//	1)	Carregar as fontes (passando o tamanho da fonte como parametro)
 	/* tentaremos uma nomenclatura padronizada --- edit 01
-		fonte*		-	para fontes, ex. fonteNormal
-		fundo_\1\2	-	para fundos, \1 é o jogo/classe, \2 QUALQUER identificador; ex. fundo_Halter01, fundo_HalterCenaLago, ...
-		per_\1\2	-	para personagens (tudo que age/tem vontade), ex. per_HalterMosca1, per_TiroPato, ...
-		obj_\1\2	-	para objetos (mesmo com animação), ex. obj_HalterRochaDoLago, obj_JudoAnelDeFogo, ...
-		fx_\1\2		-	para imateriais/efeitos, ex. fx_TiroFumaca, fx_ArcoSangue, ...
+		fonte*			-	para fontes, ex. fonteNormal
+		fundo_\1\2		-	para fundos, \1 é o jogo/classe, \2 QUALQUER identificador; ex. fundo_Halter01, fundo_HalterCenaLago, ...
+		per_\1\2		-	para personagens (tudo que age/tem vontade), ex. per_HalterMosca1, per_TiroPato, ...
+		obj_\1\2		-	para objetos (mesmo com animação), ex. obj_HalterRochaDoLago, obj_JudoAnelDeFogo, ...
+		fx_\1\2			-	para imateriais/efeitos, ex. fx_TiroFumaca, fx_ArcoSangue, ...
+		somfx_\1\2		-	para imateriais/efeitos, somex. fx_Tiro, somfx_SangueJorrando, ...
+		somfundo_\1\2	-	para fundos, ex. somfundo_Campo, somfundo_Vento, ...
 	*/
 	// fontes
 	recursos.carregarFonte("fonteNormal", "UbuntuMono-R.ttf", 17);
 	recursos.carregarFonte("fonteNormalSombra", "UbuntuMono-B.ttf", 19);
 	recursos.carregarFonte("fonteGrande", "UbuntuMono-R.ttf", 27);
 	recursos.carregarFonte("fonteGrandeSombra", "UbuntuMono-B.ttf", 29);
+	// sons
+	/*
+	somfundo_HalterFazenda
+	somfundo_HalterEsgoto
+	somfundo_HalterCanil
+	somfundo_HalterAcademiaSuburbio
+	somfundo_HalterAcademiaCentro
+	somfx_HalterBebeChorando
+	somfx_HalterBolaBilharQuebrando
+	somfx_HalterCavaloDoido
+	somfx_HalterCarroLigando
+	somfx_HalterOvelhas
+	somfx_HalterEnxame
+	somfx_HalterTrovao
+	somfx_HalterEspirro
+	somfx_HalterOssosQuebrando
+	somfx_HalterVozNoRadio
+	*/
 	// sprites
 	recursos.carregarSpriteSheet("fx_Esmaecer", "img/fx/fx_esmaecer.png", 1, 100);
 	recursos.carregarSpriteSheet("fx_Dot", "img/fx/fx_Dot.png", 1, 1);
+	recursos.carregarSpriteSheet("fundo_teste", "img/fundos/fundo_teste.jpg");
 	// menuPrincipal
 	recursos.carregarSpriteSheet("fundo_MenuPrincipal01", "img/fundos/fundo_MenuPrincipal01.png");
 	recursos.carregarSpriteSheet("fundo_MenuPrincipal02", "img/fundos/fundo_MenuPrincipal02.png");
@@ -65,7 +86,7 @@ void Jogo::inicializar()
 
 	// inicializar menu de seleção de tipo de jogo
 	vector<wstring> textoSecundario = { L"Halterofilismo (campanha)", L"Halterofilismo (sandbox)", \
-		L"Tiro (campanha)", L"Tiro (sandbox)", L"Voltar" };
+		/* talvez no GB //L"Tiro (campanha)", L"Tiro (sandbox)",*/ L"Voltar" };
 	secundario.inicializar(textoSecundario);
 
 	// inicializar menu de créditos
@@ -193,7 +214,10 @@ void Jogo::gerenciarEstado()
 			}
 			break;
 		case jogoHalterofilismoCampanha:
-			halterofilia.desenhar();
+			halterofilia.campanha();
+			break;
+		case jogoHalterofilismoSandbox:
+			halterofilia.sandbox();
 			break;
 	}
 }
@@ -233,6 +257,10 @@ void Jogo::gerenciarMenuSecundario()
 	switch (opcaoEscolhida) {
 	case escolhaHalterCampanha:
 		estado = jogoHalterofilismoCampanha;
+		halterofilia.inicializar(estado, opcoesDeJogo);
+		break;
+	case escolhaHalterSandbox:
+		estado = jogoHalterofilismoSandbox;
 		halterofilia.inicializar(estado, opcoesDeJogo);
 		break;
 	default:

@@ -2,6 +2,7 @@
 #include "libUnicornio.h"
 #include "Menu.h"
 #include "Temporizador.h"
+#include "Historia.h"
 
 #include <ctime>	// deveria ser chrono, mas quem ia explicar isso?
 
@@ -28,16 +29,18 @@ class Halterofilismo
 	// Sprites usadas pela classe
 	Sprite fundo, protagonista, barra, barraProgresso;
 	vector<Sprite> pragasAladas, letrasAladas;
-
+	// Textos usados pela class
 	Texto textoTemporizador, textoTemporizadorSombra;
 	Texto textoMensagem, textoAvisoPragas, textoAvisoPragasSombra;
-
+	// Tipo do levantamento sendo feito (normal, fatality)
 	TipoDeLevantamento tipo;
+	// história do modo campanha
+	Historia historiaCampanha;
 
 	// menus de vitória
 	Menu vitoriaFatalityAtivo, vitoriaFatalityInativo;
 	// menus de derrota
-	Menu derrota, derrotaFatality;	// fatality não elimina
+	Menu derrota, derrotaFatality;	// fatality permite continuar
 
 	Temporizador temporizador, tempoDificultar, tempoPragas, tempoAvisoPragas, tempoMovimentoLetras;
 
@@ -63,12 +66,7 @@ class Halterofilismo
 	vector<vector<int>> xyPragas;	// coordenadas de desenho
 	vector<bool>	chegouPraga;	// usado para saber se a praga já está incomodando ou não
 
-	// os elementos são pontos no tempo de execução da classe
-	int pontoTempoDificuldade;	// usamos isso para não executar a função dificuldade mais de uma vez por x milissegundos
-	int pontoTempo;				// ponto de tempo usado para depuração
-
-	clock_t inicioLevantamento = 0;		// armazena o "tick", que equivale a dizer que armazena o tempo de inicio do levantamento
-	int contadorTeclarA, contadorTeclarB, contadorTeclarMisc;	// conta o intervalo pressionar das teclas
+	int etapaAtual;		// etapa atual no modo campanha ([0,5])
 	int xTemporizador, yTemporizador;							// coordenadas do temporizador
 	int cena = 0;			// o fundo a ser utilizado
 	int dificuldade;		// define a taxa de espera antes de executar dificultar (internamenta fazemos um n maior resultar em um intervalo menor)
@@ -86,14 +84,13 @@ class Halterofilismo
 
 	EstadoDoJogo estadoDoJogo;
 
-	// modos de jogo
-	void campanha();
+	// preparar modalidades de jogo
 	void preparaCampanha();
-	void sandbox();
 	void preparaSandbox();
 
 	// utilidades
 	int Halterofilismo::traduzLetraFrame(char letra);
+	void desenhar();
 	void desenharHUD();
 	void gerenciarLevantamento();
 	void moverBarra();
@@ -114,7 +111,9 @@ public:
 	Halterofilismo();
 	~Halterofilismo();
 
-	void desenhar();
 	void inicializar(int estado, vector<int> valoresOpcoesDeJogo);
+	// modalidades de jogo
+	void campanha();
+	void sandbox();
 };
 

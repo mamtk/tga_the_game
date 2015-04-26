@@ -98,6 +98,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Halterofilismo.cpp" />
+    <ClCompile Include="Historia.cpp" />
     <ClCompile Include="Jogo.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Menu.cpp" />
@@ -106,6 +107,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Halterofilismo.h" />
+    <ClInclude Include="Historia.h" />
     <ClInclude Include="Jogo.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Protagonista.h" />

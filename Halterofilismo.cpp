@@ -84,9 +84,6 @@ void Halterofilismo::inicializar(int estado, vector<int> valoresOpcoesDeJogo)
 	textoAvisoPragasSombra.setFonte("fonteGrande");
 	textoAvisoPragasSombra.setWstring(L"Moscas vão me sobrecarregar!\nPreciso assoviar a saga da minha vida!\nDigite as palavras do poder!");
 
-	// inicializar ponto no tempo para função dificultar
-	pontoTempoDificuldade = clock();	// retorna o "tick" atual, pode-se dizer que vamos armazenar o "tempo" atual
-
 	// a parte complicada de escolher o multiplicador da dificuldade é tornar a progressão gradual, por causa do sandbox (modo contínuo)
 	switch (valoresOpcoesDeJogo[valorDificuldade]) {	// por isso aqui definimos valores com uma distância cada vez menor
 	case 0:	// medio
@@ -129,6 +126,12 @@ void Halterofilismo::inicializar(int estado, vector<int> valoresOpcoesDeJogo)
 
 	// iniciar temporizador
 	temporizador.reset();
+
+	// inicializar estado
+	if (estadoDoJogo == jogoHalterofilismoCampanha)
+		preparaCampanha();
+	else	// só há uma possibilidade = sandbox()
+		preparaSandbox();
 }
 
 // loop principal
@@ -149,8 +152,6 @@ void Halterofilismo::desenhar()
 		/****/
 		// isso aqui será definido em outra função ou num dos preparar ou em sandbox ou em campanha
 		progressoMaximo = sizeBarraProgressoFrames - 1;	// reduzimos 1, pois: indice ultimo elemento = total - 1
-		if (!inicioLevantamento) // equivale a if( == 0), então o levantamento começou agora
-			inicioLevantamento = clock();	// clock nos dá o "tick" atual, equivale a dizer que armazenamos o tempo atual
 
 		if (tempoDificultar.passouTempoMS(fatorDificuldade)) {
 			dificultar();
@@ -163,7 +164,7 @@ void Halterofilismo::desenhar()
 		// primeiro gerenciamos o progresso (pois se terminou queremos exibir menu, etc antes de desenhar algo)
 		//gerenciarProgresso();
 		fundo.desenhar(xCentro, yCentro);
-		protagonista.setCor(50, 50, 50);	// TODO: usar isso para escurecer fundos do tiro em dias de chuva
+		protagonista.setCor(50, 50, 50);
 		protagonista.desenhar(xCentro, yCentro);
 		// desenhamos a barra antes apenas das pragas e do hud
 		barra.desenhar(xBarra, yBarra);
@@ -221,24 +222,69 @@ void Halterofilismo::preparaSandbox()
 //	mantemos um contador de vitórias (fatality conta como derrota, mas pode ser pulado)
 void Halterofilismo::sandbox()
 {
-
+	desenhar();
 }
 // aqui oferecemos opções de jogo ao usuário: nome do personagem, sexo do protagonista, 
 //	sprite do personagem (slider, incluindo opção pseudoaleatório),
 //	tom de voz (slider, incluindo opção pseudoaleatório)
 void Halterofilismo::preparaCampanha()
 {
+	// primeiro alocamos a historia
+	vector<vector<wstring>> historia;
+	historia.resize(6);	// nossa história terá 6 etapas
+	// etapa 0 = inínio na fazenda
+	historia[0] = { L"%NOME% nasceu em uma fazenda, sem energia elétrica, estradas de asfalto ou video-games para passar o tempo.", // "final" som de bebe chorando
+		L"Desde a mais tenra idade, sempre gostou muito de exercer sua força e domínio sobre o mundo natural a sua volta.",
+		L"Logo cresceu e se tornou uma pessoa conhecida pela capcidade física, já que conseguia quebrar bolas de bilhar usando as nádegas.", // "final" Bullet Body Hit
+		L"Ano após ano, %NOME% aumentava sua força, com a ajuda de seus amigos mamíferos do reino animal, treinava todos os dias, até o esgotamento."
+	};
+	// etapa 1 = migração urbana
+	historia[1] = { L"Após superar todos os seus amigos da fazena no cabo de guerra, incluindo o Sr. Cavalo Doido, era hora de migrar.", // "final" som de Horse Single Neigh
+		L"%NOME% decide que é hora de um êxodo rural, e prepara suas coisas para a longa viagem até a cidade grande.",	// "final" Antique Car Start Idle Off
+		L"Enquanto relembra sua vida na fazenda, %NOME% aperta com força o amuleto de família que recebera dos pais antes da viagem.",
+		L"Está na família há gerações, todo sabem que ele traz sorte. Pena que o amuleto é um pingente contendo um saquinho de esterco.", // "final" Lambs Bleating
+		L"Pra piorar as coisas, o único lugar com espaço para recém-chegados sem dinheiro treinarem levantamento de peso é o esgoto."
+	};
+	// etapa 2 = emprego em canil
+	historia[2] = { L"Após longas horas de treinos e moscas, %NOME% finalmente percebe que sua sorte está mudando."
+		L"Com um emprego em um canil, lugar para treinar não mais será um problema, do mesmo modo que treinar na fazenda não era.",
+		L"%NOME% sempre se deu bem com animais, a única exceção era e ainda é os insetos.",	// "final" the swarm
+	};
+	// etapa 3 = pequena academia nos suburbios
+	historia[3] = { L"Infelizmente parece que um canil também é um lugar infestado por moscas.",
+		L"%NOME% pede ao céu para que o seu destino não seja sobrecarregado com moscas.",	// "inicio" Thunder Clap Loud
+		L"Com o seu segundo salário, %NOME% finalmente pode pagar a mensalidade de uma academia de musculação."
+		L"Isso sim deve livrá-%lo% das moscas, sempre as malditas moscas!"	// "inicio" Thunder Clap Loud
+	};
+	// etapa 4 = academia no centro da cidade
+	historia[4] = { L"%NOME% treinava duro para se livrar das moscas, nem que isso fosse a última coisa a fazer em vida!",
+		L"Enquanto treinava na pequena academia, %NOME% percebeu que um senhor ia espirrar enquanto erguia toneladas de peso.",	// "final" LoFi Man Sneeze
+		L"Por pura sorte, ele foi salvo %pelo nosso herói/pela nossa protagonista%, que conseguiu chutá-lo para longe da barra caindo.", // "final" Body Fall Medium 02
+		L"Feliz por ter quebrado apenas os dois braços, ele conta que é um olheiro da equipe Delta-Zeta-Simba-Rei-Leão, e convida %NOME% para a equipe.",
+		L"Parece que tudo vai dar certo, finalmente! uma academia no centro da cidade! Finalmente as moscas vão embora."	// "inicio" Thunder Clap Loud
+	};
+	// etapa 5 = levantamento nas olimpíadas no rio
+	historia[5] = { L"Infelizmente parece que o centro da cidade é rodeado por restaurantes, que atraem todo tipo de moscas!",
+		L"Mas isso não era mais motivo de preocupação, afinal o nome %NOME% constava na lista oficial de levantadores olímpicos!",	// "nomeio" Vocal Garble 01
+		L"O próximo desafio significava vencer as olimpíadas! E certamente um evento desse porte, com tanto dinheiro roubado via imposto...",
+		L"É simplesmente impossível haver moscas por lá!"	// "inicio" Thunder Clap Loud
+	};
+	etapaAtual = 0;
+	historiaCampanha.inicializar(historia, "fundo_teste");
 }
 
 // jogo com história (se ativa), e progresso linear baseado na dificuldade até um final
 void Halterofilismo::campanha()
 {
-
+	historiaCampanha.desenhar(etapaAtual);
+	if (historiaCampanha.terminouEtapa())
+		etapaAtual++;
 }
 
 // aqui: avançamos animações (barras, personagem), gerenciamos eventos (pragaAlada), encerramos o levantamento
 void Halterofilismo::gerenciarLevantamento()
 {
+	// TODO: se progresso = 0 e diminuir = morte()
 	// SE a barra de progresso ainda não atingiu o objetivo, verificamos o intervalo das teclas
 	if (barraProgresso.getFrameAtual() < progressoMaximo) {
 		// TODO && barraProgresso.getFrameAtual() >= progressoMaximo
