@@ -9,7 +9,7 @@ Historia::~Historia()
 }
 
 
-void Historia::inicializar(vector<vector<wstring>> historia, string fundo, vector<string> sonsDeFundo, vector<vector<string>> sonsDaHistoria,\
+void Historia::inicializar(vector<vector<wstring>> historia, string fundo, vector<string> sonsDeFundo, vector<vector<vector<string>>> sonsDaHistoria, \
 	vector<vector<Sprite>> sprites, vector<vector<int>> spritesXY)
 {
 	if (fundo.size() > 0)
@@ -25,14 +25,27 @@ void Historia::inicializar(vector<vector<wstring>> historia, string fundo, vecto
 			historiaSonsDeFundo[somDeFundo].setAudio(sonsDeFundo[somDeFundo]);	// carregamos o som correto
 		}
 	}
+	// isso aqui é horrível de feio, mas quem ia explicar um contâiner diferente?
 	if (sonsDaHistoria.size() > 0) {
 		int sizeSons = sonsDaHistoria.size();
 		historiaSons.resize(sizeSons);	// alocamos a memória a ser utilizada
+		historiaSonsDefinidos.resize(sizeSons);	// alocamos a memória a ser utilizada
 		for (int etapa = 0; etapa < sizeSons; etapa++) {	// para cada etapa
 			int sizeSonsDaEtapa = sonsDaHistoria[etapa].size();
-			historiaSons.resize(sizeSonsDaEtapa);	// alocamos a memória a ser utilizada
-			for (int som = 0; som < sizeSonsDaEtapa; som++) { // para cada som da etapa
-				historiaSons[etapa][som].setAudio(sonsDaHistoria[etapa][som]);	// carregamos o áudio correto
+			historiaSons[etapa].resize(sizeSonsDaEtapa);	// alocamos a memória a ser utilizada
+			historiaSonsDefinidos[etapa].resize(sizeSonsDaEtapa);	// alocamos a memória a ser utilizada
+
+			for (int linha = 0; linha < sizeSonsDaEtapa; linha++) {	// para cada linha
+				//int sizeSonsDaLinha = sonsDaHistoria[etapa][linha].size();	// sempre = 3, pois quando varia de [0,2]
+				historiaSons[etapa][linha].resize(3);	// alocamos a memória a ser utilizada
+				historiaSonsDefinidos[etapa][linha].resize(3);	// alocamos a memória a ser utilizada
+
+				for (int quando = 0; quando < 3; quando++) { // para cada "quando" da linha
+					if (sonsDaHistoria[etapa][linha].size() > quando && !sonsDaHistoria[etapa][linha][quando].empty()) {	// se há som definido (tamanho da string > 1)
+						historiaSons[etapa][linha][quando].setAudio(sonsDaHistoria[etapa][linha][quando]);	// carregamos o áudio correto
+						historiaSonsDefinidos[etapa][linha][quando] = true;
+					}
+				}
 			}
 		}
 	}
@@ -84,10 +97,16 @@ void Historia::desenhar(int etapa)
 			for (int som = 0; som < sizeSonsDeFundo; som++)
 				historiaSonsDeFundo[som].parar();
 
+			// na verdade esse teste não adianta, já que a classe som retorna endereços inválidos caso não exista som carregado...
+			//	isso significa que eu devia fazer um vetor com os sons definidos, mas eu vou definir som para todos os fundos, então
+			//	não pretendo fazer isso, pelo menos até meu caso de uso mudar
 			if (historiaSonsDeFundo[etapaAtual].getAudio()->estaCarregado()) {	// se tocar() nulo, aparece mensagem de erro, então testamos
 				historiaSonsDeFundo[etapaAtual].tocar();
 			}
 		}
+		// verificamos se há som para tocar no início da primeira linha
+		if (historiaSonsDefinidos[etapaAtual].size() > linhaAtual && historiaSonsDefinidos[etapa][linhaAtual][tocarComecoDaLinha])
+			historiaSons[etapaAtual][linhaAtual][tocarComecoDaLinha].tocar();
 	}
 	// primeiro de tudo desenhar o fundo
 	sprFundo.desenhar(xCentro, yCentro);
@@ -104,6 +123,16 @@ void Historia::desenhar(int etapa)
 	// se a letraAtual é menos que o total da linhaAtual _E_ se passou tantos milissegundos, avançamos uma letra
 	if (letraAtual < sizeLinhas[linhaAtual] && tempoPrint.passouTempoMS(10)) {
 		letraAtual++;
+		// verificamos se há som para tocar na letra atual
+		if (letraAtual == (int)(sizeLinhas[linhaAtual] * .5)) {
+			if (historiaSonsDefinidos[etapa].size() > linhaAtual && historiaSonsDefinidos[etapa][linhaAtual][tocarMeioDaLinha])
+				historiaSons[etapa][linhaAtual][tocarMeioDaLinha].tocar();
+		}
+		else if (letraAtual == sizeLinhas[linhaAtual] ) {
+			if (historiaSonsDefinidos[etapa].size() > linhaAtual && historiaSonsDefinidos[etapa][linhaAtual][tocarFinalDaLinha])
+				historiaSons[etapa][linhaAtual][tocarFinalDaLinha].tocar();
+		}
+
 		// setamos a string do objeto texto da linha atual, levando em consideração a letra atual
 		//	substr retorna uma substring da atual, pedimos uma da posição 0 até letraAtual
 		textoLinhas[linhaAtual].setWstring(historiaLinhas[etapaAtual][linhaAtual].substr(0, letraAtual));
@@ -126,6 +155,9 @@ void Historia::desenhar(int etapa)
 			// aumentar a linha atual, resetar letraAtual
 			linhaAtual++;
 			letraAtual = 0;
+			// verificar se há som para tocar no começo da linha
+			if (historiaSonsDefinidos[etapa].size() > linhaAtual && historiaSonsDefinidos[etapa][linhaAtual][tocarComecoDaLinha])
+				historiaSons[etapa][linhaAtual][tocarComecoDaLinha].tocar();
 		}
 		else if (letraAtual != sizeLinhas[linhaAtual]) {	// jogador tem pressa
 			letraAtual = sizeLinhas[linhaAtual];

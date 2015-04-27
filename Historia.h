@@ -8,6 +8,8 @@ using namespace std;	// de novo, já que o MVS parece não entender
 
 class Historia
 {
+	enum QuandoABandaToca {tocarComecoDaLinha, tocarMeioDaLinha, tocarFinalDaLinha};
+
 	// sprites usadas para elementos, incluindo efeitos
 	Sprite sprFundo, sprSobreCamada, sprEsmaecer;
 	// elementos que serao desenhados
@@ -20,7 +22,10 @@ class Historia
 												//	intervalo para não detectar cliques de menus anteriores
 
 	vector<vector<wstring>> historiaLinhas;	// a.b.c: a = etapa, b = linha, c = texto
-	vector<vector<Som>> historiaSons;	// a.b.c: a = etapa, b = linha, c = som
+	vector<vector<vector<Som>>> historiaSons;	// a.b.c.d: a = etapa, b = linha, c = quando, d = som
+												//	quando = 0 = inicio da linha, 1 = meio da linha, 2 = fim da linha
+	vector<vector<vector<bool>>> historiaSonsDefinidos;	// a classe Som retorna endereços inválidos para soms não carregados...
+														//	por isso é preciso checar se há som definido por aqui
 	vector<Som> historiaSonsDeFundo;	// inicializados no construtor
 	vector<int> sizeLinhas;				// armazena o tamanho das linhas da etapaAtual
 	vector<int> yLinhas;				// armazena a altura adequada para desenhar cada linha
@@ -31,7 +36,7 @@ class Historia
 	int xCentro, yCentro;	// pra não precisar ficar chamando gets desnecessariamente
 public:
 	Historia();
-	void inicializar (vector<vector<wstring>> historia, string fundo = "", vector<string> sonsDeFundo = {}, vector<vector<string>> sonsDaHistoria = {}, \
+	void inicializar (vector<vector<wstring>> historia, string fundo = "", vector<string> sonsDeFundo = {}, vector<vector<vector<string>>> sonsDaHistoria = {}, \
 		vector<vector<Sprite>> sprites = {},\
 		vector<vector<int>> spritesXY = {});
 	~Historia();

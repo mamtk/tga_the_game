@@ -233,7 +233,7 @@ void Halterofilismo::preparaCampanha()
 	vector<vector<wstring>> historia;
 	historia.resize(6);	// nossa história terá 6 etapas
 	// etapa 0 = inínio na fazenda
-	historia[0] = { L"%NOME% nasceu em uma fazenda, sem energia elétrica, estradas de asfalto ou video-games para passar o tempo.", // "final" som de bebe chorando
+	historia[0] = { L"%NOME% nasceu em uma fazenda, sem energia elétrica, estradas de asfalto ou video-games para passar o tempo.", // "meio" som de bebe chorando
 		L"Desde a mais tenra idade, sempre gostou muito de exercer sua força e domínio sobre o mundo natural a sua volta.",
 		L"Logo cresceu e se tornou uma pessoa conhecida pela capcidade física, já que conseguia quebrar bolas de bilhar usando as nádegas.", // "final" bolas bilhar
 		L"Ano após ano, %NOME% aumentava sua força, com a ajuda de seus amigos mamíferos do reino animal, treinava todos os dias, até o esgotamento."
@@ -241,8 +241,8 @@ void Halterofilismo::preparaCampanha()
 	// etapa 1 = migração urbana
 	historia[1] = { L"Após superar todos os seus amigos da fazena no cabo de guerra, incluindo o Sr. Cavalo Doido, era hora de migrar.", // "final" som de cavalo doido
 		L"%NOME% decide que é hora de um êxodo rural, e prepara suas coisas para a longa viagem até a cidade grande.",	// "final" carro
-		L"Enquanto relembra sua vida na fazenda, %NOME% aperta com força o amuleto de família que recebera dos pais antes da viagem.",
-		L"Está na família há gerações, todo sabem que ele traz sorte. Pena que o amuleto é um pingente contendo um saquinho de esterco.", // "final" ovelhas
+		L"Enquanto relembra sua vida na fazenda antes de apertar a mão do motorista, %NOME% aperta com força o amuleto de família que recebera dos pais antes da viagem.",
+		L"Está na família há gerações, todo sabem que ele traz sorte. Pena que o amuleto é um pingente contendo um saquinho de esterco ovino.", // "final" ovelhas
 		L"Pra piorar as coisas, o único lugar com espaço para recém-chegados sem dinheiro treinarem levantamento de peso é o esgoto."
 	};
 	// etapa 2 = emprego em canil
@@ -277,8 +277,49 @@ void Halterofilismo::preparaCampanha()
 		"somfundo_HalterAcademiaCentro",
 		"somfundo_HalterOlimpiadas"
 	};
+	vector<vector<vector<string>>> sonsDaHistoria;
+	// sons nas posições (etapa.linha.quando): 0.0.1; 0.2.2; 1.0.2; 1.1.2; 1.3.2; 2.2.2; 3.1.0; 3.3.0; 4.1.2; 4.2.2; 4.4.0; 5.2.1; 5.4.0
+	sonsDaHistoria.resize(5);	// usamos até a etapa 5
+	// etapa 0
+	sonsDaHistoria[0].resize(3);	// usamos até a linha 3
+	sonsDaHistoria[0][0].resize(3);	// usamos sons na a linha 1 da etapa 0
+	sonsDaHistoria[0][0][tocarMeioDaLinha] = "somfx_BebeChorando";
+	sonsDaHistoria[0][2].resize(3);	// usamos sons na a linha 3 da etapa 0
+	sonsDaHistoria[0][2][tocarFinalDaLinha] = "somfx_GrunhidosBolaBilhar";
+	// etapa 1
+	sonsDaHistoria[1].resize(4);	// usamos até a linha 4
+	sonsDaHistoria[1][0].resize(3);	// usamos sons na a linha 1 da etapa 1
+	sonsDaHistoria[1][0][tocarFinalDaLinha] = "somfx_CavaloDoido";
+	sonsDaHistoria[1][1].resize(3);	// usamos sons na a linha 2 da etapa 1
+	sonsDaHistoria[1][1][tocarFinalDaLinha] = "somfx_CarroLigando";
+	sonsDaHistoria[1][3].resize(3);	// usamos sons na a linha 4 da etapa 1
+	sonsDaHistoria[1][3][tocarFinalDaLinha] = "somfx_Ovelhas";
+	// etapa 2
+	sonsDaHistoria[2].resize(3);	// usamos até a linha 3
+	sonsDaHistoria[2][2].resize(3);	// usamos sons na a linha 3 da etapa 2
+	sonsDaHistoria[2][2][tocarFinalDaLinha] = "somfx_Enxame";
+	// etapa 3
+	sonsDaHistoria[3].resize(4);	// usamos até a linha 4
+	sonsDaHistoria[3][1].resize(3);	// usamos sons na a linha 2 da etapa 3
+	sonsDaHistoria[3][1][tocarComecoDaLinha] = "somfx_Trovao";
+	sonsDaHistoria[3][3].resize(3);	// usamos sons na a linha 4 da etapa 3
+	sonsDaHistoria[3][3][tocarComecoDaLinha] = "somfx_Trovao";
+	// etapa 4
+	sonsDaHistoria[4].resize(5);	// usamos até a linha 5
+	sonsDaHistoria[4][1].resize(3);	// usamos sons na a linha 2 da etapa 4
+	sonsDaHistoria[4][1][tocarFinalDaLinha] = "somfx_Espirro";
+	sonsDaHistoria[4][2].resize(3);	// usamos sons na a linha 3 da etapa 4
+	sonsDaHistoria[4][2][tocarFinalDaLinha] = "somfx_OssosQuebrando";
+	sonsDaHistoria[4][4].resize(3);	// usamos sons na a linha 5 da etapa 4
+	sonsDaHistoria[4][4][tocarComecoDaLinha] = "somfx_Trovao";
+	// etapa 5
+	sonsDaHistoria[4].resize(5);	// usamos até a linha 5
+	sonsDaHistoria[4][1].resize(3);	// usamos sons na a linha 2 da etapa 4
+	sonsDaHistoria[4][1][tocarMeioDaLinha] = "somfx_VozNoRadio";
+	sonsDaHistoria[4][4].resize(3);	// usamos sons na a linha 5 da etapa 4
+	sonsDaHistoria[4][4][tocarComecoDaLinha] = "somfx_Trovao";
 	etapaAtual = 0;
-	historiaCampanha.inicializar(historia, "fundo_teste", sonsDeFundo);
+	historiaCampanha.inicializar(historia, "fundo_teste", sonsDeFundo, sonsDaHistoria);
 }
 
 // jogo com história (se ativa), e progresso linear baseado na dificuldade até um final

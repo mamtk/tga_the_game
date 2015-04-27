@@ -18,6 +18,8 @@ class Halterofilismo
 	enum ValoresMenuOpcoes { valorDificuldade, valorDesativarEventos, valorDesativarFatality, valorDesativarSom, valorDesativarMusicas, valorDesativarHistoria };
 	// tipo de levantamento
 	enum TipoDeLevantamento { levantamentoNormal, levantamentoFatality };
+	// posições de som no vetor de sons da história
+	enum QuandoABandaToca { tocarComecoDaLinha, tocarMeioDaLinha, tocarFinalDaLinha };
 	// sprites do proganista
 	enum SpritesProtagonista { protagonistaHomem, protagonistaMulher };
 	// locais de ataque de pragas
