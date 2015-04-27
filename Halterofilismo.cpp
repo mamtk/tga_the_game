@@ -313,11 +313,11 @@ void Halterofilismo::preparaCampanha()
 	sonsDaHistoria[4][4].resize(3);	// usamos sons na a linha 5 da etapa 4
 	sonsDaHistoria[4][4][tocarComecoDaLinha] = "somfx_Trovao";
 	// etapa 5
-	sonsDaHistoria[4].resize(5);	// usamos até a linha 5
-	sonsDaHistoria[4][1].resize(3);	// usamos sons na a linha 2 da etapa 4
-	sonsDaHistoria[4][1][tocarMeioDaLinha] = "somfx_VozNoRadio";
-	sonsDaHistoria[4][4].resize(3);	// usamos sons na a linha 5 da etapa 4
-	sonsDaHistoria[4][4][tocarComecoDaLinha] = "somfx_Trovao";
+	sonsDaHistoria[5].resize(5);	// usamos até a linha 5
+	sonsDaHistoria[5][1].resize(3);	// usamos sons na a linha 2 da etapa 4
+	sonsDaHistoria[5][1][tocarMeioDaLinha] = "somfx_VozNoRadio";
+	sonsDaHistoria[5][4].resize(3);	// usamos sons na a linha 5 da etapa 4
+	sonsDaHistoria[5][4][tocarComecoDaLinha] = "somfx_Trovao";
 	etapaAtual = 0;
 	historiaCampanha.inicializar(historia, "fundo_teste", sonsDeFundo, sonsDaHistoria);
 }
