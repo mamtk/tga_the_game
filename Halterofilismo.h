@@ -29,7 +29,7 @@ class Halterofilismo
 		letraQ, letraR, letraS, letraT, letraU, letraV, letraW, letraX, letraY, letraZ, letraVirgulina };
 
 	// Sprites usadas pela classe
-	Sprite fundo, protagonista, barra, barraProgresso;
+	Sprite fundo, protagonista, barraProgresso;
 	vector<Sprite> pragasAladas, letrasAladas;
 	// Textos usados pela class
 	Texto textoTemporizador, textoTemporizadorSombra;

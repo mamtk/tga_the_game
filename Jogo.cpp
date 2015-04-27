@@ -72,9 +72,9 @@ void Jogo::inicializar()
 	recursos.carregarSpriteSheet("fx_Letras", "img/fx/fx_Letras.png", 1, 30);
 	recursos.carregarSpriteSheet("fx_LetrasIluminadas", "img/fx/fx_LetrasIluminadas.png", 1, 30);
 	recursos.carregarSpriteSheet("per_HalterHomem0", "img/per/per_HalterHomem0.png", 0, 13);
+	recursos.carregarSpriteSheet("per_HalterMulher", "img/per/per_HalterMulher.png", 0, 15);
 	recursos.carregarSpriteSheet("per_HalterMosca", "img/per/per_HalterMosca.png");
 	//recursos.carregarSpriteSheet("per_HalterPomba", "img/per/per_HalterMosca.png");
-	recursos.carregarSpriteSheet("obj_HalterBarra", "img/obj/obj_HalterBarraFofa.png");
 	recursos.carregarSpriteSheet("fx_HalterBarra", "img/fx/fx_HalterBar.png", 1, 11);
 
 	//********* MENUS

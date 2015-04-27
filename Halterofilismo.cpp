@@ -24,8 +24,6 @@ void Halterofilismo::inicializar(int estado, vector<int> valoresOpcoesDeJogo)
 	xyBarraProgresso = { xCentro - 450, yCentro - 100 };
 
 	// inicializar sprites
-	barra.setSpriteSheet("obj_HalterBarra");
-	barra.setEscala(5, 5);
 	fundo.setSpriteSheet("fundo_Halter01");
 	protagonista.setSpriteSheet("per_HalterHomem0");
 	protagonista.setAnimacao(0);
@@ -167,8 +165,6 @@ void Halterofilismo::desenhar()
 		fundo.desenhar(xCentro, yCentro);
 		//protagonista.setCor(50, 50, 50);
 		protagonista.desenhar(xCentro, yCentro);
-		// desenhamos a barra antes apenas das pragas e do hud
-		barra.desenhar(xBarra, yBarra);
 		// desenhamos o hud antes apenas das pragas
 		desenharHUD();
 		if (!pausado) {	// se o jogo está pausado não queremos alterar nada
