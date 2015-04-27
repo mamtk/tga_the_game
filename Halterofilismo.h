@@ -44,7 +44,7 @@ class Halterofilismo
 	// menus de derrota
 	Menu derrota, derrotaFatality;	// fatality permite continuar
 
-	Temporizador temporizador, tempoDificultar, tempoPragas, tempoAvisoPragas, tempoMovimentoLetras;
+	Temporizador temporizador, tempoDificultar, tempoPragas, tempoAvisoPragas, tempoMovimentoLetras, tempoMisc;
 
 	// os vetore abaixo serão usados na combinação (a ser digitada) para espantar as moscas
 	vector<string> queriaPalavrasLista;	// formato: queria palavraLista, acabei palavraEiro
@@ -83,12 +83,9 @@ class Halterofilismo
 	bool barraSobe = true;			// agora a barra sobe? ou desce?
 	bool primeiraPraga = true;		// melhor explicar como se livrar delas!
 	bool avisoPrimeiraPraga = false;	// faz com que o aviso seja mostrado por algum tempo
+	bool pausado = false;			// registra se o jogo está pausado
 
 	EstadoDoJogo estadoDoJogo;
-
-	// preparar modalidades de jogo
-	void preparaCampanha();
-	void preparaSandbox();
 
 	// utilidades
 	int Halterofilismo::traduzLetraFrame(char letra);
@@ -117,5 +114,9 @@ public:
 	// modalidades de jogo
 	void campanha();
 	void sandbox();
+	void pausar();
+	void prosseguir();
+	// preparar modalidades de jogo
+	void preparaCampanha();
+	void preparaSandbox();
 };
-

@@ -9,19 +9,20 @@
 // inicializar menu unitário com espaçamento fixo (i.e. sem especificar a posição de cada item no menu)
 Menu::Menu()
 {
-	fundoEsmaecer.setEscala(700, 100);
-	fundoEsmaecer.setVelocidadeAnimacao(50);
-
 }
 
 // inicializar menu único (fazemos as coisas aqui por que setFonte exige um tipo completo para a classe Jogo)
 // TODO: versão com origemX|Y em vetores, verificar tamanho, e usar regras de espaçamento pras opções que restarem
 void Menu::inicializar(vector<wstring> vetorOpcoes, wstring cabecalhoParam, string fundilho, string som, vector<int> cabecalhoXY, int selecaoPadrao, int origemX, \
 	int origemY, int xEspacamento, int yEspacamento, vector<int> corNormalParam, vector<int> corDestaqueParam, vector<int> corCabecalhoParam, bool mouse, \
-	string fonte, float espacoLinhas, int alinhamento)
+	string fonte, float espacoLinhas, int alinhamento, bool esmaecer)
 {
-	// sprite para efeito esmaecer dessa calsse
-	fundoEsmaecer.setSpriteSheet("fx_Esmaecer");
+	esmaecerFundo = esmaecer;
+	if (esmaecerFundo) {	// se devemos esmaecer o fundo para desenhar esse menu
+		fundoEsmaecer.setSpriteSheet("fx_Esmaecer");	// setar sprite para efeito esmaecer dessa calsse
+		fundoEsmaecer.setEscala(1300, 100);				// cobrir tela inteira
+		fundoEsmaecer.setVelocidadeAnimacao(50);		// tornar animação mais rápida
+	}
 
 	// inicializar menu unico
 	tipoMenu = unico;
@@ -49,7 +50,7 @@ void Menu::inicializar(vector<wstring> vetorOpcoes, wstring cabecalhoParam, stri
 	if (corCabecalhoParam.size() == 4)			// verificar se cor destaque possui 4 elementos
 		corCabecalho = corCabecalhoParam;
 	else
-		corCabecalho = { 0, 200, 255, 255 };		// do contrário usar a padrão
+		corCabecalho = { 0, 200, 155, 255 };		// do contrário usar a padrão
 
 	// setamos o cabeçalho, se existir
 	if (cabecalhoParam.size() > 1) {
@@ -179,11 +180,14 @@ void Menu::inicializar(vector<wstring> vetorOpcoes, vector<vector<wstring>> veto
 	vector<int> cabecalhoXY, int selecaoPadrao, vector<int> valoresPadrao, int origemX, int origemY, int xEspacamento, int yEspacamento, \
 	int origemXValores, int origemYValores, int xEspacamentoValores, int yEspacamentoValores, int xEspacamentoValoresOpcoes, \
 	int yEspacamentoValoresOpcoes, vector<int> corNormalParam, vector<int> corDestaqueParam, vector<int> corNormalValoresParam, \
-	vector<int> corDestaqueValoresParam, vector<int> corCabecalhoParam, bool mouse,	string fonte, float espacoLinhas, int alinhamento)
+	vector<int> corDestaqueValoresParam, vector<int> corCabecalhoParam, bool mouse, string fonte, float espacoLinhas, int alinhamento, bool esmaecer)
 {
-	// sprite para efeito esmaecer dessa calsse
-	//fundo.setSpriteSheet(fundilho);
-	fundoEsmaecer.setSpriteSheet("fx_Esmaecer");
+	esmaecerFundo = esmaecer;
+	if (esmaecerFundo) {	// se devemos esmaecer o fundo para desenhar esse menu
+		fundoEsmaecer.setSpriteSheet("fx_Esmaecer");	// setar sprite para efeito esmaecer dessa calsse
+		fundoEsmaecer.setEscala(1300, 100);				// cobrir tela inteira
+		fundoEsmaecer.setVelocidadeAnimacao(50);		// tornar animação mais rápida
+	}
 
 	// inicializar menu unico
 	tipoMenu = duplo;
@@ -480,21 +484,21 @@ Menu::~Menu()
 
 void Menu::desenhar()
 {
-	uniDepurar("Ativo", ativo);
-	uniDepurar("Y[ativo]", yOpcoesMenu[ativo]);
-	uniDepurar("X[ativo]", xOpcoesMenu[ativo]);
-
-	// primeiro desenhar o fundo (antes de tudo)
-	if(possuiFundo)
+	if(possuiFundo)	// desenhar o fundo antes de tudo, se existir
 		fundo.desenhar(xCentral, yCentral);
-
 	if (possuiCabecalho)	// aqui desenhamos o cabecalho, se existir
 		cabecalho.desenhar(xyCabecalho[0], xyCabecalho[1]);
 	
-	if (mouseAtivo)
+	if (mouseAtivo)	// se podemos selecionar opções com o mouse nesse menu
 		mouseMoveu = mouseSeMoveu();	// precisamos saber se o mouse efetivamente se moveu, pra não bagunçar as opções
-	else
+	else			// se não podemos usar o mouse
 		mouseMoveu = false;				// _não_ precisamos saber se o mouse efetivamente se moveu
+
+	if (esmaecerFundo) {	// se devemos esmaecer o fundo para desenhar esse menu
+		fundoEsmaecer.desenhar(xCentral, yCentral);	// desenhamos o efeito
+		if (fundoEsmaecer.getFrameAtual() < fundoEsmaecer.getSpriteSheet()->getNumFramesDaAnimacao(0) - 10)	// se ainda não chegou em 10 frames antes do esmaecimento completo
+			fundoEsmaecer.avancarAnimacao();	// avançamos a animação
+	}
 
 	switch (tipoMenu) { // aqui senhamos as opções
 	case unico:
@@ -639,6 +643,8 @@ void Menu::resetarMenu()
 	destacar(ativo);
 	if (possuiSomFundo)
 		somFundo.parar();
+	if (esmaecerFundo)	// se esmaecer está ativado
+		fundoEsmaecer.setFrame(0);		// reiniciamos a animação
 }
 
 /* alteramos o estadoInterno ou aplicacao.sair;
@@ -702,4 +708,16 @@ void Menu::tocarMusica()
 		bool repetir = true;
 		somFundo.tocar(repetir);
 	}
+}
+
+// fica mais fácil definir um método
+void Menu::setEsmaecer(bool opcao)
+{
+	esmaecerFundo = opcao;
+	if (esmaecerFundo) {	// se devemos esmaecer o fundo para desenhar esse menu
+		fundoEsmaecer.setSpriteSheet("fx_Esmaecer");	// setar sprite para efeito esmaecer dessa calsse
+		fundoEsmaecer.setEscala(1300, 100);				// cobrir tela inteira
+		fundoEsmaecer.setVelocidadeAnimacao(50);		// tornar animação mais rápida
+	}
+
 }

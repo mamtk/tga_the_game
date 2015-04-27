@@ -34,14 +34,17 @@ class Historia
 	int etapaAtual, linhaAtual, letraAtual, totalEtapas, totalLinhasEtapaAtual;	// para controlar o progresso no desenho
 	int xLinhas;			// x não muda em nenhuma linha
 	int xCentro, yCentro;	// pra não precisar ficar chamando gets desnecessariamente
+
+	bool pausado = false;	// armazena se a história deve ser pausada
 public:
 	Historia();
-	void inicializar (vector<vector<wstring>> historia, string fundo = "", vector<string> sonsDeFundo = {}, vector<vector<vector<string>>> sonsDaHistoria = {}, \
+	bool terminouEtapa();		// se todas as linhas foram desenhadas completamente: retorna true
+	void inicializar(vector<vector<wstring>> historia, string fundo = "", vector<string> sonsDeFundo = {}, vector<vector<vector<string>>> sonsDaHistoria = {}, \
 		vector<vector<Sprite>> sprites = {},\
 		vector<vector<int>> spritesXY = {});
 	~Historia();
 
 	void desenhar(int etapa);	// se etapa != etapaAtual, significa que devemos reiniciar coisas
-	bool terminouEtapa();		// se todas as linhas foram desenhadas completamente: retorna true
+	void pausar();
+	void prosseguir();
 };
-

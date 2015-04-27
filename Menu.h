@@ -71,6 +71,7 @@ class Menu
 	bool mouseMoveu = false;
 	bool possuiSomFundo = false;
 	bool possuiFundo = false;
+	bool esmaecerFundo = false;
 
 	// tantos vais não-genéricos poderiam ser evitados, mas quem explicaria tal coisa?
 	void vaiOpcao();
@@ -97,7 +98,7 @@ public:
 	void inicializar(vector<wstring> vetorOpcoes, wstring cabecalhoParam = L"", string fundilho = "fundo_MenuPrincipal01", string som = "", \
 		vector<int> cabecalhoXY = { 0 }, int selecaoPadrao = 0, int origemX = -1, int origemY = -1, int xEspacamento = 0, int yEspacamento = 31, \
 		vector<int> corNormalParam = { 0 }, vector<int> corDestaqueParam = { 0 }, vector<int> corCabecalhoParam = { 0 }, bool mouse = true, \
-		string fonte = "fonteGrandeSombra", float espacoLinhas = 1.5f, int alinhamento = TEXTO_CENTRALIZADO);
+		string fonte = "fonteGrandeSombra", float espacoLinhas = 1.5f, int alinhamento = TEXTO_CENTRALIZADO, bool esmaecer = false);
 	// inicializar (sobrecarregada/overloaded) para menu único com coordenadas x e y para cada elemento
 	// inicializar (sobrecarregada/overloaded) para menu duplo desenhado de uma origem
 	void inicializar(vector<wstring> vetorOpcoes, vector<vector<wstring>> vetorValores, wstring cabecalhoParam = L"", string fundilho = "fundo_MenuPrincipal01", \
@@ -105,10 +106,11 @@ public:
 		int xEspacamento = 0, int yEspacamento = 27, int origemXValores = -1, int origemYValores = -1, int xEspacamentoValores = 11, int yEspacamentoValores = 0,\
 		int xEspacamentoValoresOpcoes = 1, int yEspacamentoValoresOpcoes = 0, vector<int> corNormalParam = { 0 }, vector<int> corDestaqueParam = { 0 }, \
 		vector<int> corNormalValoresParam = { 0 }, vector<int> corDestaqueValoresParam = { 0 }, vector<int> corCabecalhoParam = { 0 }, bool mouse = true, \
-		string fonte = "fonteNormal", float espacoLinhas = 1.5f, int alinhamento = TEXTO_CENTRALIZADO);
+		string fonte = "fonteNormal", float espacoLinhas = 1.5f, int alinhamento = TEXTO_CENTRALIZADO, bool esmaecer = false);
 	// inicializar (sobrecarregada/overloaded) para menu duplo com coordenadas x e y para cada elemento
-	void resetarMenu();	// também para somFundo
-	void tocarMusica();
+	void resetarMenu();		// também para somFundo
+	void tocarMusica();		// toca a música de fundo do menu (se existir)
+	void setEsmaecer(bool opcao);	// altera a função de esmaecer o menu
 
 	vector<int> getValores();
 	int getOpcao();

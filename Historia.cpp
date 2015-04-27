@@ -100,9 +100,8 @@ void Historia::desenhar(int etapa)
 			// na verdade esse teste não adianta, já que a classe som retorna endereços inválidos caso não exista som carregado...
 			//	isso significa que eu devia fazer um vetor com os sons definidos, mas eu vou definir som para todos os fundos, então
 			//	não pretendo fazer isso, pelo menos até meu caso de uso mudar
-			if (historiaSonsDeFundo[etapaAtual].getAudio()->estaCarregado()) {	// se tocar() nulo, aparece mensagem de erro, então testamos
+			// if (historiaSonsDeFundo[etapaAtual].getAudio()->estaCarregado())	// se tocar() nulo, aparece mensagem de erro, então testamos
 				historiaSonsDeFundo[etapaAtual].tocar();
-			}
 		}
 		// verificamos se há som para tocar no início da primeira linha
 		if (historiaSonsDefinidos[etapaAtual].size() > linhaAtual && historiaSonsDefinidos[etapa][linhaAtual][tocarComecoDaLinha])
@@ -110,18 +109,15 @@ void Historia::desenhar(int etapa)
 	}
 	// primeiro de tudo desenhar o fundo
 	sprFundo.desenhar(xCentro, yCentro);
-	/* SE o setCorAlpha realmente mudasse algo, eu usaria isso aqui
-		mas como parece não ser o caso, editei os fundos na mão mesmo...
 	// depois a sobrecamada
 	sprSobreCamada.desenhar(xCentro, yCentro);
-	*/
 	// finalmente desenhamos o texto passado, começando em x = 5%, e y% = 15%
 	for (int linha = 0; linha < linhaAtual; linha++) {	// para cada linha até a linha anterior a atual
 		textoLinhas[linha].desenhar(xLinhas, yLinhas[linha]);	// desenhamos a linha inteira
 	}
 	// atualizamos o contador da letra atual
-	// se a letraAtual é menos que o total da linhaAtual _E_ se passou tantos milissegundos, avançamos uma letra
-	if (letraAtual < sizeLinhas[linhaAtual] && tempoPrint.passouTempoMS(10)) {
+	// se a história não foi pausada _E_ a letraAtual é menos que o total da linhaAtual _E_ se passou tantos milissegundos, avançamos uma letra
+	if (!pausado && letraAtual < sizeLinhas[linhaAtual] && tempoPrint.passouTempoMS(10)) {
 		letraAtual++;
 		// verificamos se há som para tocar na letra atual
 		if (letraAtual == (int)(sizeLinhas[linhaAtual] * .5)) {
@@ -142,10 +138,11 @@ void Historia::desenhar(int etapa)
 	// por fim desenhamos a linha atual
 	textoLinhas[linhaAtual].desenhar(xLinhas, yLinhas[linhaAtual]);
 
-	// por fim gerenciamos as entradas do jogador; esperamos um tempo antes de aceitar o mouse, para evitar os cliques do menu anterior
-	if (teclado.soltou[TECLA_A] || teclado.soltou[TECLA_S] || teclado.soltou[TECLA_D] || teclado.soltou[TECLA_W] || \
+	// por fim, se a classe não está pausada,
+	//	gerenciamos as entradas do jogador; esperamos um tempo antes de aceitar o mouse, para evitar os cliques do menu anterior
+	if (!pausado && (teclado.soltou[TECLA_A] || teclado.soltou[TECLA_S] || teclado.soltou[TECLA_D] || teclado.soltou[TECLA_W] || \
 		teclado.soltou[TECLA_DIR] || teclado.soltou[TECLA_ESQ] || teclado.soltou[TECLA_CIMA] || teclado.soltou[TECLA_BAIXO] || \
-		teclado.soltou[TECLA_ENTER] || teclado.soltou[TECLA_ESPACO] || (mouse.soltou[BOTAO_ESQ] && tempoClique.passouTempoMS(300))) {
+		teclado.soltou[TECLA_ENTER] || teclado.soltou[TECLA_ESPACO] || (mouse.soltou[BOTAO_ESQ] && tempoClique.passouTempoMS(300)))) {
 		if (linhaAtual < totalLinhasEtapaAtual - 1) {	// se linha atual menor que o tamanho - 1 (última posição)
 			if (letraAtual < sizeLinhas[linhaAtual]) {	// se ainda não terminamos de desenhar a linha
 				textoLinhas[linhaAtual].setWstring(historiaLinhas[etapaAtual][linhaAtual]);	// corrigir a wstring do objeto texto, do contrário a linha ficará incompleta
@@ -170,8 +167,20 @@ void Historia::desenhar(int etapa)
 
 bool Historia::terminouEtapa()
 {
-	if (linhaAtual == totalLinhasEtapaAtual -1 && letraAtual == sizeLinhas[linhaAtual])
+	if (linhaAtual == totalLinhasEtapaAtual - 1 && letraAtual == sizeLinhas[linhaAtual])
 		return true;
 
 	return false;
+}
+
+void Historia::prosseguir()
+{
+	if (pausado)
+		pausado = false;
+}
+
+void Historia::pausar()
+{
+	if (!pausado)
+		pausado = true;
 }

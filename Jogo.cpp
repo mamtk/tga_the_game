@@ -32,7 +32,7 @@ void Jogo::inicializar()
 	recursos.carregarFonte("fonteGrande", "UbuntuMono-R.ttf", 27);
 	recursos.carregarFonte("fonteGrandeSombra", "UbuntuMono-B.ttf", 29);
 	// sons
-	recursos.carregarAudio("somfundo_HalterFazenda", "audio/somfundo/somfundo_HalterFazenda.ogg");
+	/*recursos.carregarAudio("somfundo_HalterFazenda", "audio/somfundo/somfundo_HalterFazenda.ogg");
 	recursos.carregarAudio("somfundo_HalterEsgoto", "audio/somfundo/somfundo_HalterEsgoto.ogg");
 	recursos.carregarAudio("somfundo_HalterCanil", "audio/somfundo/somfundo_HalterCanil.ogg");
 	recursos.carregarAudio("somfundo_HalterAcademiaSuburbio", "audio/somfundo/somfundo_HalterAcademiaSuburbio.ogg");
@@ -52,7 +52,7 @@ void Jogo::inicializar()
 	recursos.carregarAudio("somfundo_MenuPrincipal", "audio/music_02_Menu.ogg");
 	recursos.carregarAudio("somfundo_MenuOpcoes", "audio/music_03_Opcoes.ogg");
 	recursos.carregarAudio("somfundo_MenuAjuda", "audio/music_04_Ajuda.ogg");
-	recursos.carregarAudio("somfundo_MenuCreditos", "audio/music_05_Creditos.ogg");
+	recursos.carregarAudio("somfundo_MenuCreditos", "audio/music_05_Creditos.ogg");*/
 	// sprites
 	recursos.carregarSpriteSheet("fx_Esmaecer", "img/fx/fx_esmaecer.png", 1, 100);
 	recursos.carregarSpriteSheet("fx_Dot", "img/fx/fx_Dot.png", 1, 1);
@@ -63,24 +63,23 @@ void Jogo::inicializar()
 	recursos.carregarSpriteSheet("fundo_MenuPrincipal03", "img/fundos/fundo_MenuPrincipal03.png");
 	recursos.carregarSpriteSheet("fundo_MenuPrincipal04", "img/fundos/fundo_MenuPrincipal04.png");
 	recursos.carregarSpriteSheet("fundo_MenuPrincipal05", "img/fundos/fundo_MenuPrincipal05.png");
-	// menuOpcoes
+	// outros menus
 	recursos.carregarSpriteSheet("fundo_MenuOpcoes", "img/fundos/fundo_MenuOpcoes.png");
+	recursos.carregarSpriteSheet("fundo_MenuAjuda", "img/fundos/fundo_MenuAjuda.png");
+	recursos.carregarSpriteSheet("fundo_MenuCreditos", "img/fundos/fundo_MenuCreditos.png");
 	// halterofilismo
 	recursos.carregarSpriteSheet("fundo_Halter01", "img/fundos/halter_01.png");
 	recursos.carregarSpriteSheet("fx_Letras", "img/fx/fx_Letras.png", 1, 30);
 	recursos.carregarSpriteSheet("fx_LetrasIluminadas", "img/fx/fx_LetrasIluminadas.png", 1, 30);
-	recursos.carregarSpriteSheet("per_Halter01", "img/per/lucas1.png", 3, 9);
+	recursos.carregarSpriteSheet("per_HalterHomem0", "img/per/per_HalterHomem0.png", 0, 13);
 	recursos.carregarSpriteSheet("per_HalterMosca", "img/per/per_HalterMosca.png");
 	//recursos.carregarSpriteSheet("per_HalterPomba", "img/per/per_HalterMosca.png");
 	recursos.carregarSpriteSheet("obj_HalterBarra", "img/obj/obj_HalterBarraFofa.png");
 	recursos.carregarSpriteSheet("fx_HalterBarra", "img/fx/fx_HalterBar.png", 1, 11);
-	// especificar numeros de frames diferentes do maior
-	recursos.getSpriteSheet("per_Halter01")->setNumFramesDaAnimacao(0, 3);
-	recursos.getSpriteSheet("per_Halter01")->setNumFramesDaAnimacao(1, 8);
 
 	//********* MENUS
 	// inicializar menu principal
-	vector<string> fundosPrincipal = { "fundo_MenuPrincipal01", "fundo_MenuPrincipal02", "fundo_MenuPrincipal03", "fundo_MenuPrincipal04", "fundo_MenuPrincipal05" };
+	vector<string> fundosPrincipal = { "fundo_MenuPrincipal01", "fundo_MenuPrincipal02", "fundo_MenuPrincipal03", /*"fundo_MenuPrincipal04",*/ "fundo_MenuPrincipal05" };
 	int fundoMaisBom = rand() % fundosPrincipal.size();
 	vector<wstring> opcoesPrincipais = { L"Iniciar Jogo", L"Opções", L"Ajuda", L"Créditos", L"Sair" };
 	int xCabecalho = janela.getLargura() * .5;
@@ -91,23 +90,38 @@ void Jogo::inicializar()
 	// inicializar menu de seleção de tipo de jogo
 	vector<wstring> textoSecundario = { L"Halterofilismo (campanha)", L"Halterofilismo (sandbox)", \
 		/* talvez no GB //L"Tiro (campanha)", L"Tiro (sandbox)",*/ L"Voltar" };
-	secundario.inicializar(textoSecundario);
+	secundario.inicializar(textoSecundario, L"", "fundo_MenuPrincipal04");
 
 	// inicializar menu de créditos
 	vector<wstring> opcoesSecundarias = { L"Halterofilismo (Campanha)", L"Halterofilismo (Sandbox)", L"Tiro (Campanha)", L"Tiro (Sandbox)", L"Voltar" };
 	vector<wstring> opcoesCreditos = { L"TGA - The Game é um jogo sério, muito sério;\n mas não deve ser levado muito a sério, \
 	já que é um jogo.\n\nCriado por Jean Lucca, Mattheus Menezes, Morris.\nSão Leopoldo, abril de 2015." };
 	wstring cabecalhoCreditos = L"Aperte [ENTER], [ESPAÇO] ou clique com o botão esquerdo para voltar.";
-	creditos.inicializar(opcoesCreditos, cabecalhoCreditos, "", "somfundo_MenuCreditos");
+	creditos.inicializar(opcoesCreditos, cabecalhoCreditos, "fundo_MenuCreditos", "somfundo_MenuCreditos");
 	
 	// inicializar menu de ajuda
 	vector<wstring> textoAjuda = { L"blablabla\n\n\nParabéns! Você está pronto para ir para a próxima página!", \
 		L"Halterofilismo\nPressione alternadamente as teclas W,S e Cima,Baixo.\nFaça isso o mais rápido que puder.\n\nO objetivo é completar o levantamento dentro do tempo.\n \
-		No entanto algumas dificuldades podem surgir." };
+		No entanto algumas dificuldades podem surgir.",
+		L"Significato de algumas palavras (1 de 2)\n\nAulista = frequenta aulas, Bulista = copiador de bulas,\nSelista = colecionador de selos, Biblista = versado na Bíblia,\n\
+		 		Coralista = parte de coro, Violista = tocador de viola,\nGaulista = partidário do gaulismo",
+		L"Significato de algumas palavras (2 de 2)\n\naneiro = inconstante, boeiro = tipo de pássaro,\n\
+		geeiro = que traz geada,\n\
+		nieiro = lugar onde a galinha vai pôr os ovos,\n\
+		oveiro = vendedor de ovos, rueiro = gosta de andar na rua,\n\
+		useiro = reincidente em algum comportamento\n\
+		agosteiro = nascido em agosto,\n\
+		capeiro = que leva capa em procissões de igreja\n\
+		dureiro = Que sofre prisão de ventre\n\
+		fateiro = vendedor de miúdos de gado, fiteiro = vendedor de fitas\n\
+		foreiro = pagador de foro, guieiro = que serve de guia\n\
+		sineiro = que toca os sinos,\n\
+		assadeiro = próprio para ser assado"
+	};
 	wstring cabecalhoAjuda = L"Aperte W ou [CIMA] para prosseguir,\nou aperte [ENTER], [ESPAÇO] ou clique esquerdo para voltar.";
 	// TODO: a classe menu precisa de uma forma de desativar a seleção com o mouse, e de setar a cor do cabeçalho
 	// { 0 } significa que queremos a cor padrão
-	ajuda.inicializar(textoAjuda, cabecalhoAjuda, "", "somfundo_MenuAjuda", { 0 }, 0, -1, -1, 0, 0, { 0, 0, 0, 0 }, { 0 }, { 255, 255, 255, 255 }, false);
+	ajuda.inicializar(textoAjuda, cabecalhoAjuda, "fundo_MenuAjuda", "somfundo_MenuAjuda", { 0 }, 0, -1, -1, 0, 0, { 0, 0, 0, 0 }, { 51, 0, 151, 255 }, { 51, 255, 177, 255 }, false);
 
 	// inicializar menu de opções
 	wstring textoCabecalhoOpcoes = L"Pressione [CIMA] ou [BAIXO], ou [W] ou [S], ou passe o mouse, para mudar a opção destacada.\n\
@@ -146,9 +160,12 @@ void Jogo::inicializar()
 			break;
 		}
 	}
-	opcoes.inicializar(textoOpcoes, stringsValores, textoCabecalhoOpcoes, "fundo_MenuOpcoes", "somfundo_MenuOpcoes", { 0 }, 0, { 0 }, -1, -1, 0, 27, 550, -1, 21);
+	opcoes.inicializar(textoOpcoes, stringsValores, textoCabecalhoOpcoes, "fundo_MenuOpcoes", "somfundo_MenuOpcoes", { 0 }, 0, { 0 }, -1, -1, 0, 27, 550, -1, 21, 0, 1, 0, { 91, 101, 11, 255 }, 
+		{ 255, 51, 101, 255 }, { 91, 101, 11, 255 }, { 255, 51, 101, 255 }, { 255, 51, 101, 255 }, true, "fonteNormalSombra");
 
-	//********* JOGOS
+	vector<wstring> textoInstantaneo = { L"Continuar o jogo", L"Sair do jogo" };
+	instantaneo.inicializar(textoInstantaneo, L"", "");
+	instantaneo.setEsmaecer(true);
 }
 
 void Jogo::finalizar()
@@ -168,13 +185,33 @@ void Jogo::executar()
 
 	// começar a tocar música do menu principal
 	principal.tocarMusica();
-	while(!teclado.soltou[TECLA_ESC] && !aplicacao.sair)
-	{
+	while (!aplicacao.sair) {
 		uniIniciarFrame();
 
 		//	Seu cigo vem aqui!
 		//	...
-		gerenciarEstado();
+		gerenciarEstado();	// gerenciar menus e modos de jogo
+
+		if (teclado.soltou[TECLA_ESC]) {	// se a tecla esc foi pressionada
+			if (estado == jogoHalterofilismoSandbox || estado == jogoHalterofilismoCampanha) {	// no meio do jogo, abrir menu instaneo
+				if (menuInstantaneoAtivo == true) {	// e o menu instantâneo já estiver ativado
+					menuInstantaneoAtivo = false;	// desativá-lo
+					halterofilia.prosseguir();		// e despausar o jogo
+				}
+				else {								// do contrário
+					menuInstantaneoAtivo = true;	// ativá-lo
+					halterofilia.pausar();			// e pausar o jogo
+				}
+			}
+			else if (estado == menuPrincipal) {	// esc no menu principal ainda deve sair
+				aplicacao.sair = true;	// facilidade da libUnicornio
+			}
+		}
+		if (menuInstantaneoAtivo) {	// se o menu instantâneo estiver ativo
+			instantaneo.desenhar();	// desenhá-lo
+			if (instantaneo.finalizado())	// se uma escolha tiver sido feita
+				gerenciarMenuInstantaneo();	// gerenciar escolhas
+		}
 
 		uniTerminarFrame();
 	}
@@ -255,7 +292,7 @@ void Jogo::gerenciarMenuPrincipal()
 		creditos.tocarMusica();
 		break;
 	case escolhaSair:
-		aplicacao.sair = true;
+		aplicacao.sair = true;	// facilidade da libUnicornio
 		break;
 	}
 }
@@ -271,10 +308,12 @@ void Jogo::gerenciarMenuSecundario()
 	case escolhaHalterCampanha:
 		estado = jogoHalterofilismoCampanha;
 		halterofilia.inicializar(estado, opcoesDeJogo);
+		halterofilia.preparaCampanha();
 		break;
 	case escolhaHalterSandbox:
 		estado = jogoHalterofilismoSandbox;
 		halterofilia.inicializar(estado, opcoesDeJogo);
+		halterofilia.preparaSandbox();
 		break;
 	default:
 		estado = menuPrincipal;
@@ -284,4 +323,23 @@ void Jogo::gerenciarMenuSecundario()
 
 	// resetar menu secundário (se não ele não desenha mais)
 	secundario.resetarMenu();
+}
+
+void Jogo::gerenciarMenuInstantaneo()
+{
+	int opcaoEscolhida = instantaneo.getOpcao(); // ober opção escolhida
+	// resetar estado do menu principal (se não ele não desenha)
+	principal.resetarMenu();
+
+	// mudar estado do jogo, ou sair
+	switch (opcaoEscolhida) {
+	case escolhaContinuarJogo:
+		instantaneo.resetarMenu();
+		menuInstantaneoAtivo = false;	// desativar menu instantaneo
+		halterofilia.prosseguir();	// e despausar o jogo
+		break;
+	case escolhaSairDoJogo:
+		aplicacao.sair = true;	// facilidade da libUnicornio
+		break;
+	}
 }

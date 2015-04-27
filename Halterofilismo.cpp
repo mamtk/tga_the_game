@@ -27,12 +27,12 @@ void Halterofilismo::inicializar(int estado, vector<int> valoresOpcoesDeJogo)
 	barra.setSpriteSheet("obj_HalterBarra");
 	barra.setEscala(5, 5);
 	fundo.setSpriteSheet("fundo_Halter01");
-	protagonista.setSpriteSheet("per_Halter01");
+	protagonista.setSpriteSheet("per_HalterHomem0");
 	protagonista.setAnimacao(0);
-	protagonista.setEscala(5, 5);
+	//protagonista.setEscala(5, 5);
 	// sprites texto (códix assoviaris)
 	// TODO: determinar dificuldades corretamente: velAnimBarra, taxaDificuldade, impacto das pragas (taxa ou vel ou ambos?)
-	protagonista.setVelocidadeAnimacao(25);
+	protagonista.setVelocidadeAnimacao(7);
 	barraProgresso.setSpriteSheet("fx_HalterBarra");
 	barraProgresso.setVelocidadeAnimacao(5);
 	sizeBarraProgressoFrames = barraProgresso.getSpriteSheet()->getNumFramesDaAnimacao(0);
@@ -153,31 +153,34 @@ void Halterofilismo::desenhar()
 		// isso aqui será definido em outra função ou num dos preparar ou em sandbox ou em campanha
 		progressoMaximo = sizeBarraProgressoFrames - 1;	// reduzimos 1, pois: indice ultimo elemento = total - 1
 
-		if (tempoDificultar.passouTempoMS(fatorDificuldade)) {
-			dificultar();
+		if (!pausado) {	// se o jogo está pausado não queremos alterar nada
+			if (tempoDificultar.passouTempoMS(fatorDificuldade)) {
+				dificultar();
+			}
+			if (tempoPragas.passouTempoMS(5000))
+				pragaAlada();
 		}
-		if (tempoPragas.passouTempoMS(5000))
-			pragaAlada();
-		temporizador.setTempo(60);	// 60 segundos
 		/****/
 
 		// primeiro gerenciamos o progresso (pois se terminou queremos exibir menu, etc antes de desenhar algo)
 		//gerenciarProgresso();
 		fundo.desenhar(xCentro, yCentro);
-		protagonista.setCor(50, 50, 50);
+		//protagonista.setCor(50, 50, 50);
 		protagonista.desenhar(xCentro, yCentro);
 		// desenhamos a barra antes apenas das pragas e do hud
 		barra.desenhar(xBarra, yBarra);
 		// desenhamos o hud antes apenas das pragas
 		desenharHUD();
-		gerenciarPragas();
-		gerenciarLevantamento();	// temporizador, progresso, eventos
-		if (avisoPrimeiraPraga) { // se temos que avisar, temos que avisar!
-			if (tempoAvisoPragas.passouTempo(segundosAvisoPragas))
-				avisoPrimeiraPraga = false;
+		if (!pausado) {	// se o jogo está pausado não queremos alterar nada
+			gerenciarPragas();
+			gerenciarLevantamento();	// temporizador, progresso, eventos
+			if (avisoPrimeiraPraga) { // se temos que avisar, temos que avisar!
+				if (tempoAvisoPragas.passouTempo(segundosAvisoPragas))
+					avisoPrimeiraPraga = false;
 
-			textoAvisoPragasSombra.desenhar(xCentro, yCentro);
-			textoAvisoPragas.desenhar(xCentro, yCentro);
+				textoAvisoPragasSombra.desenhar(xCentro, yCentro);
+				textoAvisoPragas.desenhar(xCentro, yCentro);
+			}
 		}
 	}
 }
@@ -215,7 +218,7 @@ void Halterofilismo::desenharHUD()
 //	dificuldade inicial (slider + personalizada), sexo do protagonista, tipo do levantamento, 
 void Halterofilismo::preparaSandbox()
 {
-
+	temporizador.setTempo(60);	// 60 segundos
 }
 
 // jogo sem fim, mas com opção de sair a cada rodada; dificuldade aumenta a cada rodada vencida
@@ -326,7 +329,7 @@ void Halterofilismo::preparaCampanha()
 void Halterofilismo::campanha()
 {
 	historiaCampanha.desenhar(etapaAtual);
-	if (historiaCampanha.terminouEtapa() && teclado.soltou[TECLA_ENTER])
+	if (!pausado && historiaCampanha.terminouEtapa() && teclado.soltou[TECLA_ENTER])
 		etapaAtual++;
 }
 
@@ -576,6 +579,9 @@ void Halterofilismo::desenharPalavrasDoPoder()
 			primeiroAposVirgula = i;
 			break;
 		}
+		if (letrasXYOriginal[i][0] == 0)	// se a coordenada x da letra é 0, não desenhar
+			continue;		// continue = pular pra próxima execução do for
+
 		if (!(rand() % 31)) {	// horrível de feio, mas funciona sem criar classes que usem ponteiros que quem ia explicar!
 			noise = rand() % 7;
 			letrasAladas[i].desenhar(letrasXYOriginal[i][0], letrasXYOriginal[i][1] + noise);
@@ -869,4 +875,23 @@ int Halterofilismo::traduzLetraFrame(char letra)	// se não for função, vai fi
 		return 0;
 	}
 	return 0;
+}
+
+void Halterofilismo::pausar()
+{
+	if (!pausado) {
+		pausado = true;
+		temporizador.pausar();
+		historiaCampanha.pausar();
+	}
+
+}
+
+void Halterofilismo::prosseguir()
+{
+	if (pausado) {
+		pausado = false;
+		temporizador.prosseguir();
+		historiaCampanha.prosseguir();
+	}
 }
