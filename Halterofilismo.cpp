@@ -235,42 +235,50 @@ void Halterofilismo::preparaCampanha()
 	// etapa 0 = inínio na fazenda
 	historia[0] = { L"%NOME% nasceu em uma fazenda, sem energia elétrica, estradas de asfalto ou video-games para passar o tempo.", // "final" som de bebe chorando
 		L"Desde a mais tenra idade, sempre gostou muito de exercer sua força e domínio sobre o mundo natural a sua volta.",
-		L"Logo cresceu e se tornou uma pessoa conhecida pela capcidade física, já que conseguia quebrar bolas de bilhar usando as nádegas.", // "final" Bullet Body Hit
+		L"Logo cresceu e se tornou uma pessoa conhecida pela capcidade física, já que conseguia quebrar bolas de bilhar usando as nádegas.", // "final" bolas bilhar
 		L"Ano após ano, %NOME% aumentava sua força, com a ajuda de seus amigos mamíferos do reino animal, treinava todos os dias, até o esgotamento."
 	};
 	// etapa 1 = migração urbana
-	historia[1] = { L"Após superar todos os seus amigos da fazena no cabo de guerra, incluindo o Sr. Cavalo Doido, era hora de migrar.", // "final" som de Horse Single Neigh
-		L"%NOME% decide que é hora de um êxodo rural, e prepara suas coisas para a longa viagem até a cidade grande.",	// "final" Antique Car Start Idle Off
+	historia[1] = { L"Após superar todos os seus amigos da fazena no cabo de guerra, incluindo o Sr. Cavalo Doido, era hora de migrar.", // "final" som de cavalo doido
+		L"%NOME% decide que é hora de um êxodo rural, e prepara suas coisas para a longa viagem até a cidade grande.",	// "final" carro
 		L"Enquanto relembra sua vida na fazenda, %NOME% aperta com força o amuleto de família que recebera dos pais antes da viagem.",
-		L"Está na família há gerações, todo sabem que ele traz sorte. Pena que o amuleto é um pingente contendo um saquinho de esterco.", // "final" Lambs Bleating
+		L"Está na família há gerações, todo sabem que ele traz sorte. Pena que o amuleto é um pingente contendo um saquinho de esterco.", // "final" ovelhas
 		L"Pra piorar as coisas, o único lugar com espaço para recém-chegados sem dinheiro treinarem levantamento de peso é o esgoto."
 	};
 	// etapa 2 = emprego em canil
 	historia[2] = { L"Após longas horas de treinos e moscas, %NOME% finalmente percebe que sua sorte está mudando."
 		L"Com um emprego em um canil, lugar para treinar não mais será um problema, do mesmo modo que treinar na fazenda não era.",
-		L"%NOME% sempre se deu bem com animais, a única exceção era e ainda é os insetos.",	// "final" the swarm
+		L"%NOME% sempre se deu bem com animais, a única exceção era e ainda é os insetos.",	// "final" enxame
 	};
 	// etapa 3 = pequena academia nos suburbios
 	historia[3] = { L"Infelizmente parece que um canil também é um lugar infestado por moscas.",
-		L"%NOME% pede ao céu para que o seu destino não seja sobrecarregado com moscas.",	// "inicio" Thunder Clap Loud
+		L"%NOME% pede ao céu para que o seu destino não seja sobrecarregado com moscas.",	// "inicio" trovao
 		L"Com o seu segundo salário, %NOME% finalmente pode pagar a mensalidade de uma academia de musculação."
-		L"Isso sim deve livrá-%lo% das moscas, sempre as malditas moscas!"	// "inicio" Thunder Clap Loud
+		L"Isso sim deve livrá-%lo% das moscas, sempre as malditas moscas!"	// "inicio" trovao
 	};
 	// etapa 4 = academia no centro da cidade
 	historia[4] = { L"%NOME% treinava duro para se livrar das moscas, nem que isso fosse a última coisa a fazer em vida!",
-		L"Enquanto treinava na pequena academia, %NOME% percebeu que um senhor ia espirrar enquanto erguia toneladas de peso.",	// "final" LoFi Man Sneeze
-		L"Por pura sorte, ele foi salvo %pelo nosso herói/pela nossa protagonista%, que conseguiu chutá-lo para longe da barra caindo.", // "final" Body Fall Medium 02
+		L"Enquanto treinava na pequena academia, %NOME% percebeu que um senhor ia espirrar enquanto erguia toneladas de peso.",	// "final" espirro
+		L"Por pura sorte, ele foi salvo %pelo nosso herói/pela nossa protagonista%, que conseguiu chutá-lo para longe da barra caindo.", // "final" ossos quebrando
 		L"Feliz por ter quebrado apenas os dois braços, ele conta que é um olheiro da equipe Delta-Zeta-Simba-Rei-Leão, e convida %NOME% para a equipe.",
-		L"Parece que tudo vai dar certo, finalmente! uma academia no centro da cidade! Finalmente as moscas vão embora."	// "inicio" Thunder Clap Loud
+		L"Parece que tudo vai dar certo, finalmente! uma academia no centro da cidade! Finalmente as moscas vão embora."	// "inicio" trovao
 	};
 	// etapa 5 = levantamento nas olimpíadas no rio
-	historia[5] = { L"Infelizmente parece que o centro da cidade é rodeado por restaurantes, que atraem todo tipo de moscas!",
-		L"Mas isso não era mais motivo de preocupação, afinal o nome %NOME% constava na lista oficial de levantadores olímpicos!",	// "nomeio" Vocal Garble 01
-		L"O próximo desafio significava vencer as olimpíadas! E certamente um evento desse porte, com tanto dinheiro roubado via imposto...",
-		L"É simplesmente impossível haver moscas por lá!"	// "inicio" Thunder Clap Loud
+	historia[5] = { L"%NOME% é %o próximo/a próxima% a ser chamada, finalmente o desafio final, as olímpiadas!",
+		L"Infelizmente parece que o centro da cidade era rodeado por restaurantes, que atraem todo tipo de moscas!",
+		L"Mas isso não era mais motivo de preocupação, afinal o nome %NOME% esta sendo chamado pelo anunciador oficial de levantadores olímpicos!",	// "nomeio" somfx_HalterVozNoRadio
+		L"Esse é o nome que será chamado! Então o próximo desafio significa vencer as olimpíadas! Certamente um evento desse porte, com tanto dinheiro roubado via imposto...",
+		L"É simplesmente impossível haver moscas atrapalhando por aqui!"	// "inicio" trovao
+	};
+	vector<string> sonsDeFundo = { "somfundo_HalterFazenda",
+		"somfundo_HalterEsgoto",
+		"somfundo_HalterCanil",
+		"somfundo_HalterAcademiaSuburbio",
+		"somfundo_HalterAcademiaCentro",
+		"somfundo_HalterOlimpiadas"
 	};
 	etapaAtual = 0;
-	historiaCampanha.inicializar(historia, "fundo_teste");
+	historiaCampanha.inicializar(historia, "fundo_teste", sonsDeFundo);
 }
 
 // jogo com história (se ativa), e progresso linear baseado na dificuldade até um final

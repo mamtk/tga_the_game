@@ -14,14 +14,14 @@ void Historia::inicializar(vector<vector<wstring>> historia, string fundo, vecto
 {
 	if (fundo.size() > 0)
 		sprFundo.setSpriteSheet(fundo);
-	if (sprites.size() > 0 && spritesXY.size() > 0) {
+	if (sprites.size() > 0 && spritesXY.size() > 0) {	// isso aqui não vai ser implementado, mas poderia...
 		sprElementos = sprites;
 		elementosXY = spritesXY;
 	}
 	if (sonsDeFundo.size() > 0) {
 		int sizeSonsDeFundo = sonsDeFundo.size();
 		historiaSonsDeFundo.resize(sizeSonsDeFundo);
-		for (int somDeFundo; somDeFundo < sizeSonsDeFundo; somDeFundo++) { // para cada som de fundo
+		for (int somDeFundo = 0; somDeFundo < sizeSonsDeFundo; somDeFundo++) { // para cada som de fundo
 			historiaSonsDeFundo[somDeFundo].setAudio(sonsDeFundo[somDeFundo]);	// carregamos o som correto
 		}
 	}
@@ -71,11 +71,22 @@ void Historia::desenhar(int etapa)
 		for (int linha = 0; linha < totalLinhasEtapaAtual; linha++) {
 			sizeLinhas[linha] = historiaLinhas[etapaAtual][linha].size();
 			textoLinhas[linha].setWstring(historiaLinhas[etapaAtual][linha]);
+			textoLinhas[linha].setAlinhamento(TEXTO_ALINHADO_A_ESQUERDA);
 			textoLinhas[linha].setFonte("fonteNormalSombra");
 			textoLinhas[linha].setCor(255, 255, 255);
 			textoLinhas[linha].ajustarStringParaLargura(970);	// 95% de 1024 = ~970
-			yTotal += textoLinhas[linha].getAltura() * 2;	// um espaço maior facilita a leitura
+			yTotal += textoLinhas[linha].getAltura() * 3;	// um espaço maior facilita a leitura
 			yLinhas.push_back(yTotal);	// adicionar a posição da linha atual no y das linhas
+		}
+		if (historiaSonsDeFundo.size() > etapaAtual) {	// se o som de fundo atual, ou posterior estiver definido
+			// parar todos os outros sons
+			int sizeSonsDeFundo = historiaSonsDeFundo.size();
+			for (int som = 0; som < sizeSonsDeFundo; som++)
+				historiaSonsDeFundo[som].parar();
+
+			if (historiaSonsDeFundo[etapaAtual].getAudio()->estaCarregado()) {	// se tocar() nulo, aparece mensagem de erro, então testamos
+				historiaSonsDeFundo[etapaAtual].tocar();
+			}
 		}
 	}
 	// primeiro de tudo desenhar o fundo

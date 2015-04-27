@@ -32,23 +32,22 @@ void Jogo::inicializar()
 	recursos.carregarFonte("fonteGrande", "UbuntuMono-R.ttf", 27);
 	recursos.carregarFonte("fonteGrandeSombra", "UbuntuMono-B.ttf", 29);
 	// sons
-	/*
-	somfundo_HalterFazenda
-	somfundo_HalterEsgoto
-	somfundo_HalterCanil
-	somfundo_HalterAcademiaSuburbio
-	somfundo_HalterAcademiaCentro
-	somfx_HalterBebeChorando
-	somfx_HalterBolaBilharQuebrando
-	somfx_HalterCavaloDoido
-	somfx_HalterCarroLigando
-	somfx_HalterOvelhas
-	somfx_HalterEnxame
-	somfx_HalterTrovao
-	somfx_HalterEspirro
-	somfx_HalterOssosQuebrando
-	somfx_HalterVozNoRadio
-	*/
+	recursos.carregarAudio("somfundo_HalterFazenda", "audio/somfundo/somfundo_HalterFazenda.ogg");
+	recursos.carregarAudio("somfundo_HalterEsgoto", "audio/somfundo/somfundo_HalterEsgoto.ogg");
+	recursos.carregarAudio("somfundo_HalterCanil", "audio/somfundo/somfundo_HalterCanil.ogg");
+	recursos.carregarAudio("somfundo_HalterAcademiaSuburbio", "audio/somfundo/somfundo_HalterAcademiaSuburbio.ogg");
+	recursos.carregarAudio("somfundo_HalterAcademiaCentro", "audio/somfundo/somfundo_HalterAcademiaCentro.ogg");
+	recursos.carregarAudio("somfundo_HalterOlimpiadas", "audio/somfundo/somfundo_HalterOlimpiadas.ogg");
+	recursos.carregarAudio("somfx_HalterBebeChorando", "audio/somfx/somfx_HalterBebeChorando.ogg");
+	recursos.carregarAudio("somfx_HalterBolaBilharQuebrando", "audio/somfx/somfx_HalterBolaBilharQuebrando.ogg");
+	recursos.carregarAudio("somfx_HalterCavaloDoido", "audio/somfx/somfx_HalterCavaloDoido.ogg");
+	recursos.carregarAudio("somfx_HalterCarroLigando", "audio/somfx/somfx_HalterCarroLigando.ogg");
+	recursos.carregarAudio("somfx_HalterOvelhas", "audio/somfx/somfx_HalterOvelhas.ogg");
+	recursos.carregarAudio("somfx_HalterEnxame", "audio/somfx/somfx_HalterEnxame.ogg");
+	recursos.carregarAudio("somfx_HalterTrovao", "audio/somfx/somfx_HalterTrovao.ogg");
+	recursos.carregarAudio("somfx_HalterEspirro", "audio/somfx/somfx_HalterEspirro.ogg");
+	recursos.carregarAudio("somfx_HalterOssosQuebrando", "audio/somfx/somfx_HalterOssosQuebrando.ogg");
+	recursos.carregarAudio("somfx_HalterVozNoRadio", "audio/somfx/somfx_HalterVozNoRadio.ogg");
 	// sprites
 	recursos.carregarSpriteSheet("fx_Esmaecer", "img/fx/fx_esmaecer.png", 1, 100);
 	recursos.carregarSpriteSheet("fx_Dot", "img/fx/fx_Dot.png", 1, 1);
