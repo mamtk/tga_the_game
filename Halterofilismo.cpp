@@ -279,7 +279,7 @@ void Halterofilismo::preparaCampanha()
 	};
 	vector<vector<vector<string>>> sonsDaHistoria;
 	// sons nas posições (etapa.linha.quando): 0.0.1; 0.2.2; 1.0.2; 1.1.2; 1.3.2; 2.2.2; 3.1.0; 3.3.0; 4.1.2; 4.2.2; 4.4.0; 5.2.1; 5.4.0
-	sonsDaHistoria.resize(5);	// usamos até a etapa 5
+	sonsDaHistoria.resize(6);	// usamos até a etapa 5
 	// etapa 0
 	sonsDaHistoria[0].resize(3);	// usamos até a linha 3
 	sonsDaHistoria[0][0].resize(3);	// usamos sons na a linha 1 da etapa 0
