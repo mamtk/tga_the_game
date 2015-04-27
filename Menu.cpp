@@ -96,7 +96,7 @@ void Menu::inicializar(vector<wstring> vetorOpcoes, wstring cabecalhoParam, stri
 
 	// setamos as coordenadas de acordo com os parametros dados; origemX|Y == -1 significa centro da tela
 	if (espacamentoOpcoesX == 0) {	// não queremos espaçamento no vetor x
-		if (origemY == -1) {
+		if (origemX == -1) {
 			// elemento zero: x = centro da tela
 			for (int i = 0; i < sizeOpcoesMenu; i++) {
 				// x = centro da tela
@@ -257,7 +257,7 @@ void Menu::inicializar(vector<wstring> vetorOpcoes, vector<vector<wstring>> veto
 	xValoresMenu.resize(sizeOpcoesMenu);		// iniciamos a memória, pois já sabemos o que vamos utilizar
 	yValoresMenu.resize(sizeOpcoesMenu);		// iniciamos a memória, pois já sabemos o que vamos utilizar
 	sizeValoresMenu.resize(sizeOpcoesMenu);		// iniciamos a memória, pois já sabemos o que vamos utilizar
-	for (int nivel = 0; nivel < sizeOpcoesMenu; nivel++){
+	for (int nivel = 0; nivel < sizeOpcoesMenu; nivel++){	// para cada opção do menu
 		sizeValoresMenu[nivel] = stringValoresMenu[nivel].size();	// armazenamos o numero de valores de cada nivel
 		sizeValores += sizeValoresMenu[nivel];						// contabilizamos o total de todos os elementos em sizeValores
 
@@ -296,7 +296,7 @@ void Menu::inicializar(vector<wstring> vetorOpcoes, vector<vector<wstring>> veto
 	int sizeValoresAtivo = valoresAtivos.size();	// para evitar acesso a memória não inicializada
 
 	// inicializar objetos Texto para cada um dos valores do menu duplo (antes das coordenadas para poder usar o getAltura/Largura)
-	for (int nivel = 0; nivel < sizeOpcoesMenu; nivel++) {	// vamos destacar um valor por nível
+	for (int nivel = 0; nivel < sizeOpcoesMenu; nivel++) {	// vamos destacar um valor por opção do menu
 		for (int elemento = 0; elemento < sizeValoresMenu[nivel]; elemento++) {
 			textosMenuValores[nivel][elemento].setAlinhamento((TipoAlinhamentoTexto)alinhamento);
 			textosMenuValores[nivel][elemento].setEspacamentoLinhas(espacoLinhas);
@@ -524,7 +524,7 @@ void Menu::desenhar()
 		}
 		break;
 	case duplo:
-		for (int nivel = 0; nivel < sizeOpcoesMenu; nivel++) {	// iteramos pelas opções
+		for (int nivel = 0; nivel < sizeOpcoesMenu; nivel++) {	// iteramos pelas opções/niveis do menu
 			textosMenu[nivel].desenhar(xOpcoesMenu[nivel], yOpcoesMenu[nivel]);		// desenhamos cada opção principal
 
 			if (mouseMoveu && mouseSobre(textosMenu[nivel], xOpcoesMenu[nivel], yOpcoesMenu[nivel])) {	// se o mouse estiver sobre a opção atual

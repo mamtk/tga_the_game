@@ -104,7 +104,7 @@ void Jogo::inicializar()
 	vector<wstring> textoAjuda = { L"blablabla\n\n\nParabéns! Você está pronto para ir para a próxima página!", \
 		L"Halterofilismo\nPressione alternadamente as teclas W,S e Cima,Baixo.\nFaça isso o mais rápido que puder.\n\nO objetivo é completar o levantamento dentro do tempo.\n \
 		No entanto algumas dificuldades podem surgir." };
-	wstring cabecalhoAjuda = L"Aperte D ou -> para prosseguir,\nou aperte [ENTER], [ESPAÇO] ou clique esquerdo para voltar.";
+	wstring cabecalhoAjuda = L"Aperte W ou [CIMA] para prosseguir,\nou aperte [ENTER], [ESPAÇO] ou clique esquerdo para voltar.";
 	// TODO: a classe menu precisa de uma forma de desativar a seleção com o mouse, e de setar a cor do cabeçalho
 	// { 0 } significa que queremos a cor padrão
 	ajuda.inicializar(textoAjuda, cabecalhoAjuda, "", "somfundo_MenuAjuda", { 0 }, 0, -1, -1, 0, 0, { 0, 0, 0, 0 }, { 0 }, { 255, 255, 255, 255 }, false);
