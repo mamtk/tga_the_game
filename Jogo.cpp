@@ -48,6 +48,11 @@ void Jogo::inicializar()
 	recursos.carregarAudio("somfx_Espirro", "audio/somfx/somfx_Espirro.ogg");
 	recursos.carregarAudio("somfx_OssosQuebrando", "audio/somfx/somfx_OssosQuebrando.ogg");
 	recursos.carregarAudio("somfx_VozNoRadio", "audio/somfx/somfx_VozNoRadio.ogg");
+	// menus
+	recursos.carregarAudio("somfundo_MenuPrincipal", "audio/music_02_Menu.ogg");
+	recursos.carregarAudio("somfundo_MenuOpcoes", "audio/music_03_Opcoes.ogg");
+	recursos.carregarAudio("somfundo_MenuAjuda", "audio/music_04_Ajuda.ogg");
+	recursos.carregarAudio("somfundo_MenuCreditos", "audio/music_05_Creditos.ogg");
 	// sprites
 	recursos.carregarSpriteSheet("fx_Esmaecer", "img/fx/fx_esmaecer.png", 1, 100);
 	recursos.carregarSpriteSheet("fx_Dot", "img/fx/fx_Dot.png", 1, 1);
@@ -81,7 +86,7 @@ void Jogo::inicializar()
 	int xCabecalho = janela.getLargura() * .5;
 	int yCabecalho = janela.getAltura() * .97;
 	// algumas funções não podem ser executadas no construtor daquela classe (pois jogo ainda possui tipo incompleto), por isso inicializamos aqui
-	principal.inicializar(opcoesPrincipais, L"Algoritmos e C++ (2015/1) - Professor Pinho Marson", fundosPrincipal[fundoMaisBom], { xCabecalho , yCabecalho });
+	principal.inicializar(opcoesPrincipais, L"Algoritmos e C++ (2015/1) - Professor Pinho Marson", fundosPrincipal[fundoMaisBom], "somfundo_MenuPrincipal", { xCabecalho, yCabecalho });
 
 	// inicializar menu de seleção de tipo de jogo
 	vector<wstring> textoSecundario = { L"Halterofilismo (campanha)", L"Halterofilismo (sandbox)", \
@@ -93,7 +98,7 @@ void Jogo::inicializar()
 	vector<wstring> opcoesCreditos = { L"TGA - The Game é um jogo sério, muito sério;\n mas não deve ser levado muito a sério, \
 	já que é um jogo.\n\nCriado por Jean Lucca, Mattheus Menezes, Morris.\nSão Leopoldo, abril de 2015." };
 	wstring cabecalhoCreditos = L"Aperte [ENTER], [ESPAÇO] ou clique com o botão esquerdo para voltar.";
-	creditos.inicializar(opcoesCreditos, cabecalhoCreditos);
+	creditos.inicializar(opcoesCreditos, cabecalhoCreditos, "", "somfundo_MenuCreditos");
 	
 	// inicializar menu de ajuda
 	vector<wstring> textoAjuda = { L"blablabla\n\n\nParabéns! Você está pronto para ir para a próxima página!", \
@@ -102,7 +107,7 @@ void Jogo::inicializar()
 	wstring cabecalhoAjuda = L"Aperte D ou -> para prosseguir,\nou aperte [ENTER], [ESPAÇO] ou clique esquerdo para voltar.";
 	// TODO: a classe menu precisa de uma forma de desativar a seleção com o mouse, e de setar a cor do cabeçalho
 	// { 0 } significa que queremos a cor padrão
-	ajuda.inicializar(textoAjuda, cabecalhoAjuda, "", { 0 }, 0, -1, -1, 0, 0, { 0, 0, 0, 0 }, { 0 }, { 255, 255, 255, 255 }, false);
+	ajuda.inicializar(textoAjuda, cabecalhoAjuda, "", "somfundo_MenuAjuda", { 0 }, 0, -1, -1, 0, 0, { 0, 0, 0, 0 }, { 0 }, { 255, 255, 255, 255 }, false);
 
 	// inicializar menu de opções
 	wstring textoCabecalhoOpcoes = L"Pressione [CIMA] ou [BAIXO], ou [W] ou [S], ou passe o mouse, para mudar a opção destacada.\n\
@@ -141,7 +146,7 @@ void Jogo::inicializar()
 			break;
 		}
 	}
-	opcoes.inicializar(textoOpcoes, stringsValores, textoCabecalhoOpcoes, "fundo_MenuOpcoes", { 0 }, 0, { 0 }, -1, -1, 0, 27, 550, -1, 21);
+	opcoes.inicializar(textoOpcoes, stringsValores, textoCabecalhoOpcoes, "fundo_MenuOpcoes", "somfundo_MenuOpcoes", { 0 }, 0, { 0 }, -1, -1, 0, 27, 550, -1, 21);
 
 	//********* JOGOS
 }
@@ -160,6 +165,9 @@ void Jogo::executar()
 	// antes de iniciar o jogo fazemos nossa intro estilosa
 	//	detalhe que isso tá errado, era pra ser orientado a objeto, mas quem ia explicar as refs?
 	// TODO: abrir menu ao apertar esc (Continuar Jogo, Voltar ao Menu Principal, Fechar Jogo), talvez permitir mudar opções durante o jogo tb
+
+	// começar a tocar música do menu principal
+	principal.tocarMusica();
 	while(!teclado.soltou[TECLA_ESC] && !aplicacao.sair)
 	{
 		uniIniciarFrame();
@@ -194,6 +202,7 @@ void Jogo::gerenciarEstado()
 				principal.resetarMenu();
 				opcoes.resetarMenu();
 				estado = menuPrincipal;
+				principal.tocarMusica();
 			}
 			break;
 		case menuAjuda:
@@ -224,33 +233,38 @@ void Jogo::gerenciarEstado()
 void Jogo::gerenciarMenuPrincipal()
 {
 	int opcaoEscolhida = principal.getOpcao(); // ober opção escolhida
+	// resetar estado do menu principal (se não ele não desenha)
+	principal.resetarMenu();
 
 	// mudar estado do jogo, ou sair
 	switch (opcaoEscolhida) {
 	case escolhaJogar:
 		estado = menuJogos;
+		secundario.tocarMusica();
 		break;
 	case escolhaAjuda:
 		estado = menuAjuda;
+		ajuda.tocarMusica();
 		break;
 	case escolhaOpcoes:
 		estado = menuOpcoes;
+		opcoes.tocarMusica();
 		break;
 	case escolhaCreditos:
 		estado = menuCreditos;
+		creditos.tocarMusica();
 		break;
 	case escolhaSair:
 		aplicacao.sair = true;
 		break;
 	}
-
-	// resetar estado do menu principal (se não ele não desenha)
-	principal.resetarMenu();
 }
 
 void Jogo::gerenciarMenuSecundario()
 {
 	int opcaoEscolhida = secundario.getOpcao(); // ober opção escolhida
+	// resetar estado do menu principal (se não ele não desenha mais)
+	principal.resetarMenu();
 
 	// mudar estado do jogo, ou sair
 	switch (opcaoEscolhida) {
@@ -264,11 +278,10 @@ void Jogo::gerenciarMenuSecundario()
 		break;
 	default:
 		estado = menuPrincipal;
+		principal.tocarMusica();
 		break;
 	}
 
-	// resetar estado do menu principal (se não ele não desenha mais)
-	principal.resetarMenu();
 	// resetar menu secundário (se não ele não desenha mais)
 	secundario.resetarMenu();
 }

@@ -326,7 +326,7 @@ void Halterofilismo::preparaCampanha()
 void Halterofilismo::campanha()
 {
 	historiaCampanha.desenhar(etapaAtual);
-	if (historiaCampanha.terminouEtapa())
+	if (historiaCampanha.terminouEtapa() && teclado.soltou[TECLA_ENTER])
 		etapaAtual++;
 }
 

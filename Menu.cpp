@@ -16,21 +16,28 @@ Menu::Menu()
 
 // inicializar menu único (fazemos as coisas aqui por que setFonte exige um tipo completo para a classe Jogo)
 // TODO: versão com origemX|Y em vetores, verificar tamanho, e usar regras de espaçamento pras opções que restarem
-void Menu::inicializar(vector<wstring> vetorOpcoes, wstring cabecalhoParam, string fundilho, vector<int> cabecalhoXY, int selecaoPadrao, int origemX, int origemY, \
-	int xEspacamento, int yEspacamento, vector<int> corNormalParam, vector<int> corDestaqueParam, vector<int> corCabecalhoParam, bool mouse, string fonte, \
-	float espacoLinhas, int alinhamento)
+void Menu::inicializar(vector<wstring> vetorOpcoes, wstring cabecalhoParam, string fundilho, string som, vector<int> cabecalhoXY, int selecaoPadrao, int origemX, \
+	int origemY, int xEspacamento, int yEspacamento, vector<int> corNormalParam, vector<int> corDestaqueParam, vector<int> corCabecalhoParam, bool mouse, \
+	string fonte, float espacoLinhas, int alinhamento)
 {
 	// sprite para efeito esmaecer dessa calsse
 	fundoEsmaecer.setSpriteSheet("fx_Esmaecer");
-	fundo.setSpriteSheet(fundilho);
 
 	// inicializar menu unico
 	tipoMenu = unico;
 	xCentral = janela.getLargura() * .5;
 	yCentral = janela.getAltura() * .5;
+	if (fundilho.size() > 0) {
+		possuiFundo = true;
+		fundo.setSpriteSheet(fundilho);
+	}
 	stringsOpcoesMenu = vetorOpcoes;
 	espacamentoOpcoesX = xEspacamento;
 	espacamentoOpcoesY = yEspacamento;
+	if (som.size() > 0) {
+		possuiSomFundo = true;
+		somFundo.setAudio(som);
+	}
 	if (corNormalParam.size() == 4)			// verificar se cor destaque possui 4 elementos
 		corNormal = corNormalParam;
 	else
@@ -168,11 +175,11 @@ void Menu::inicializar(vector<wstring> vetorOpcoes, wstring cabecalhoParam, stri
 
 // inicializar menu duplos (fazemos as coisas aqui por que setFonte exige um tipo completo para a classe Jogo)
 // TODO: versão com origemX|Y em vetores, verificar tamanho, e usar regras de espaçamento pras opções que restarem
-void Menu::inicializar(vector<wstring> vetorOpcoes, vector<vector<wstring>> vetorValores, wstring cabecalhoParam, string fundilho, vector<int> cabecalhoXY, \
-	int selecaoPadrao, vector<int> valoresPadrao, int origemX, int origemY, int xEspacamento, int yEspacamento, int origemXValores, int origemYValores, \
-	int xEspacamentoValores, int yEspacamentoValores, int xEspacamentoValoresOpcoes, int yEspacamentoValoresOpcoes, vector<int> corNormalParam, \
-	vector<int> corDestaqueParam, vector<int> corNormalValoresParam, vector<int> corDestaqueValoresParam, vector<int> corCabecalhoParam, bool mouse,\
-	string fonte, float espacoLinhas, int alinhamento)
+void Menu::inicializar(vector<wstring> vetorOpcoes, vector<vector<wstring>> vetorValores, wstring cabecalhoParam, string fundilho, string som, \
+	vector<int> cabecalhoXY, int selecaoPadrao, vector<int> valoresPadrao, int origemX, int origemY, int xEspacamento, int yEspacamento, \
+	int origemXValores, int origemYValores, int xEspacamentoValores, int yEspacamentoValores, int xEspacamentoValoresOpcoes, \
+	int yEspacamentoValoresOpcoes, vector<int> corNormalParam, vector<int> corDestaqueParam, vector<int> corNormalValoresParam, \
+	vector<int> corDestaqueValoresParam, vector<int> corCabecalhoParam, bool mouse,	string fonte, float espacoLinhas, int alinhamento)
 {
 	// sprite para efeito esmaecer dessa calsse
 	//fundo.setSpriteSheet(fundilho);
@@ -182,7 +189,10 @@ void Menu::inicializar(vector<wstring> vetorOpcoes, vector<vector<wstring>> veto
 	tipoMenu = duplo;
 	xCentral = janela.getLargura() * .5;
 	yCentral = janela.getAltura() * .5;
-	fundo.setSpriteSheet(fundilho);
+	if (fundilho.size() > 0) {
+		possuiFundo = true;
+		fundo.setSpriteSheet(fundilho);
+	}
 	stringsOpcoesMenu = vetorOpcoes;
 	stringValoresMenu = vetorValores;
 	espacamentoOpcoesX = xEspacamento;
@@ -192,6 +202,10 @@ void Menu::inicializar(vector<wstring> vetorOpcoes, vector<vector<wstring>> veto
 	espacamentoValoresOpcoesX = xEspacamentoValoresOpcoes;
 	espacamentoValoresOpcoesY = yEspacamentoValoresOpcoes;
 
+	if (som.size() > 0) {
+		possuiSomFundo = true;
+		somFundo.setAudio(som);
+	}
 	if (corNormalParam.size() == 4)			// verificar se cor destaque das opcoes possui 4 elementos
 		corNormal = corNormalParam;
 	else
@@ -471,7 +485,8 @@ void Menu::desenhar()
 	uniDepurar("X[ativo]", xOpcoesMenu[ativo]);
 
 	// primeiro desenhar o fundo (antes de tudo)
-	fundo.desenhar(xCentral, yCentral);
+	if(possuiFundo)
+		fundo.desenhar(xCentral, yCentral);
 
 	if (possuiCabecalho)	// aqui desenhamos o cabecalho, se existir
 		cabecalho.desenhar(xyCabecalho[0], xyCabecalho[1]);
@@ -622,6 +637,8 @@ void Menu::resetarMenu()
 	esmaecer(ativo);
 	ativo = ativoPadrao;
 	destacar(ativo);
+	if (possuiSomFundo)
+		somFundo.parar();
 }
 
 /* alteramos o estadoInterno ou aplicacao.sair;
@@ -677,4 +694,12 @@ bool Menu::mouseSeMoveu()	// para não bagunçar desnecessariamente o menu
 	}
 
 	return moveu;
+}
+
+void Menu::tocarMusica()
+{
+	if (possuiSomFundo && !somFundo.estaTocando()) {
+		bool repetir = true;
+		somFundo.tocar(repetir);
+	}
 }

@@ -9,6 +9,7 @@ class Menu
 	enum TipoMenu { unico, duplo };
 
 	Sprite fundo, fundoEsmaecer;
+	Som somFundo;
 
 	//vector<wstring> opcoesPrincipais;			// Sabe como é, eu realmente gosto de acentos, mas quem é que vai explicar isso aqui depois?
 	vector<Texto> textosMenu;					// objetos Texto das opções do menu
@@ -68,6 +69,8 @@ class Menu
 	bool menuDuplo = false;					// para não chamar desenhar() sem necessidade
 	bool mouseAtivo = true;
 	bool mouseMoveu = false;
+	bool possuiSomFundo = false;
+	bool possuiFundo = false;
 
 	// tantos vais não-genéricos poderiam ser evitados, mas quem explicaria tal coisa?
 	void vaiOpcao();
@@ -91,20 +94,21 @@ public:
 	~Menu();
 	void desenhar();
 	// inicializar para menu único iniciado de uma origem
-	void inicializar(vector<wstring> vetorOpcoes, wstring cabecalhoParam = L"", string fundilho = "img/fundos/fundo_MenuPrincipal01.png", vector<int> cabecalhoXY = { 0 }, \
-		int selecaoPadrao = 0, int origemX = -1, int origemY = -1, int xEspacamento = 0, int yEspacamento = 31, vector<int> corNormalParam = { 0 }, \
-		vector<int> corDestaqueParam = { 0 }, vector<int> corCabecalhoParam = { 0 }, bool mouse = true, string fonte = "fonteGrandeSombra", float espacoLinhas = 1.5f, \
-		int alinhamento = TEXTO_CENTRALIZADO);
+	void inicializar(vector<wstring> vetorOpcoes, wstring cabecalhoParam = L"", string fundilho = "fundo_MenuPrincipal01", string som = "", \
+		vector<int> cabecalhoXY = { 0 }, int selecaoPadrao = 0, int origemX = -1, int origemY = -1, int xEspacamento = 0, int yEspacamento = 31, \
+		vector<int> corNormalParam = { 0 }, vector<int> corDestaqueParam = { 0 }, vector<int> corCabecalhoParam = { 0 }, bool mouse = true, \
+		string fonte = "fonteGrandeSombra", float espacoLinhas = 1.5f, int alinhamento = TEXTO_CENTRALIZADO);
 	// inicializar (sobrecarregada/overloaded) para menu único com coordenadas x e y para cada elemento
 	// inicializar (sobrecarregada/overloaded) para menu duplo desenhado de uma origem
-	void inicializar(vector<wstring> vetorOpcoes, vector<vector<wstring>> vetorValores, wstring cabecalhoParam = L"", string fundilho = "img/fundos/fundo_MenuPrincipal01.png",\
-		vector<int> cabecalhoXY = { 0 }, int selecaoPadrao = 0, vector<int> valoresPadrao = { 0 }, int origemX = -1, int origemY = -1, int xEspacamento = 0, \
-		int yEspacamento = 27, int origemXValores = -1, int origemYValores = -1, int xEspacamentoValores = 11, int yEspacamentoValores = 0,\
+	void inicializar(vector<wstring> vetorOpcoes, vector<vector<wstring>> vetorValores, wstring cabecalhoParam = L"", string fundilho = "fundo_MenuPrincipal01", \
+		string som = "", vector<int> cabecalhoXY = { 0 }, int selecaoPadrao = 0, vector<int> valoresPadrao = { 0 }, int origemX = -1, int origemY = -1, \
+		int xEspacamento = 0, int yEspacamento = 27, int origemXValores = -1, int origemYValores = -1, int xEspacamentoValores = 11, int yEspacamentoValores = 0,\
 		int xEspacamentoValoresOpcoes = 1, int yEspacamentoValoresOpcoes = 0, vector<int> corNormalParam = { 0 }, vector<int> corDestaqueParam = { 0 }, \
 		vector<int> corNormalValoresParam = { 0 }, vector<int> corDestaqueValoresParam = { 0 }, vector<int> corCabecalhoParam = { 0 }, bool mouse = true, \
 		string fonte = "fonteNormal", float espacoLinhas = 1.5f, int alinhamento = TEXTO_CENTRALIZADO);
 	// inicializar (sobrecarregada/overloaded) para menu duplo com coordenadas x e y para cada elemento
-	void resetarMenu();
+	void resetarMenu();	// também para somFundo
+	void tocarMusica();
 
 	vector<int> getValores();
 	int getOpcao();
