@@ -32,12 +32,12 @@ void Jogo::inicializar()
 	recursos.carregarFonte("fonteGrande", "UbuntuMono-R.ttf", 27);
 	recursos.carregarFonte("fonteGrandeSombra", "UbuntuMono-B.ttf", 29);
 	// sons
-	recursos.carregarAudio("somfundo_HalterFazenda", "audio/somfundo/somfundo_HalterFazenda.ogg");
+	/*recursos.carregarAudio("somfundo_HalterFazenda", "audio/somfundo/somfundo_HalterFazenda.ogg");
 	recursos.carregarAudio("somfundo_HalterEsgoto", "audio/somfundo/somfundo_HalterEsgoto.ogg");
 	recursos.carregarAudio("somfundo_HalterCanil", "audio/somfundo/somfundo_HalterCanil.ogg");
 	recursos.carregarAudio("somfundo_HalterAcademiaSuburbio", "audio/somfundo/somfundo_HalterAcademiaSuburbio.ogg");
 	recursos.carregarAudio("somfundo_HalterAcademiaCentro", "audio/somfundo/somfundo_HalterAcademiaCentro.ogg");
-	recursos.carregarAudio("somfundo_HalterOlimpiadas", "audio/somfundo/somfundo_HalterOlimpiadas.ogg");
+	recursos.carregarAudio("somfundo_HalterOlimpiadas", "audio/somfundo/somfundo_HalterOlimpiadas.ogg");*/
 	recursos.carregarAudio("somfx_BebeChorando", "audio/somfx/somfx_BebeChorando.ogg");
 	recursos.carregarAudio("somfx_GrunhidosBolaBilhar", "audio/somfx/somfx_GrunhidosBolaBilhar.ogg");
 	recursos.carregarAudio("somfx_CavaloDoido", "audio/somfx/somfx_CavaloDoido.ogg");
@@ -49,10 +49,10 @@ void Jogo::inicializar()
 	recursos.carregarAudio("somfx_OssosQuebrando", "audio/somfx/somfx_OssosQuebrando.ogg");
 	recursos.carregarAudio("somfx_VozNoRadio", "audio/somfx/somfx_VozNoRadio.ogg");
 	// menus
-	recursos.carregarAudio("somfundo_MenuPrincipal", "audio/music_02_Menu.ogg");
+	/*recursos.carregarAudio("somfundo_MenuPrincipal", "audio/music_02_Menu.ogg");
 	recursos.carregarAudio("somfundo_MenuOpcoes", "audio/music_03_Opcoes.ogg");
 	recursos.carregarAudio("somfundo_MenuAjuda", "audio/music_04_Ajuda.ogg");
-	recursos.carregarAudio("somfundo_MenuCreditos", "audio/music_05_Creditos.ogg");
+	recursos.carregarAudio("somfundo_MenuCreditos", "audio/music_05_Creditos.ogg");*/
 	// sprites
 	recursos.carregarSpriteSheet("fx_Esmaecer", "img/fx/fx_esmaecer.png", 1, 100);
 	recursos.carregarSpriteSheet("fx_Dot", "img/fx/fx_Dot.png", 1, 1);
@@ -67,6 +67,7 @@ void Jogo::inicializar()
 	recursos.carregarSpriteSheet("fundo_MenuOpcoes", "img/fundos/fundo_MenuOpcoes.png");
 	recursos.carregarSpriteSheet("fundo_MenuAjuda", "img/fundos/fundo_MenuAjuda.png");
 	recursos.carregarSpriteSheet("fundo_MenuCreditos", "img/fundos/fundo_MenuCreditos.png");
+	recursos.carregarSpriteSheet("fundo_HalterMenuSandbox", "img/fundos/fundo_HalterMenuSandbox.png");
 	// halterofilismo
 	recursos.carregarSpriteSheet("fundo_Halter01", "img/fundos/halter_01.png");
 	recursos.carregarSpriteSheet("fx_Letras", "img/fx/fx_Letras.png", 1, 30);
@@ -79,16 +80,24 @@ void Jogo::inicializar()
 	recursos.carregarSpriteSheet("fundo_HalterCanil", "img/fundos/fundo_HalterCanil.png");
 	recursos.carregarSpriteSheet("fundo_HalterAcademiaSuburbio", "img/fundos/fundo_HalterAcademiaSuburbio.png");
 	recursos.carregarSpriteSheet("fundo_HalterAcademiaCentro", "img/fundos/fundo_HalterAcademiaCentro.png");
-	recursos.carregarSpriteSheet("fundo_HalterOlimpiadas", "img/fundos/fundo_HalterOlimpiadas.png");
+	recursos.carregarSpriteSheet("fundo_HalterEtapaFazenda", "img/fundos/fundo_HalterEtapaFazenda.png");
+	recursos.carregarSpriteSheet("fundo_HalterEtapaEsgoto", "img/fundos/fundo_HalterEtapaEsgoto.png");
+	recursos.carregarSpriteSheet("fundo_HalterEtapaCanil", "img/fundos/fundo_HalterEtapaCanil.png");
+	recursos.carregarSpriteSheet("fundo_HalterEtapaAcademiaSub", "img/fundos/fundo_HalterEtapaAcademiaSub.png");
+	recursos.carregarSpriteSheet("fundo_HalterEtapaAcademiaCentro", "img/fundos/fundo_HalterEtapaAcademiaCentro.png");
+	recursos.carregarSpriteSheet("fundo_HalterEtapaConclusao", "img/fundos/fundo_HalterEtapaConclusao.png");
 	//recursos.carregarSpriteSheet("per_HalterPomba", "img/per/per_HalterPomba.png");
 	recursos.carregarSpriteSheet("fx_HalterBarra", "img/fx/fx_HalterBar.png", 1, 11);
+
+	int xCentro = janela.getLargura() * .5;
+	int yCentro = janela.getAltura() * .5;
 
 	//********* MENUS
 	// inicializar menu principal
 	vector<string> fundosPrincipal = { "fundo_MenuPrincipal01", "fundo_MenuPrincipal02", "fundo_MenuPrincipal03", /*"fundo_MenuPrincipal04",*/ "fundo_MenuPrincipal05" };
 	int fundoMaisBom = rand() % fundosPrincipal.size();
 	vector<wstring> opcoesPrincipais = { L"Iniciar Jogo", L"Opções", L"Ajuda", L"Créditos", L"Sair" };
-	int xCabecalho = janela.getLargura() * .5;
+	int xCabecalho = xCentro;
 	int yCabecalho = janela.getAltura() * .97;
 	// algumas funções não podem ser executadas no construtor daquela classe (pois jogo ainda possui tipo incompleto), por isso inicializamos aqui
 	principal.inicializar(opcoesPrincipais, L"Algoritmos e C++ (2015/1) - Professor Pinho Marson", fundosPrincipal[fundoMaisBom], "somfundo_MenuPrincipal", { xCabecalho, yCabecalho });
@@ -124,7 +133,7 @@ void Jogo::inicializar()
 		sineiro = que toca os sinos,\n\
 		assadeiro = próprio para ser assado"
 	};
-	wstring cabecalhoAjuda = L"Aperte W ou [CIMA] para prosseguir,\nou aperte [ENTER], [ESPAÇO] ou clique esquerdo para voltar.";
+	wstring cabecalhoAjuda = L"Aperte S ou [BAIXO] para prosseguir,\nou aperte [ENTER], [ESPAÇO] ou clique esquerdo para voltar.";
 	// TODO: a classe menu precisa de uma forma de desativar a seleção com o mouse, e de setar a cor do cabeçalho
 	// { 0 } significa que queremos a cor padrão
 	ajuda.inicializar(textoAjuda, cabecalhoAjuda, "fundo_MenuAjuda", "somfundo_MenuAjuda", { 0 }, 0, -1, -1, 0, 0, { 0, 0, 0, 0 }, { 51, 0, 151, 255 }, { 51, 255, 177, 255 }, false);
@@ -134,7 +143,7 @@ void Jogo::inicializar()
 	Pressione <- e ->, ou passe o mouse para alterar os valores da opção destacada.\n\
 	\nPressione [ESPAÇO] para voltar. Todas os valores destacades serão armazenados.";
 	vector<wstring> textoOpcoes = { L"Nível de dificuldade:", // [0]
-		L"Desativar eventos aleatórios:",	// [1]
+		L"Desativar pragas aladas:",	// [1]
 		L"Desativar desafios:", // [2]
 		L"Desativar som:", // [3]
 		L"Desativar musicas:", // [4]
@@ -176,6 +185,20 @@ void Jogo::inicializar()
 	vector<wstring> textoInstantaneo = { L"Continuar o jogo", L"Sair do jogo" };
 	instantaneo.inicializar(textoInstantaneo, L"", "");
 	instantaneo.setEsmaecer(true);
+
+	// menus de modo jogo
+	wstring textoCabecalhoSandbox = L"Escolha o mapa desejado\n\nPressione [CIMA] ou [BAIXO] ou passe o mouse para mudar a seleção.\n\
+											\nPressione [ENTER] para iniciar o jogo com a opção destacada, ou voltar para voltar ao menu anterior.";
+	vector<wstring> textoOpcoesSandbox = { L"Aleatório", // [0]
+		L"Fazenda",	// [1]
+		L"Esgoto", // [2]
+		L"Canil", // [3]
+		L"Academia no Suburbio", // [4]
+		L"Academia no Centro", // [5]
+		L"Olimpiadas", // [6]
+		L"Voltar", // [7]
+	};
+	menuSandbox.inicializar(textoOpcoesSandbox, textoCabecalhoSandbox, "fundo_HalterMenuSandbox", "somfundo_MenuPrincipal", { xCentro, (int)(yCentro*.3) }, 0, xCentro, (int)(yCentro), 0, 31, {}, {}, {}, true, "fonteNormalSombra");
 }
 
 void Jogo::finalizar()
@@ -268,9 +291,11 @@ void Jogo::gerenciarEstado()
 				estado = menuPrincipal;
 			}
 			break;
-		case menuHalterofilismoCampanha:
-			break;
 		case menuHalterofilismoSandbox:
+			menuSandbox.desenhar();
+			if (menuSandbox.finalizado()) {	// verificar se o jogador decidiu voltar
+				gerenciarMenuSandbox();
+			}
 			break;
 		case jogoHalterofilismoCampanha:
 			halterofilia.campanha();
@@ -322,12 +347,10 @@ void Jogo::gerenciarMenuSecundario()
 	case escolhaHalterCampanha:
 		estado = jogoHalterofilismoCampanha;
 		halterofilia.inicializar(estado, opcoesDeJogo);
-		halterofilia.preparaCampanha();
+		halterofilia.prepararCampanha();
 		break;
 	case escolhaHalterSandbox:
-		estado = jogoHalterofilismoSandbox;
-		halterofilia.inicializar(estado, opcoesDeJogo);
-		halterofilia.preparaSandbox();
+		estado = menuHalterofilismoSandbox;
 		break;
 	default:
 		estado = menuPrincipal;
@@ -354,6 +377,27 @@ void Jogo::gerenciarMenuInstantaneo()
 		break;
 	case escolhaSairDoJogo:
 		aplicacao.sair = true;	// facilidade da libUnicornio
+		break;
+	}
+}
+
+void Jogo::gerenciarMenuSandbox()
+{
+	int opcaoEscolhida = menuSandbox.getOpcao(); // ober opção escolhida
+	// resetar estado do menu principal (se não ele não desenha)
+	menuSandbox.resetarMenu();
+
+	// mudar estado do jogo, ou sair
+	switch (opcaoEscolhida) {
+	case escolhaVoltar:	// caso a escolha seja voltar ao menu de jogos
+		estado = menuJogos;
+		secundario.tocarMusica();
+		break;
+	default:
+		estado = jogoHalterofilismoSandbox;
+		menuSandbox.resetarMenu();
+		halterofilia.inicializar(estado, opcoesDeJogo);
+		halterofilia.prepararSandbox(opcaoEscolhida);
 		break;
 	}
 }

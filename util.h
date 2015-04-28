@@ -1,5 +1,4 @@
 ﻿#pragma once
-#include "libUnicornio.h"
 
 // função módulo matemático (≠ resto da divisão)
 int modulo(int a, int b)

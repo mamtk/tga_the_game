@@ -16,22 +16,41 @@ Halterofilismo::~Halterofilismo()
 void Halterofilismo::inicializar(int estado, vector<int> valoresOpcoesDeJogo)
 {
 	tipo = levantamentoNormal;
+	etapaAtual = 0;
 	estadoDoJogo = (EstadoDoJogo)estado;
 	opcoesDeJogo = valoresOpcoesDeJogo;
+	xCentro = janela.getLargura() * .5;
+	yCentro = janela.getAltura() * .5;
 	// começamos com a barra no centro da tela
-	xBarra = xCentro = janela.getLargura() * .5;
-	yBarra = yCentro = janela.getAltura() * .5;
 	xyBarraProgresso = { xCentro - 450, yCentro - 100 };
 
-	// inicializar sprites
+	// inicializar vetor com o nome das sprites fundo
+	fundos = { "fundo_HalterEtapaFazenda",
+		"fundo_HalterEtapaEsgoto",
+		"fundo_HalterEtapaCanil",
+		"fundo_HalterEtapaAcademiaSub",
+		"fundo_HalterEtapaAcademiaCentro",
+		"fundo_HalterEtapaConclusao"
+	};
+	// setar para o fundo de testes
 	fundo.setSpriteSheet("fundo_Halter01");
 	if (opcoesDeJogo[valorSexo] == protagonistaHomem)
 		protagonista.setSpriteSheet("per_HalterHomem0");
 	else
 		protagonista.setSpriteSheet("per_HalterMulher");
 
+	xyFinaisSpritesPragas.resize(2);	// alocamos a memória que vamos utilizar
+	xyFinaisSpritesPragas[protagonistaHomem] = { { 99, 239, 207, 239 }, { 104, 201, 209, 205 }, { 111, 150, 214, 159 }, { 104, 152, 206, 161 },
+	{ 101, 153, 203, 158 }, { 95, 165, 187, 173 }, { 102, 126, 202, 141 }, { 99, 90, 196, 104 }, { 92, 60, 199, 81 }, { 88, 73, 198, 84 },
+	{ 84, 47, 195, 60 }, { 92, 30, 196, 43 }, { 107, 71, 206, 83 }
+	};
+	xyFinaisSpritesPragas[protagonistaMulher] = { { 85, 239, 201, 237 }, { 87, 230, 203, 227 }, { 86, 217, 196, 217 }, { 89, 208, 202, 208 },
+	{ 87, 191, 199, 192 }, { 85, 176, 196, 179 }, { 91, 154, 198, 158 }, { 96, 137, 201, 142 }, { 94, 132, 199, 139 }, { 87, 152, 198, 157 },
+	{ 85, 170, 193, 176 }, { 74, 69, 190, 85 }, { 59, 52, 173, 30 }, { 60, 57, 175, 74 }, { 73, 24, 218, 47 }
+	};
+
 	protagonista.setAnimacao(0);
-	//protagonista.setEscala(5, 5);
+	protagonista.setEscala(1.5, 1.5);
 	// sprites texto (códix assoviaris)
 	// TODO: determinar dificuldades corretamente: velAnimBarra, taxaDificuldade, impacto das pragas (taxa ou vel ou ambos?)
 	protagonista.setVelocidadeAnimacao(7);
@@ -55,6 +74,14 @@ void Halterofilismo::inicializar(int estado, vector<int> valoresOpcoesDeJogo)
 	xyLinhasObjetivo[8] = { xBase, yBase - 322 };
 	xyLinhasObjetivo[9] = { xBase, yBase - 362 };
 	xyLinhasObjetivo[10] = { xBase, yBase - 400 };
+	// inicializar valores xy de posição do protagonista nos fundos
+	coordenadasXY.resize(6);			// inicializar a memória que vamos utilizar
+	coordenadasXY[0] = { 685, 331 };	// fazenda; todos os valores de acordo com o GIMP
+	coordenadasXY[1] = { 745, 430 };	// esgoto
+	coordenadasXY[2] = { 750, 400 };	// canil
+	coordenadasXY[3] = { 570, 435 };	// academia no suburbio
+	coordenadasXY[4] = { 711, 309 };	// academia no centro
+	coordenadasXY[5] = { 507, 475 };	// oimpíadas
 
 	// inicializar objetos texto
 	// temporizador
@@ -108,48 +135,8 @@ void Halterofilismo::inicializar(int estado, vector<int> valoresOpcoesDeJogo)
 	fatorDificuldade = 1000 / dificuldade;
 
 	// inicializar menus
-	// sandbox
-	wstring textoCabecalhoOpcoes = L"Pressione [CIMA] ou [BAIXO], ou [W] ou [S], ou passe o mouse, para mudar a opção destacada.\n\
-		Pressione <- e ->, ou passe o mouse para alterar os valores da opção destacada.\n\
-		\nPressione [ESPAÇO] para iniciar o jogo. Todas os valores destacades serão usados.";
-	vector<wstring> textoOpcoes = { L"Nível de dificuldade:", // [0]
-		L"Desativar eventos aleatórios:",	// [1]
-		L"Desativar desafios:", // [2]
-		L"Desativar som:", // [3]
-		L"Desativar musicas:", // [4]
-		L"Pular história:", // [5]
-	};
-	int sizeTextoOpcoes = textoOpcoes.size();
-	vector<vector<wstring>> stringsValores;
-	stringsValores.resize(sizeTextoOpcoes);
-	// inicializar valores para cada nível de opção
-	for (int nivel = 0; nivel < sizeTextoOpcoes; nivel++) {	// aqui setamos os valores possíveis para cada uma das opções (níveis)
-		switch (nivel) { // talvez fique mais fácil de entender se eu usar um loop for (embora fique mais lento, só roda uma vez)
-		case 0: // variáveis possíveis para a opção [0] do textoOpcoes
-			stringsValores[nivel] = { L"Normal", L"Difícil", L"Impossível", L"Impossível?" }; // opções para [0] (dificuldade)
-			break;
-		case 1: // variáveis possíveis para a opção [1] do textoOpcoes
-			stringsValores[nivel] = { L"Não", L"Sim" }; // opções para [1] (desativar eventos pseudoaleatórios)
-			break;
-		case 2: // variáveis possíveis para a opção [2] do textoOpcoes
-			stringsValores[nivel] = { L"Não", L"Sim" }; // opções para [2] (desativar fatality)
-			break;
-		case 3: // variáveis possíveis para a opção [2] do textoOpcoes
-			stringsValores[nivel] = { L"Não", L"Sim" }; // opções para [3] (desativar som)
-			break;
-		case 4: // variáveis possíveis para a opção [2] do textoOpcoes
-			stringsValores[nivel] = { L"Não", L"Sim" }; // opções para [4] (desativar musicas)
-			break;
-		case 5: // variáveis possíveis para a opção [2] do textoOpcoes
-			stringsValores[nivel] = { L"Não", L"Sim" }; // opções para [5] (pular história)
-			break;
-		}
-	}
-	menuSandbox.inicializar(textoOpcoes, stringsValores, textoCabecalhoOpcoes, "fundo_MenuOpcoes", "somfundo_MenuOpcoes", { 0 }, 0, { 0 }, -1, -1, 0, 27, 550, -1, 21, 0, 1, 0, { 91, 101, 11, 255 },
-	{ 255, 51, 101, 255 }, { 91, 101, 11, 255 }, { 255, 51, 101, 255 }, { 255, 51, 101, 255 }, true, "fonteNormalSombra");
-	//menuCampanha.inicializar();
 	// vitoria
-	vector<wstring> vitoriaFatalityInativoStr = { L"Prosseguir", L"Repetir", L"Voltar ao menu", L"Sair do jogo" };
+	/*vector<wstring> vitoriaFatalityInativoStr = { L"Prosseguir", L"Repetir", L"Voltar ao menu", L"Sair do jogo" };
 	vector<wstring> vitoriaFatalityAtivoStr = { L"Prosseguir", L"Tentar desafio", L"Repetir", L"Voltar ao menu", L"Sair do jogo" };
 	vitoriaFatalityAtivo.inicializar(vitoriaFatalityInativoStr);
 	vitoriaFatalityInativo.inicializar(vitoriaFatalityAtivoStr);
@@ -157,7 +144,7 @@ void Halterofilismo::inicializar(int estado, vector<int> valoresOpcoesDeJogo)
 	vector<wstring> derrotaStr = { L"Repetir", L"Reiniciar", L"Voltar ao menu", L"Sair do jogo" };	// reiniciar volta para o preparar jogo
 	vector<wstring> derrotaFatalityStr = { L"Continuar", L"Reiniciar", L"Voltar ao menu", L"Sair do jogo" };	// só aparece no modo campanha
 	derrota.inicializar(derrotaStr);
-	derrotaFatality.inicializar(derrotaFatalityStr);
+	derrotaFatality.inicializar(derrotaFatalityStr);*/
 
 	// inicializar palavras do poder de espantar pragas
 	queriaPalavrasLista = { "aulista", "bulista", "selista", "biblista", "coralista", "violista", "gaulista", "oculista", "simplista", "cafelista", "paulista", \
@@ -169,96 +156,27 @@ void Halterofilismo::inicializar(int estado, vector<int> valoresOpcoesDeJogo)
 	// iniciar temporizador
 	temporizador.reset();
 
-	// inicializar estado
+	// aqui inicializar estado se for campanha, o sandbox só inicializa depois de menu próprio
 	if (estadoDoJogo == jogoHalterofilismoCampanha)
-		preparaCampanha();
-	else	// só há uma possibilidade = sandbox()
-		preparaSandbox();
+		prepararCampanha();
 }
 
-// loop principal
-void Halterofilismo::desenhar()
-{
-	// switch case estado do jogo
-
-	// case sandbox
-	// preparar
-	
-	// iniciar jogo
-	if (barraProgresso.getFrameAtual() >= progressoMaximo) {
-		textoTemporizador.setWstring(L"Parabéns, você ganhou!");
-		textoTemporizador.desenhar(xCentro, yCentro);
-		// fadeout de ~5s, depois menu de vitória baseado no tipo de jogo
-	}
-	else {
-		/****/
-		// isso aqui será definido em outra função ou num dos preparar ou em sandbox ou em campanha
-		progressoMaximo = sizeBarraProgressoFrames - 1;	// reduzimos 1, pois: indice ultimo elemento = total - 1
-
-		if (!pausado) {	// se o jogo está pausado não queremos alterar nada
-			if (tempoDificultar.passouTempoMS(fatorDificuldade)) {
-				dificultar();
-			}
-			if (tempoPragas.passouTempoMS(5000))
-				pragaAlada();
-		}
-		/****/
-
-		// primeiro gerenciamos o progresso (pois se terminou queremos exibir menu, etc antes de desenhar algo)
-		//gerenciarProgresso();
-		fundo.desenhar(xCentro, yCentro);
-		//protagonista.setCor(50, 50, 50);
-		protagonista.desenhar(xCentro, yCentro);
-		// desenhamos o hud antes apenas das pragas
-		desenharHUD();
-		if (!pausado) {	// se o jogo está pausado não queremos alterar nada
-			gerenciarPragas();
-			gerenciarLevantamento();	// temporizador, progresso, eventos
-			if (avisoPrimeiraPraga) { // se temos que avisar, temos que avisar!
-				if (tempoAvisoPragas.passouTempo(segundosAvisoPragas))
-					avisoPrimeiraPraga = false;
-
-				textoAvisoPragasSombra.desenhar(xCentro, yCentro);
-				textoAvisoPragas.desenhar(xCentro, yCentro);
-			}
-		}
-	}
-}
-// aqui desenhamos na tela os elementos necessários pela mecânica do jogo
-void Halterofilismo::desenharHUD()
-{
-	// desenhamos a barra de progresso
-	barraProgresso.desenhar(xyBarraProgresso[0], xyBarraProgresso[1]);
-	// desenhamos a linha de objetivo
-	uniDesenharRetangulo(xyLinhasObjetivo[progressoMaximo][0], xyLinhasObjetivo[progressoMaximo][1], 0, 100, 1, 0, 0, 255, 0, 0);
-	// desenhamos o temporizador
-	textoTemporizador.setString(temporizador.getTempoFormatado());
-	textoTemporizadorSombra.setString(temporizador.getTempoFormatado());
-
-	// para sugerir urgência, dependendo do tempo restante, mudamos as cores para amarelo (10-), e vermelho (5-)
-	if (temporizador.getTempo() <= 5) {
-		textoTemporizador.setCor(255, 0, 0);
-		textoTemporizadorSombra.setCor(127, 0, 0);
-		textoTemporizador.setEscala(2, 2);
-		textoTemporizadorSombra.setEscala(2, 2);
-	}
-	else if (temporizador.getTempo() <= 9) {
-		textoTemporizador.setCor(255, 255, 0);
-		textoTemporizadorSombra.setCor(127, 127, 0);
-		textoTemporizador.setEscala(1.5, 1.5);
-		textoTemporizadorSombra.setEscala(1.5, 1.5);
-	}
-
-	// primeiro desenhamos a sombra
-	textoTemporizadorSombra.desenhar(xTemporizador, yTemporizador);
-	textoTemporizador.desenhar(xTemporizador, yTemporizador);
-}
 
 // aqui oferecemos opções de jogo ao usuário: incluem cenário (slider, incluindo opção pseudoaleatório),
 //	dificuldade inicial (slider + personalizada), sexo do protagonista, tipo do levantamento, 
-void Halterofilismo::preparaSandbox()
+void Halterofilismo::prepararSandbox(int selecaoMapa)
 {
+	mapaSandbox = (OpcoesMenuSandbox)(selecaoMapa);
 	temporizador.setTempo(60);	// 60 segundos
+
+	if (selecaoMapa == escolhaAleatorio) {
+		cena = rand() % fundos.size();
+	}
+	else {
+		cena = selecaoMapa - 1;	// reduzimos 1 pois a primeira opção é aleatório
+	}
+
+	mudarFundo(cena);
 }
 
 // jogo sem fim, mas com opção de sair a cada rodada; dificuldade aumenta a cada rodada vencida
@@ -270,7 +188,7 @@ void Halterofilismo::sandbox()
 // aqui oferecemos opções de jogo ao usuário: nome do personagem, sexo do protagonista, 
 //	sprite do personagem (slider, incluindo opção pseudoaleatório),
 //	tom de voz (slider, incluindo opção pseudoaleatório)
-void Halterofilismo::preparaCampanha()
+void Halterofilismo::prepararCampanha()
 {
 	// primeiro alocamos a historia
 	vector<vector<wstring>> historia;
@@ -418,7 +336,6 @@ void Halterofilismo::preparaCampanha()
 	sonsDaHistoria[5][1][tocarMeioDaLinha] = "somfx_VozNoRadio";
 	sonsDaHistoria[5][4].resize(3);	// usamos sons na a linha 5 da etapa 4
 	sonsDaHistoria[5][4][tocarComecoDaLinha] = "somfx_Trovao";
-	etapaAtual = 0;
 	vector<string> fundosCampanha = { "fundo_HalterFazenda",
 		"fundo_HalterEsgoto",
 		"fundo_HalterCanil",
@@ -437,6 +354,87 @@ void Halterofilismo::campanha()
 		etapaAtual++;
 }
 
+// loop principal
+void Halterofilismo::desenhar()
+{
+	uniDepurar("fundo", fundo.getSpriteSheet()->getCaminhoDoArquivo());
+	// switch case estado do jogo
+
+	// case sandbox
+	// preparar
+	
+	// iniciar jogo
+	// primeiro de tudo desenhar o fundo
+	fundo.desenhar(xCentro, yCentro);
+	if (barraProgresso.getFrameAtual() >= progressoMaximo) {
+		textoTemporizador.setWstring(L"Parabéns, você ganhou!");
+		textoTemporizador.desenhar(xCentro, yCentro);
+		// fadeout de ~5s, depois menu de vitória baseado no tipo de jogo
+	}
+	else {
+		/****/
+		// isso aqui será definido em outra função ou num dos preparar ou em sandbox ou em campanha
+		progressoMaximo = sizeBarraProgressoFrames - 1;	// reduzimos 1, pois: indice ultimo elemento = total - 1
+
+		if (!pausado) {	// se o jogo está pausado não queremos alterar nada
+			if (tempoDificultar.passouTempoMS(fatorDificuldade)) {
+				dificultar();
+			}
+			if (tempoPragas.passouTempoMS(5000))
+				pragaAlada();
+		}
+		/****/
+
+		// primeiro gerenciamos o progresso (pois se terminou queremos exibir menu, etc antes de desenhar algo)
+		//gerenciarProgresso();
+		//protagonista.setCor(50, 50, 50);
+		protagonista.desenhar(coordenadasXY[cena][0], coordenadasXY[cena][1]);
+		// desenhamos o hud antes apenas das pragas
+		desenharHUD();
+		if (!pausado) {	// se o jogo está pausado não queremos alterar nada
+			gerenciarPragas();
+			gerenciarLevantamento();	// temporizador, progresso, eventos
+			if (avisoPrimeiraPraga) { // se temos que avisar, temos que avisar!
+				if (tempoAvisoPragas.passouTempo(segundosAvisoPragas))
+					avisoPrimeiraPraga = false;
+
+				textoAvisoPragasSombra.desenhar(xCentro, yCentro);
+				textoAvisoPragas.desenhar(xCentro, yCentro);
+			}
+		}
+	}
+
+}
+// aqui desenhamos na tela os elementos necessários pela mecânica do jogo
+void Halterofilismo::desenharHUD()
+{
+	// desenhamos a barra de progresso
+	barraProgresso.desenhar(xyBarraProgresso[0], xyBarraProgresso[1]);
+	// desenhamos a linha de objetivo
+	uniDesenharRetangulo(xyLinhasObjetivo[progressoMaximo][0], xyLinhasObjetivo[progressoMaximo][1], 0, 100, 1, 0, 0, 255, 0, 0);
+	// desenhamos o temporizador
+	textoTemporizador.setString(temporizador.getTempoFormatado());
+	textoTemporizadorSombra.setString(temporizador.getTempoFormatado());
+
+	// para sugerir urgência, dependendo do tempo restante, mudamos as cores para amarelo (10-), e vermelho (5-)
+	if (temporizador.getTempo() <= 5) {
+		textoTemporizador.setCor(255, 0, 0);
+		textoTemporizadorSombra.setCor(127, 0, 0);
+		textoTemporizador.setEscala(2, 2);
+		textoTemporizadorSombra.setEscala(2, 2);
+	}
+	else if (temporizador.getTempo() <= 9) {
+		textoTemporizador.setCor(255, 255, 0);
+		textoTemporizadorSombra.setCor(127, 127, 0);
+		textoTemporizador.setEscala(1.5, 1.5);
+		textoTemporizadorSombra.setEscala(1.5, 1.5);
+	}
+
+	// primeiro desenhamos a sombra
+	textoTemporizadorSombra.desenhar(xTemporizador, yTemporizador);
+	textoTemporizador.desenhar(xTemporizador, yTemporizador);
+}
+
 // aqui: avançamos animações (barras, personagem), gerenciamos eventos (pragaAlada), encerramos o levantamento
 void Halterofilismo::gerenciarLevantamento()
 {
@@ -451,33 +449,16 @@ void Halterofilismo::gerenciarLevantamento()
 			// TODO: tornar a velocidade proporcional ao número de frames da barra
 			if (protagonista.getFrameAtual() + 1 < protagonista.getSpriteSheet()->getNumFramesDaAnimacao(0))
 				protagonista.avancarAnimacao();
-			moverBarra();
 		}
 		if (teclado.soltou[TECLA_S] || teclado.soltou[TECLA_BAIXO]) {
 			barraProgresso.avancarAnimacao();
 			protagonista.avancarAnimacao();
-			moverBarra();
 		}
 	}
 	// verificamos se ao final de tudo atingimos o objetivo final
 	// TODO || barraProgresso.getFrameAtual() >= progressoMaximo
 	if (barraProgresso.getFrameAtual() >= progressoMaximo) {	// atingimos o objetivo, fim do levantamento
 		
-	}
-}
-
-void Halterofilismo::moverBarra()
-{
-	// movimento ainda rudimentar
-	// TODO: cara sprite precisa de um trajeto com coordenadas para cada frame da animação (simples vetor<vetor<int>> por sprite)
-	//	[1][2], 1 é o frame da animação, [2] são as coordenadas x,y, talvez a rotação também
-	if (barraSobe) {
-		barraSobe = false;
-		yBarra += 10;
-	}
-	else {
-		barraSobe = true;
-		yBarra -= 10;
 	}
 }
 
@@ -554,8 +535,18 @@ void Halterofilismo::gerenciarPragas()
 {
 	int sizePragas = pragasAladas.size();
 	// aqui fazemos a praga se aproximar do local escolhido em sua criação de modo não-linear (pseudoaleatório)
+	int frameAtual = protagonista.getFrameAtual();
+	int xObjetivo, yObjetivo;
+	if (opcoesDeJogo[valorSexo] == protagonistaHomem) {
+		xObjetivo = coordenadasXY[cena][0] + xyFinaisSpritesPragas[protagonistaHomem][frameAtual][0];
+		yObjetivo = coordenadasXY[cena][1] - xyFinaisSpritesPragas[protagonistaHomem][frameAtual][1];
+	}
+	else {
+		xObjetivo = coordenadasXY[cena][0] + xyFinaisSpritesPragas[protagonistaMulher][frameAtual][0];
+		yObjetivo = coordenadasXY[cena][1] - xyFinaisSpritesPragas[protagonistaMulher][frameAtual][1];
+	}
 	for (int i = 0; i < sizePragas; i++) {
-		if (chegouPraga[i] != true && (xyPragas[i][0] != xCentro || xyPragas[i][1] != yCentro)) {	// ainda não chegamos lá
+		if (chegouPraga[i] != true && (xyPragas[i][0] != xObjetivo || xyPragas[i][1] != yObjetivo)) {	// ainda não chegamos lá
 
 			// atuamos no eixo (x)
 			if (rand() % 3) {	// módulo 3, nos dá 66% de chance de não ser 0 (false)
@@ -566,9 +557,9 @@ void Halterofilismo::gerenciarPragas()
 					xyPragas[i][0] += rand() % 4;
 			}
 			else {	// vamos seguir um trajeto linear
-				if (xyPragas[i][0] > xCentro)
+				if (xyPragas[i][0] > xObjetivo)
 					xyPragas[i][0] -= 1;
-				else if (xyPragas[i][0] < xCentro)
+				else if (xyPragas[i][0] < xObjetivo)
 					xyPragas[i][0] += 1;
 			}
 
@@ -581,12 +572,12 @@ void Halterofilismo::gerenciarPragas()
 					xyPragas[i][1] += rand() % 7;
 			}
 			else {	// vamos seguir um trajeto linear
-				if (xyPragas[i][1] > yCentro)
+				if (xyPragas[i][1] > yObjetivo)
 					xyPragas[i][1] -= 1;
-				else if (xyPragas[i][1] < yCentro)
+				else if (xyPragas[i][1] < yObjetivo)
 					xyPragas[i][1] += 1;
 			}
-			if (xyPragas[i][0] == xCentro && xyPragas[i][1] == yCentro)
+			if (xyPragas[i][0] == xObjetivo && xyPragas[i][1] == yObjetivo)
 				chegouPraga[i] = true;
 		}
 		pragasAladas[i].desenhar(xyPragas[i][0], xyPragas[i][1]);
@@ -678,7 +669,7 @@ void Halterofilismo::inicializarPalavrasDoPoder()
 void Halterofilismo::desenharPalavrasDoPoder()
 {
 	// TODO: desenhar só até a primeira virgula, depois que teclar tudo, desenhar a segunda parte
-	int primeiroAposVirgula = 0, noise = 0;
+	int primeiroAposVirgula = 0, variacaoPseudoAleatoria = 0;
 	int sizeLetrasAladas = letrasAladas.size();
 	// desenhar apenas até a primeira virgula nas coordenadas originais
 	for (int i = 0; i < sizeLetrasAladas; i++) {
@@ -689,18 +680,18 @@ void Halterofilismo::desenharPalavrasDoPoder()
 		if (letrasXYOriginal[i][0] == 0)	// se a coordenada x da letra é 0, não desenhar
 			continue;		// continue = pular pra próxima execução do for
 
-		if (!(rand() % 31)) {	// horrível de feio, mas funciona sem criar classes que usem ponteiros que quem ia explicar!
-			noise = rand() % 7;
-			letrasAladas[i].desenhar(letrasXYOriginal[i][0], letrasXYOriginal[i][1] + noise);
+		if (!(rand() % 31)) {	// horrível de feio, mas funciona sem usar o random do c++11 que quem ia explicar!
+			variacaoPseudoAleatoria = rand() % 7;
+			letrasAladas[i].desenhar(letrasXYOriginal[i][0], letrasXYOriginal[i][1] + variacaoPseudoAleatoria);
 		}
 		else {
 			letrasAladas[i].desenhar(letrasXYOriginal[i][0], letrasXYOriginal[i][1]);
 		}
 	}
 	for (int i = primeiroAposVirgula; i < sizeLetrasAladas; i++) {
-		if (!(rand() % 31)) {	// horrível de feio, mas funciona sem criar classes que usem ponteiros que quem ia explicar!
-			noise = rand() % 7;
-			letrasAladas[i].desenhar(letrasXYOriginal[i][0] - (primeiroAposVirgula * 27), letrasXYOriginal[i][1] + 100 + noise);
+		if (!(rand() % 31)) {	// horrível de feio, mas funciona sem usar o random do c++11 que quem ia explicar!
+			variacaoPseudoAleatoria = rand() % 7;
+			letrasAladas[i].desenhar(letrasXYOriginal[i][0] - (primeiroAposVirgula * 27), letrasXYOriginal[i][1] + 100 + variacaoPseudoAleatoria);
 		}
 		else {
 			letrasAladas[i].desenhar(letrasXYOriginal[i][0] - (primeiroAposVirgula * 27), letrasXYOriginal[i][1] + 100);
@@ -1001,4 +992,11 @@ void Halterofilismo::prosseguir()
 		temporizador.prosseguir();
 		historiaCampanha.prosseguir();
 	}
+}
+
+void Halterofilismo::mudarFundo(int novoFundo)
+{
+	// se o valor for válido
+	if (novoFundo < fundos.size() && novoFundo >= 0)
+		fundo.setSpriteSheet(fundos[novoFundo]);
 }

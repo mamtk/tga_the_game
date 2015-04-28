@@ -1,6 +1,5 @@
 ﻿#pragma once
 #include "libUnicornio.h"
-#include "Menu.h"
 #include "Temporizador.h"
 #include "Historia.h"
 
@@ -10,13 +9,14 @@ class Halterofilismo
 {
 	// estado do jogo, valores pretendem ser universais (entre as classes)
 	enum EstadoDoJogo {
-		menuPrincipal, menuJogos, menuOpcoes, menuAjuda, menuCreditos, menuHalterofilismo, jogoHalterofilismoCampanha, \
-		jogoHalterofilismoSandbox, jogoTirofilismoCampanha, jogoTirofilismoSandbox
+		menuPrincipal, menuJogos, menuOpcoes, menuAjuda, menuCreditos, menuHalterofilismoSandbox, jogoHalterofilismoCampanha, jogoHalterofilismoSandbox
 	};
 
 	// valores do menu de opcoes
 	enum ValoresMenuOpcoes { valorDificuldade, valorDesativarEventos, valorDesativarFatality, valorDesativarSom, valorDesativarMusicas, valorDesativarHistoria, valorSexo };
 	enum ValoresSexo { protagonistaHomem, protagonistaMulher };
+	// valores do menu sandbox
+	enum OpcoesMenuSandbox { escolhaAleatorio, escolhaFazenda, escolhaEsgoto, escolhaCanil, escolhaAcademiaSuburbio, escolhaAcademiaCentro, escolhaOlimpiadas, escolhaVoltar };
 	// tipo de levantamento
 	enum TipoDeLevantamento { levantamentoNormal, levantamentoFatality };
 	// posições de som no vetor de sons da história
@@ -40,16 +40,18 @@ class Halterofilismo
 	// história do modo campanha
 	Historia historiaCampanha;
 
-	// menus de modo de jogo
-	Menu menuSandbox, menuCampanha;
 	// menus de vitória
-	Menu vitoriaFatalityAtivo, vitoriaFatalityInativo;
+	//Menu vitoriaFatalityAtivo, vitoriaFatalityInativo;
 	// menus de derrota
-	Menu derrota, derrotaFatality;	// fatality permite continuar
+	//Menu derrota, derrotaFatality;	// fatality permite continuar
 
-	Temporizador temporizador, tempoDificultar, tempoPragas, tempoAvisoPragas, tempoMovimentoLetras, tempoMisc;
+	// temporizadores usados na classe
+	Temporizador temporizador, tempoDificultar, tempoPragas, tempoAvisoPragas, tempoMovimentoLetras;
 
-	// os vetore abaixo serão usados na combinação (a ser digitada) para espantar as moscas
+	// escolha feita no menuSandbox
+	OpcoesMenuSandbox mapaSandbox;
+
+	// os vetores abaixo serão usados na combinação (a ser digitada) para espantar as moscas
 	vector<string> queriaPalavrasLista;	// formato: queria palavraLista, acabei palavraEiro
 	vector<string> acabeiPalavrasEiro;
 	string fraseAssovio;					// armazena a frase completa escolhida
@@ -57,33 +59,29 @@ class Halterofilismo
 	vector<vector<int>> letrasXYAtual;		// vetor coordenadas XY com barulho
 	vector<bool> letrasAtivadas;			// vetor que informa se a letra foi ativada ou não
 
-	// os vetores abaixo armazenam as coordenadas de âncora da sprite do personagem
-	vector<int> coordenadasX;	// vetor coordenadas X pra cada fundo
-	vector<int> coordenadasY;	// vetor coordenadas Y pra cada fundo
-	float progresso = 0;		// progresso rumo aos _100%_ da "rep"
+	vector<string> fundos;					// armazena o nome para carregar cada sprite de fundo
+	vector<vector<int>> coordenadasXY;		// armazenam as coordenadas x,y da sprite do personagem para cada fundo
+	float progresso = 0;					// progresso rumo aos _100%_ da repetição
 	vector<int> xyBarraProgresso;			// coordenadas para desenhar a barra de progresso
 	vector<vector<int>> xyLinhasObjetivo;	// coordenadas para desenhar as "linhas" objetivo, dependendo do progressoMaximo
 	vector<int> opcoesDeJogo;				// como setado no menuOpções
-	// tetravetor a.b.c.d: nivel a = sprite, b = testa ou ombros, c = frame, d = x e y (em função da origem da sprite)
-	vector<vector<vector<vector<int>>>> xyFinaisSpritesPragas;	// x,y alvos para cada sprite, usado para mover as pragas
-	// nível 1 = local da barra (d,c,e), nivel 2 = x,y e rotação (se necessário)
-	vector<vector<int>> xyFinaisBarraPragas;	// x,y alvos para cada objetivo, usado para mover as pragas
+	// vetor a.b.c.d: nivel a = sprite, b = frame, c = x e y (em função da origem da sprite)
+	vector<vector<vector<int>>> xyFinaisSpritesPragas;	// Xmin,Ymin,Xmax,Ymax para as pragas para cada sprite, usado para mover as pragas
 	vector<vector<int>> xyPragas;	// coordenadas de desenho
 	vector<bool>	chegouPraga;	// usado para saber se a praga já está incomodando ou não
 
-	int etapaAtual;		// etapa atual no modo campanha ([0,5])
-	int xTemporizador, yTemporizador;							// coordenadas do temporizador
-	int cena = 0;			// o fundo a ser utilizado
+
+	int xTemporizador, yTemporizador;		// coordenadas do temporizador
+	int etapaAtual;			// etapa atual no modo campanha ([0,5])
+	int cena;				// cena [0,5], mapa atualizado nas funções sandbox ou campanha
 	int dificuldade;		// define a taxa de espera antes de executar dificultar (internamenta fazemos um n maior resultar em um intervalo menor)
 	float fatorDificuldade;	// dificuldade efetica (intervalo da função dificultar())
 	int xCentro, yCentro;	// coordenadas do centro da tela
-	int xBarra, yBarra;		// a barra possui x,y diferentes ao longo das animações
 	int progressoMaximo;	// progresso máximo de um levantamento, pode variar de (0, ..., sizeBarraProgressoFrames - 1)
 	int chancePraga;		// chance de uma nova pragaAlada aparecer (aumenta com a dificuldade)
 
 	int sizeBarraProgressoFrames;	// numero de quadros da animação da barra de progresso
 	int segundosAvisoPragas = 7;	// por padrão exibimos o aviso por 7s
-	bool barraSobe = true;			// agora a barra sobe? ou desce?
 	bool primeiraPraga = true;		// melhor explicar como se livrar delas!
 	bool avisoPrimeiraPraga = false;	// faz com que o aviso seja mostrado por algum tempo
 	bool pausado = false;			// registra se o jogo está pausado
@@ -95,7 +93,6 @@ class Halterofilismo
 	void desenhar();
 	void desenharHUD();
 	void gerenciarLevantamento();
-	void moverBarra();
 	void dificultar();
 	void pragaAlada();
 	void gerenciarPragas();
@@ -108,6 +105,7 @@ class Halterofilismo
 	void ativarLetra(int indice);
 	void limparFrase();
 	void ativarEspantarMoscas();
+	void mudarFundo(int novoFundo);
 
 public:
 	Halterofilismo();
@@ -117,9 +115,10 @@ public:
 	// modalidades de jogo
 	void campanha();
 	void sandbox();
+	// preparar modalidades de jogo
+	void prepararCampanha();
+	void prepararSandbox(int selecaoMapa);
+	// des/pausar jogo
 	void pausar();
 	void prosseguir();
-	// preparar modalidades de jogo
-	void preparaCampanha();
-	void preparaSandbox();
 };
