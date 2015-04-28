@@ -44,7 +44,7 @@ void Halterofilismo::inicializar(int estado, vector<int> valoresOpcoesDeJogo)
 	{ -62, -130 }, { -70, -109 }, { -75, -150 }, { -64, -176 }, { -47 , -117 }
 	};
 	xyFinaisSpritesPragas[protagonistaMulher] = { { -64, 144 }, { -62, 129 }, { -62, 111 }, { -57, 95 }, { -60, 70 }, { -63, 46 }, { -53, 12 }, 
-	{ -49, -13 }, { -51, -18 }, { -59, 7 }, { -62, -41 }, { -79, -114 }, { -100, -137 }, { -100, -130 }, { -78, -183 }
+	{ -49, -13 }, { -51, -18 }, { -59, 7 }, { -63, 40 }, { -79, -114 }, { -100, -137 }, { -100, -130 }, { -78, -183 }
 	};
 
 	protagonista.setAnimacao(0);
@@ -414,8 +414,8 @@ void Halterofilismo::desenhar()
 		// desenhamos o hud antes apenas das pragas
 		desenharHUD();
 		if (!pausado) {	// se o jogo está pausado não queremos alterar nada
-			gerenciarPragas();
-			gerenciarLevantamento();	// temporizador, progresso, eventos
+			//gerenciarPragas();
+			//gerenciarLevantamento();	// temporizador, progresso, eventos
 			if (avisoPrimeiraPraga) { // se temos que avisar, temos que avisar!
 				if (tempoAvisoPragas.passouTempo(segundosAvisoPragas))
 					avisoPrimeiraPraga = false;

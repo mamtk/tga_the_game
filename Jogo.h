@@ -10,7 +10,8 @@ class Jogo
 {
 	// estado do jogo, valores pretendem ser universais (entre as classes)
 	enum EstadoDoJogo {
-		menuPrincipal, menuJogos, menuOpcoes, menuAjuda, menuCreditos, menuHalterofilismoSandbox, jogoHalterofilismoCampanha, jogoHalterofilismoSandbox, menuVitoria, menuDerrota
+		menuPrincipal, menuJogos, menuOpcoes, menuAjuda, menuCreditos, menuHalterofilismoSandbox, jogoHalterofilismoCampanha, jogoHalterofilismoSandbox, 
+		menuVitoriaEstado, menuDerrotaEstado
 	};
 
 	// opções dos menus
