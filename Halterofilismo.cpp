@@ -362,6 +362,8 @@ void Halterofilismo::campanha()
 	if (!historiaCampanha.terminouEtapa())
 		historiaCampanha.desenhar(etapaAtual);
 	if (!pausado && historiaCampanha.terminouEtapa() && teclado.soltou[TECLA_ENTER])
+		estaJogando = true;
+	if (estaJogando)
 	{
 		cena = etapaAtual;
 		mudarFundo(cena);
@@ -1032,4 +1034,21 @@ void Halterofilismo::mudarFundo(int novoFundo)
 	// se o valor for válido
 	if (novoFundo < fundos.size() && novoFundo >= 0)
 		fundo.setSpriteSheet(fundos[novoFundo]);
+}
+
+bool Halterofilismo::desenharMenuVitoria()
+{
+	if (venceu)
+	{
+		return true;
+	}
+}
+
+bool Halterofilismo::desenharMenuDerrota()
+{
+	if (!venceu)
+	{
+		return true;
+	}
+
 }

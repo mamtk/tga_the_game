@@ -413,3 +413,17 @@ void Jogo::gerenciarMenuSandbox()
 		break;
 	}
 }
+
+void Jogo::gerenciarMenuCampanha()
+{
+	int opcaoEscolhida = menuCampanha.getOpcao();
+	switch (opcaoEscolhida) {
+	case continuar:
+
+
+	default:
+		break;
+	}
+
+
+}

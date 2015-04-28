@@ -9,7 +9,7 @@ class Halterofilismo
 {
 	// estado do jogo, valores pretendem ser universais (entre as classes)
 	enum EstadoDoJogo {
-		menuPrincipal, menuJogos, menuOpcoes, menuAjuda, menuCreditos, menuHalterofilismoSandbox, jogoHalterofilismoCampanha, jogoHalterofilismoSandbox
+		menuPrincipal, menuJogos, menuOpcoes, menuAjuda, menuCreditos, menuHalterofilismoSandbox, jogoHalterofilismoCampanha, jogoHalterofilismoSandbox, menuVitoria, menuDerrota
 	};
 
 	// valores do menu de opcoes
@@ -85,6 +85,9 @@ class Halterofilismo
 	bool primeiraPraga = true;		// melhor explicar como se livrar delas!
 	bool avisoPrimeiraPraga = false;	// faz com que o aviso seja mostrado por algum tempo
 	bool pausado = false;			// registra se o jogo está pausado
+	bool estaJogando = false; // registra se esta jogando
+	bool terminouLevantamento = false; // se o jogador terminou o levantamento
+	bool venceu = false;
 
 	EstadoDoJogo estadoDoJogo;
 
@@ -121,4 +124,8 @@ public:
 	// des/pausar jogo
 	void pausar();
 	void prosseguir();
+
+	bool desenharMenuVitoria();
+	bool desenharMenuDerrota();
+
 };
