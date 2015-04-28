@@ -361,8 +361,14 @@ void Halterofilismo::desenhar()
 	uniDepurar("mouse.x", mouse.x);
 	uniDepurar("mouse.y", mouse.y);
 	uniDepurar("mouse.y", mouse.y);
-	uniDepurar("xObjetivo", coordenadasXY[cena][0] + xyFinaisSpritesPragas[protagonistaHomem][frameAtual][0]);
-	uniDepurar("yObjetivo", coordenadasXY[cena][1] + xyFinaisSpritesPragas[protagonistaHomem][frameAtual][1]);
+	if (opcoesDeJogo[valorSexo] == protagonistaHomem) {
+		uniDepurar("xObjetivo", coordenadasXY[cena][0] + xyFinaisSpritesPragas[protagonistaHomem][frameAtual][0]);
+		uniDepurar("yObjetivo", coordenadasXY[cena][1] + xyFinaisSpritesPragas[protagonistaHomem][frameAtual][1]);
+	}
+	else {
+		uniDepurar("xObjetivo", coordenadasXY[cena][0] + xyFinaisSpritesPragas[protagonistaMulher][frameAtual][0]);
+		uniDepurar("yObjetivo", coordenadasXY[cena][1] + xyFinaisSpritesPragas[protagonistaMulher][frameAtual][1]);
+	}
 	
 	// switch case estado do jogo
 
@@ -409,7 +415,10 @@ void Halterofilismo::desenhar()
 			}
 		}
 	}
-	uniDesenharCirculo(coordenadasXY[cena][0] + xyFinaisSpritesPragas[protagonistaHomem][frameAtual][0], coordenadasXY[cena][1] + xyFinaisSpritesPragas[protagonistaHomem][frameAtual][1], 5, 90);
+	if (opcoesDeJogo[valorSexo] == protagonistaHomem)
+		uniDesenharCirculo(coordenadasXY[cena][0] + xyFinaisSpritesPragas[protagonistaHomem][frameAtual][0], coordenadasXY[cena][1] + xyFinaisSpritesPragas[protagonistaHomem][frameAtual][1], 5, 90);
+	else
+		uniDesenharCirculo(coordenadasXY[cena][0] + xyFinaisSpritesPragas[protagonistaMulher][frameAtual][0], coordenadasXY[cena][1] + xyFinaisSpritesPragas[protagonistaMulher][frameAtual][1], 5, 90);
 }
 // aqui desenhamos na tela os elementos necessários pela mecânica do jogo
 void Halterofilismo::desenharHUD()
