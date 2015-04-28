@@ -91,6 +91,7 @@ class Halterofilismo
 	bool terminouLevantamento = false; // se o jogador terminou o levantamento
 	bool venceu = false; // registra se venceu
 	bool repetirEtapa = false;
+	bool repetir = false;
 
 	EstadoDoJogo estadoDoJogo;
 

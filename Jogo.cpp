@@ -458,21 +458,44 @@ void Jogo::gerenciarMenuVitoria()
 		halterofilia.avancarEtapa();
 		estado = jogoHalterofilismoCampanha;
 		break;
-	case escolhaMenuPrincipal:
+	case escolhaMenuPrincipalVitoria:
 		halterofilia.resetarLevantamento();
 		estado = menuPrincipal;
 		if (opcoesDeJogo[valorDesativarMusicas] == 0)
 			principal.tocarMusica();
 		break;
-	case escolhaSairMenuCampanha:
+	case escolhaSairMenuVitoria:
 		aplicacao.sair;
 		break;
 	default:
 		break;
+	}
 }
-void Jogo::gerenciarMenuDerrota()
-	{
 
+void Jogo::AtivarRepetir()
+{
+	repetir = true;
+}
+
+void Jogo::gerenciarMenuDerrota()
+{
+	int opcaoEscolhida = menuDerrota.getOpcao();
+	switch (opcaoEscolhida) {
+	case escolhaRepetir:
+		AtivarRepetir();
+		estado = jogoHalterofilismoCampanha;
+		break;
+	case escolhaMenuPrincipalDerrota:
+		halterofilia.resetarLevantamento();
+		estado = menuPrincipal;
+		if (opcoesDeJogo[valorDesativarMusicas] == 0)
+			principal.tocarMusica();
+		break;
+	case escolhaSairMenuDerrota:
+		aplicacao.sair;
+		break;
+	default:
+		break;
 	}
 
 }

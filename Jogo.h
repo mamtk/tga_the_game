@@ -18,7 +18,8 @@ class Jogo
 	enum OpcoesMenuPrincipal { escolhaJogar, escolhaOpcoes, escolhaAjuda, escolhaCreditos, escolhaSair };
 	enum OpcoesMenuSecundario { escolhaHalterCampanha, escolhaHalterSandbox, escolhaTiroCampanha, escolhaTiroSandbox, Retornar };
 	enum OpcoesMenuSandbox { escolhaAleatorio, escolhaFazenda, escolhaEsgoto, escolhaCanil, escolhaAcademiaSuburbio, escolhaAcademiaCentro, escolhaOlimpiadas, escolhaVoltar };
-	enum OpcoesMenuCampanha { escolhaContinuar, escolhaMenuPrincipal, escolhaSairMenuCampanha };
+	enum OpcoesMenuVitoria { escolhaContinuar, escolhaMenuPrincipalVitoria, escolhaSairMenuVitoria };
+	enum opcoesMenuDerrota {escolhaRepetir, escolhaMenuPrincipalDerrota, escolhaSairMenuDerrota};
 	enum OpcoesMenuInstantaneo { escolhaContinuarJogo, escolhaSairDoJogo };
 
 	// valores dos menus
@@ -45,6 +46,7 @@ class Jogo
 	int jogo = 0;
 
 	bool menuInstantaneoAtivo = false;	// essa variável nos diz se o menu instanâneo está ativado
+	bool repetir = false;
 
 	void gerenciarEstado();
 	void gerenciarMenuPrincipal();
@@ -58,10 +60,12 @@ public:
 	Jogo();
 	~Jogo();
 
+
 	void inicializar();
 	void finalizar();
 
 	void executar();
 	void setEstado(int);
+	void AtivarRepetir();
 };
 
