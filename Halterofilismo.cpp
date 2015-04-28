@@ -573,7 +573,6 @@ void Halterofilismo::gerenciarPragas()
 	}
 	for (int i = 0; i < sizePragas; i++) {
 		if (chegouPraga[i] != true && (xyPragas[i][0] != xObjetivo || xyPragas[i][1] != yObjetivo)) {	// ainda não chegamos lá
-
 			// atuamos no eixo (x)
 			if (rand() % 3) {	// módulo 3, nos dá 66% de chance de não ser 0 (false)
 				// vamos adicionar um pouco de ruído
@@ -607,17 +606,19 @@ void Halterofilismo::gerenciarPragas()
 				chegouPraga[i] = true;
 		}
 		else {	// já chegamos lá
+			// caso a barra tenha se movido, devemos atualizar a altura automaticamente
+			xyPragas[i][1] = yObjetivo;
 			// só queremos atuar no eixo x, pois não queremos dar a entender que as moscas estão voando
-			int variacaoPseudoAleatoria = rand() % 30;
+			int variacaoPseudoAleatoria = rand() % 2;
 			if (direcaoPragas[i]) {	// se devemos ir para a direita
 				if (xyPragas[i][0] + variacaoPseudoAleatoria < xObjetivo + 170)
-					xyPragas[i][0] = xObjetivo + variacaoPseudoAleatoria;
+					xyPragas[i][0] = xyPragas[i][0] + variacaoPseudoAleatoria;
 				else
 					direcaoPragas[i] = false; // devemos ir para a esquerda
 			}
 			else {					// se devemos ir para a esquerda
 				if (xyPragas[i][0] - variacaoPseudoAleatoria > xObjetivo)
-					xyPragas[i][0] = xObjetivo - variacaoPseudoAleatoria;
+					xyPragas[i][0] = xyPragas[i][0] - variacaoPseudoAleatoria;
 				else
 					direcaoPragas[i] = true; // devemos ir para a esquerda
 			}

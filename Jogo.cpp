@@ -469,10 +469,10 @@ void Jogo::gerenciarMenuVitoria()
 		break;
 	default:
 		break;
-}
-void Jogo::gerenciarMenuDerrota()
-	{
-
 	}
+}
+
+void Jogo::gerenciarMenuDerrota()
+{
 
 }
