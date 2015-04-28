@@ -1066,6 +1066,7 @@ bool Halterofilismo::desenharMenuDerrota()
 
 void Halterofilismo::resetarLevantamento() 
 {
+	terminouLevantamento = false;
 	barraProgresso.setFrame(0);
 	protagonista.setFrame(0);
 	progresso = 0;
