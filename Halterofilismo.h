@@ -15,13 +15,14 @@ class Halterofilismo
 	};
 
 	// valores do menu de opcoes
-	enum ValoresMenuOpcoes { valorDificuldade, valorDesativarEventos, valorDesativarFatality, valorDesativarSom, valorDesativarMusicas, valorDesativarHistoria };
+	enum ValoresMenuOpcoes { valorDificuldade, valorDesativarEventos, valorDesativarFatality, valorDesativarSom, valorDesativarMusicas, valorDesativarHistoria, valorSexo };
+	enum ValoresSexo { protagonistaHomem, protagonistaMulher };
 	// tipo de levantamento
 	enum TipoDeLevantamento { levantamentoNormal, levantamentoFatality };
 	// posições de som no vetor de sons da história
 	enum QuandoABandaToca { tocarComecoDaLinha, tocarMeioDaLinha, tocarFinalDaLinha };
 	// sprites do proganista
-	enum SpritesProtagonista { protagonistaHomem, protagonistaMulher };
+	enum SpritesProtagonista { spriteDeHomem, spriteDeMulher };
 	// locais de ataque de pragas
 	enum LocaisPragas { direitaBarra, centroBarra, esquerdaBarra, testaProtagonista, ombrosProtagonista };
 	// fica mais fácil usar um enum para acessar o frame de cada letra
@@ -39,6 +40,8 @@ class Halterofilismo
 	// história do modo campanha
 	Historia historiaCampanha;
 
+	// menus de modo de jogo
+	Menu menuSandbox, menuCampanha;
 	// menus de vitória
 	Menu vitoriaFatalityAtivo, vitoriaFatalityInativo;
 	// menus de derrota

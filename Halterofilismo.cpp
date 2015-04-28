@@ -104,6 +104,46 @@ void Halterofilismo::inicializar(int estado, vector<int> valoresOpcoesDeJogo)
 	fatorDificuldade = 1000 / dificuldade;
 
 	// inicializar menus
+	// sandbox
+	wstring textoCabecalhoOpcoes = L"Pressione [CIMA] ou [BAIXO], ou [W] ou [S], ou passe o mouse, para mudar a opção destacada.\n\
+		Pressione <- e ->, ou passe o mouse para alterar os valores da opção destacada.\n\
+		\nPressione [ESPAÇO] para iniciar o jogo. Todas os valores destacades serão usados.";
+	vector<wstring> textoOpcoes = { L"Nível de dificuldade:", // [0]
+		L"Desativar eventos aleatórios:",	// [1]
+		L"Desativar desafios:", // [2]
+		L"Desativar som:", // [3]
+		L"Desativar musicas:", // [4]
+		L"Pular história:", // [5]
+	};
+	int sizeTextoOpcoes = textoOpcoes.size();
+	vector<vector<wstring>> stringsValores;
+	stringsValores.resize(sizeTextoOpcoes);
+	// inicializar valores para cada nível de opção
+	for (int nivel = 0; nivel < sizeTextoOpcoes; nivel++) {	// aqui setamos os valores possíveis para cada uma das opções (níveis)
+		switch (nivel) { // talvez fique mais fácil de entender se eu usar um loop for (embora fique mais lento, só roda uma vez)
+		case 0: // variáveis possíveis para a opção [0] do textoOpcoes
+			stringsValores[nivel] = { L"Normal", L"Difícil", L"Impossível", L"Impossível?" }; // opções para [0] (dificuldade)
+			break;
+		case 1: // variáveis possíveis para a opção [1] do textoOpcoes
+			stringsValores[nivel] = { L"Não", L"Sim" }; // opções para [1] (desativar eventos pseudoaleatórios)
+			break;
+		case 2: // variáveis possíveis para a opção [2] do textoOpcoes
+			stringsValores[nivel] = { L"Não", L"Sim" }; // opções para [2] (desativar fatality)
+			break;
+		case 3: // variáveis possíveis para a opção [2] do textoOpcoes
+			stringsValores[nivel] = { L"Não", L"Sim" }; // opções para [3] (desativar som)
+			break;
+		case 4: // variáveis possíveis para a opção [2] do textoOpcoes
+			stringsValores[nivel] = { L"Não", L"Sim" }; // opções para [4] (desativar musicas)
+			break;
+		case 5: // variáveis possíveis para a opção [2] do textoOpcoes
+			stringsValores[nivel] = { L"Não", L"Sim" }; // opções para [5] (pular história)
+			break;
+		}
+	}
+	menuSandbox.inicializar(textoOpcoes, stringsValores, textoCabecalhoOpcoes, "fundo_MenuOpcoes", "somfundo_MenuOpcoes", { 0 }, 0, { 0 }, -1, -1, 0, 27, 550, -1, 21, 0, 1, 0, { 91, 101, 11, 255 },
+	{ 255, 51, 101, 255 }, { 91, 101, 11, 255 }, { 255, 51, 101, 255 }, { 255, 51, 101, 255 }, true, "fonteNormalSombra");
+	//menuCampanha.inicializar();
 	// vitoria
 	vector<wstring> vitoriaFatalityInativoStr = { L"Prosseguir", L"Repetir", L"Voltar ao menu", L"Sair do jogo" };
 	vector<wstring> vitoriaFatalityAtivoStr = { L"Prosseguir", L"Tentar desafio", L"Repetir", L"Voltar ao menu", L"Sair do jogo" };
@@ -232,43 +272,100 @@ void Halterofilismo::preparaCampanha()
 	vector<vector<wstring>> historia;
 	historia.resize(6);	// nossa história terá 6 etapas
 	// etapa 0 = inínio na fazenda
-	historia[0] = { L"%NOME% nasceu em uma fazenda, sem energia elétrica, estradas de asfalto ou video-games para passar o tempo.", // "meio" som de bebe chorando
-		L"Desde a mais tenra idade, sempre gostou muito de exercer sua força e domínio sobre o mundo natural a sua volta.",
-		L"Logo cresceu e se tornou uma pessoa conhecida pela capcidade física, já que conseguia quebrar bolas de bilhar usando as nádegas.", // "final" bolas bilhar
-		L"Ano após ano, %NOME% aumentava sua força, com a ajuda de seus amigos mamíferos do reino animal, treinava todos os dias, até o esgotamento."
-	};
+	if (opcoesDeJogo[valorSexo] == protagonistaHomem) {
+		historia[0] = { L"Nosso protagonista nasceu em uma fazenda, sem energia elétrica, estradas de asfalto ou video-games para passar o tempo.", // "meio" som de bebe chorando
+			L"Desde a mais tenra idade, sempre gostou muito de exercer sua força e domínio sobre o mundo natural a sua volta.",
+			L"Logo cresceu e se tornou uma pessoa conhecida pela capcidade física, já que conseguia quebrar bolas de bilhar usando as nádegas.", // "final" bolas bilhar
+			L"Ano após ano, nosso herói aumentava sua força, com a ajuda de seus amigos mamíferos do reino animal, treinava todos os dias, até o esgotamento."
+		};
+	}
+	else {
+		historia[0] = { L"Nossa protagonista nasceu em uma fazenda, sem energia elétrica, estradas de asfalto ou video-games para passar o tempo.", // "meio" som de bebe chorando
+			L"Desde a mais tenra idade, sempre gostou muito de exercer sua força e domínio sobre o mundo natural a sua volta.",
+			L"Logo cresceu e se tornou uma pessoa conhecida pela capcidade física, já que conseguia quebrar bolas de bilhar usando as nádegas.", // "final" bolas bilhar
+			L"Ano após ano, nossa protagonista aumentava sua força, com a ajuda de seus amigos mamíferos do reino animal, treinava todos os dias, até o esgotamento."
+		};
+	}
 	// etapa 1 = migração urbana
-	historia[1] = { L"Após superar todos os seus amigos da fazena no cabo de guerra, incluindo o Sr. Cavalo Doido, era hora de migrar.", // "final" som de cavalo doido
-		L"%NOME% decide que é hora de um êxodo rural, e prepara suas coisas para a longa viagem até a cidade grande.",	// "final" carro
-		L"Enquanto relembra sua vida na fazenda antes de apertar a mão do motorista, %NOME% aperta com força o amuleto de família que recebera dos pais antes da viagem.",
-		L"Está na família há gerações, todo sabem que ele traz sorte. Pena que o amuleto é um pingente contendo um saquinho de esterco ovino.", // "final" ovelhas
-		L"Pra piorar as coisas, o único lugar com espaço para recém-chegados sem dinheiro treinarem levantamento de peso é o esgoto."
-	};
+	if (opcoesDeJogo[valorSexo] == protagonistaHomem) {
+		historia[1] = { L"Após superar todos os seus amigos da fazena no cabo de guerra, incluindo o Sr. Cavalo Doido, era hora de migrar.", // "final" som de cavalo doido
+			L"O herói decide que é hora de um êxodo rural, e prepara suas coisas para a longa viagem até a cidade grande.",	// "final" carro
+			L"Enquanto relembra sua vida na fazenda, logo antes de apertar a mão do motorista, herói aperta com força o amuleto de família que recebera dos pais antes da viagem.",
+			L"Está na família há gerações, todo sabem que ele traz sorte. Pena que o amuleto é um pingente contendo um saquinho de esterco de ovelha.", // "final" ovelhas
+			L"Pra piorar as coisas, o único lugar com espaço para recém-chegados sem dinheiro treinarem levantamento de peso é o esgoto."
+		};
+	}
+	else {
+		historia[1] = { L"Após superar todos os seus amigos da fazena no cabo de guerra, incluindo o Sr. Cavalo Doido, era hora de migrar.", // "final" som de cavalo doido
+			L"A protagonista decide que é hora de um êxodo rural, e prepara suas coisas para a longa viagem até a cidade grande.",	// "final" carro
+			L"Enquanto relembra sua vida na fazenda, logo antes de apertar a mão do motorista, herói aperta com força o amuleto de família que recebera dos pais antes da viagem.",
+			L"Está na família há gerações, todo sabem que ele traz sorte. Pena que o amuleto é um pingente contendo um saquinho de esterco de ovelha.", // "final" ovelhas
+			L"Pra piorar as coisas, o único lugar com espaço para recém-chegados sem dinheiro treinarem levantamento de peso é o esgoto."
+		};
+	}
 	// etapa 2 = emprego em canil
-	historia[2] = { L"Após longas horas de treinos e moscas, %NOME% finalmente percebe que sua sorte está mudando."
-		L"Com um emprego em um canil, lugar para treinar não mais será um problema, do mesmo modo que treinar na fazenda não era.",
-		L"%NOME% sempre se deu bem com animais, a única exceção era e ainda é os insetos.",	// "final" enxame
-	};
+	if (opcoesDeJogo[valorSexo] == protagonistaHomem) {
+		historia[2] = { L"Após longas horas de treinos e moscas, nosso aventureiro finalmente percebe que sua sorte está mudando."
+			L"Com um emprego em um canil, lugar para treinar não mais será um problema, do mesmo modo que treinar na fazenda não era.",
+			L"O protagonista dessa história sempre se deu bem com animais, a única exceção continuava sendo as pragas voadoras.",	// "final" enxame
+		};
+	}
+	else {
+		historia[2] = { L"Após longas horas de treinos e moscas, nossa estrela finalmente percebe que sua sorte está mudando."
+			L"Com um emprego em um canil, lugar para treinar não mais será um problema, do mesmo modo que treinar na fazenda não era.",
+			L"A protagonista dessa história sempre se deu bem com animais, a única exceção continuava sendo as pragas voadoras.",	// "final" enxame
+		};
+	}
 	// etapa 3 = pequena academia nos suburbios
-	historia[3] = { L"Infelizmente parece que um canil também é um lugar infestado por moscas.",
-		L"%NOME% pede ao céu para que o seu destino não seja sobrecarregado com moscas.",	// "inicio" trovao
-		L"Com o seu segundo salário, %NOME% finalmente pode pagar a mensalidade de uma academia de musculação."
-		L"Isso sim deve livrá-%lo% das moscas, sempre as malditas moscas!"	// "inicio" trovao
-	};
+	if (opcoesDeJogo[valorSexo] == protagonistaHomem) {
+		historia[3] = { L"Infelizmente parece que um canil também é um lugar infestado por moscas.",
+			L"Nosso desbravador pede ao céu para que o seu destino não seja sobrecarregado com moscas.",	// "inicio" trovao
+			L"Com o seu segundo salário, o audacioso finalmente pode pagar a mensalidade de uma academia de musculação."
+			L"Isso sim deve livrá-lo das moscas, sempre as malditas moscas!"	// "inicio" trovao
+		};
+	}
+	else {
+		historia[3] = { L"Infelizmente parece que um canil também é um lugar infestado por moscas.",
+			L"Nossa protagonista pede ao céu para que o seu destino não seja sobrecarregado com moscas.",	// "inicio" trovao
+			L"Com o seu segundo salário, a estrela finalmente pode pagar a mensalidade de uma academia de musculação."
+			L"Isso sim deve livrá-la das moscas, sempre as malditas moscas!"	// "inicio" trovao
+		};
+	}
 	// etapa 4 = academia no centro da cidade
-	historia[4] = { L"%NOME% treinava duro para se livrar das moscas, nem que isso fosse a última coisa a fazer em vida!",
-		L"Enquanto treinava na pequena academia, %NOME% percebeu que um senhor ia espirrar enquanto erguia toneladas de peso.",	// "final" espirro
-		L"Por pura sorte, ele foi salvo %pelo nosso herói/pela nossa protagonista%, que conseguiu chutá-lo para longe da barra caindo.", // "final" ossos quebrando
-		L"Feliz por ter quebrado apenas os dois braços, ele conta que é um olheiro da equipe Delta-Zeta-Simba-Rei-Leão, e convida %NOME% para a equipe.",
-		L"Parece que tudo vai dar certo, finalmente! uma academia no centro da cidade! Finalmente as moscas vão embora."	// "inicio" trovao
-	};
+	if (opcoesDeJogo[valorSexo] == protagonistaHomem) {
+		historia[4] = { L"O notável treinava duro para se livrar das moscas, nem que isso fosse a última coisa a fazer em vida!",
+			L"Enquanto treinava na pequena academia, nosso vencedor percebeu que um senhor ia espirrar enquanto erguia toneladas de peso.",	// "final" espirro
+			L"Por pura sorte, ele foi salvo pelo nosso herói, que conseguiu chutá-lo para longe da barra caindo.", // "final" ossos quebrando
+			L"Feliz por ter quebrado apenas os dois braços, ele conta que é um olheiro da equipe Delta-Zeta-Simba-Rei-Leão, e convida seu guardião para a equipe.",
+			L"Parece que tudo vai dar certo, finalmente! uma academia no centro da cidade! Finalmente as moscas vão embora."	// "inicio" trovao
+		};
+	}
+	else {
+		historia[4] = { L"Nossa estrela treinava duro para se livrar das moscas, nem que isso fosse a última coisa a fazer em vida!",
+			L"Enquanto treinava na pequena academia, a protagonista percebeu que um senhor ia espirrar enquanto erguia toneladas de peso.",	// "final" espirro
+			L"Por pura sorte, ele foi salvo pela nossa protagonista, que conseguiu chutá-lo para longe da barra caindo.", // "final" ossos quebrando
+			L"Feliz por ter quebrado apenas os dois braços, ele conta que é um olheiro da equipe Delta-Zeta-Simba-Rei-Leão, e convida a protagonista para a equipe.",
+			L"Parece que tudo vai dar certo, finalmente! uma academia no centro da cidade! Finalmente as moscas vão embora."	// "inicio" trovao
+		};
+	}
 	// etapa 5 = levantamento nas olimpíadas no rio
-	historia[5] = { L"%NOME% é %o próximo/a próxima% a ser chamada, finalmente o desafio final, as olímpiadas!",
-		L"Infelizmente parece que o centro da cidade era rodeado por restaurantes, que atraem todo tipo de moscas!",
-		L"Mas isso não era mais motivo de preocupação, afinal o nome %NOME% esta sendo chamado pelo anunciador oficial de levantadores olímpicos!",	// "nomeio" somfx_HalterVozNoRadio
-		L"Esse é o nome que será chamado! Então o próximo desafio significa vencer as olimpíadas! Certamente um evento desse porte, com tanto dinheiro roubado via imposto...",
-		L"É simplesmente impossível haver moscas atrapalhando por aqui!"	// "inicio" trovao
-	};
+	if (opcoesDeJogo[valorSexo] == protagonistaHomem) {
+		historia[5] = { L"Nosso herói é o próximo a ser chamado, finalmente o desafio final, as olímpiadas!",
+			L"Infelizmente parece que o centro da cidade era rodeado por restaurantes, que atraem todo tipo de moscas!",
+			L"Mas isso não era mais motivo de preocupação, afinal o nome do nosso herói esta sendo chamado pelo anunciador oficial de levantadores olímpicos!",	// "nomeio" somfx_HalterVozNoRadio
+			L"Esse é o nome que será chamado! Então o próximo desafio significa vencer as olimpíadas! Certamente um evento desse porte, com tanto dinheiro roubado via imposto...",
+			L"É simplesmente impossível haver moscas atrapalhando por aqui!"	// "inicio" trovao
+		};
+	}
+	else {
+		historia[5] = { L"Nossa protagonista é a próxima a ser chamada, finalmente o desafio final, as olímpiadas!",
+			L"Infelizmente parece que o centro da cidade era rodeado por restaurantes, que atraem todo tipo de moscas!",
+			L"Mas isso não era mais motivo de preocupação, afinal o nome da nossa partidária esta sendo chamado pelo anunciador oficial de levantadores olímpicos!",	// "nomeio" somfx_HalterVozNoRadio
+			L"Esse é o nome que será chamado! Então o próximo desafio significa vencer as olimpíadas! Certamente um evento desse porte, com tanto dinheiro roubado via imposto...",
+			L"É simplesmente impossível haver moscas atrapalhando por aqui!"	// "inicio" trovao
+		};
+	}
+
 	vector<string> sonsDeFundo = { "somfundo_HalterFazenda",
 		"somfundo_HalterEsgoto",
 		"somfundo_HalterCanil",

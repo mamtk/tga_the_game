@@ -139,6 +139,7 @@ void Jogo::inicializar()
 		L"Desativar som:", // [3]
 		L"Desativar musicas:", // [4]
 		L"Pular história:", // [5]
+		L"Sexo do personagem:", // [6]
 	};
 	int sizeTextoOpcoes = textoOpcoes.size();
 	vector<vector<wstring>> stringsValores;
@@ -155,19 +156,22 @@ void Jogo::inicializar()
 		case 2: // variáveis possíveis para a opção [2] do textoOpcoes
 			stringsValores[nivel] = { L"Não", L"Sim" }; // opções para [2] (desativar fatality)
 			break;
-		case 3: // variáveis possíveis para a opção [2] do textoOpcoes
+		case 3: // variáveis possíveis para a opção [3] do textoOpcoes
 			stringsValores[nivel] = { L"Não", L"Sim" }; // opções para [3] (desativar som)
 			break;
-		case 4: // variáveis possíveis para a opção [2] do textoOpcoes
+		case 4: // variáveis possíveis para a opção [4] do textoOpcoes
 			stringsValores[nivel] = { L"Não", L"Sim" }; // opções para [4] (desativar musicas)
 			break;
-		case 5: // variáveis possíveis para a opção [2] do textoOpcoes
+		case 5: // variáveis possíveis para a opção [5] do textoOpcoes
 			stringsValores[nivel] = { L"Não", L"Sim" }; // opções para [5] (pular história)
+			break;
+		case 6: // variáveis possíveis para a opção [6] do textoOpcoes
+			stringsValores[nivel] = { L"Homem", L"Mulher" }; // opções para [5] (sexo do personagem)
 			break;
 		}
 	}
 	opcoes.inicializar(textoOpcoes, stringsValores, textoCabecalhoOpcoes, "fundo_MenuOpcoes", "somfundo_MenuOpcoes", { 0 }, 0, { 0 }, -1, -1, 0, 27, 550, -1, 21, 0, 1, 0, { 91, 101, 11, 255 }, 
-		{ 255, 51, 101, 255 }, { 91, 101, 11, 255 }, { 255, 51, 101, 255 }, { 255, 51, 101, 255 }, true, "fonteNormalSombra");
+	{ 255, 51, 101, 255 }, { 255, 51, 101, 255 }, { 91, 101, 11, 255 }, { 255, 51, 101, 255 }, true, "fonteNormalSombra");
 
 	vector<wstring> textoInstantaneo = { L"Continuar o jogo", L"Sair do jogo" };
 	instantaneo.inicializar(textoInstantaneo, L"", "");
@@ -263,6 +267,10 @@ void Jogo::gerenciarEstado()
 				creditos.resetarMenu();
 				estado = menuPrincipal;
 			}
+			break;
+		case menuHalterofilismoCampanha:
+			break;
+		case menuHalterofilismoSandbox:
 			break;
 		case jogoHalterofilismoCampanha:
 			halterofilia.campanha();
