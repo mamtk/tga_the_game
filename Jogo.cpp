@@ -203,20 +203,20 @@ void Jogo::inicializar()
 	// menu de vitoria
 	wstring textoCabecalhoVitoria = L"Escolha a opção desejada\n\nPressione [CIMA] ou [BAIXO] ou passe o mouse para mudar a seleção.\n\
 									 			\nPressione [ENTER] para iniciar o jogo com a opção destacada ou Menu Principal para voltar ao menu.";
-	vector<wstring> textoOpcoesCampanha = { L"Continuar", // [0]
+	vector<wstring> textoOpcoesVitoria = { L"Continuar", // [0]
 		L"Menu Principal", // [1]
 		L"Sair do jogo", // [2]
 	};
-	menuVitoria.inicializar(textoOpcoesCampanha, textoCabecalhoVitoria, " ", " ", { xCentro, (int)(yCentro*.3) }, 0, xCentro, (int)(yCentro), 0, 31, {}, {}, {}, true, "fonteNormalSombra");
+	menuVitoria.inicializar(textoOpcoesVitoria, textoCabecalhoVitoria, " ", " ", { xCentro, (int)(yCentro*.3) }, 0, xCentro, (int)(yCentro), 0, 31, {}, {}, {}, true, "fonteNormalSombra");
 
 	// menu de derrota
-	wstring textoCabecalhoVitoria = L"Escolha a opção desejada\n\nPressione [CIMA] ou [BAIXO] ou passe o mouse para mudar a seleção.\n\
+	wstring textoCabecalhoDerrota = L"Escolha a opção desejada\n\nPressione [CIMA] ou [BAIXO] ou passe o mouse para mudar a seleção.\n\
 									 									 			\nPressione [ENTER] para iniciar o jogo com a opção destacada ou Menu Principal para voltar ao menu.";
-	vector<wstring> textoOpcoesCampanha = { L"Repetir", // [0]
+	vector<wstring> textoOpcoesDerrota = { L"Repetir", // [0]
 		L"Menu Principal", // [1]
 		L"Sair do jogo", // [2]
 	};
-	menuVitoria.inicializar(textoOpcoesCampanha, textoCabecalhoVitoria, " ", " ", { xCentro, (int)(yCentro*.3) }, 0, xCentro, (int)(yCentro), 0, 31, {}, {}, {}, true, "fonteNormalSombra");
+	menuVitoria.inicializar(textoOpcoesDerrota, textoCabecalhoDerrota, " ", " ", { xCentro, (int)(yCentro*.3) }, 0, xCentro, (int)(yCentro), 0, 31, {}, {}, {}, true, "fonteNormalSombra");
 }
 
 void Jogo::finalizar()
@@ -469,7 +469,10 @@ void Jogo::gerenciarMenuVitoria()
 		break;
 	default:
 		break;
-	}
+}
+void Jogo::gerenciarMenuDerrota()
+	{
 
+	}
 
 }
