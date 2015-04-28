@@ -54,6 +54,8 @@ void Halterofilismo::inicializar(int estado, vector<int> valoresOpcoesDeJogo)
 	protagonista.setVelocidadeAnimacao(7);
 	barraProgresso.setSpriteSheet("fx_HalterBarra");
 	barraProgresso.setVelocidadeAnimacao(5);
+	// usamos '->' pois getSpriteSheet retorna um ponteiro, e tudo que precisamos saber é que
+	//	'->' é mágico, e do bem, pois nos permite acessar os membros do objeto para o qual o ponteiro aponta...
 	sizeBarraProgressoFrames = barraProgresso.getSpriteSheet()->getNumFramesDaAnimacao(0);
 	progressoMaximo = sizeBarraProgressoFrames - 1;	// reduzimos 1, pois: indice ultimo elemento = total - 1
 	xyLinhasObjetivo.resize(sizeBarraProgressoFrames);	// iniciar memória, antes de utilizá-la
@@ -399,23 +401,21 @@ void Halterofilismo::desenhar()
 
 		if (!pausado) {	// se o jogo está pausado não queremos alterar nada
 			if (tempoDificultar.passouTempoMS(fatorDificuldade)) {
-				//dificultar();
+				dificultar();
 			}
 			if (tempoPragas.passouTempoMS(5000)) {
-				//pragaAlada();
+				pragaAlada();
 			}
 		}
 		/****/
 
-		// primeiro gerenciamos o progresso (pois se terminou queremos exibir menu, etc antes de desenhar algo)
-		//gerenciarProgresso();
 		//protagonista.setCor(50, 50, 50);
 		protagonista.desenhar(coordenadasXY[cena][0], coordenadasXY[cena][1]);
 		// desenhamos o hud antes apenas das pragas
 		desenharHUD();
 		if (!pausado) {	// se o jogo está pausado não queremos alterar nada
-			//gerenciarPragas();
-			//gerenciarLevantamento();	// temporizador, progresso, eventos
+			gerenciarPragas();
+			gerenciarLevantamento();	// temporizador, progresso, eventos
 			if (avisoPrimeiraPraga) { // se temos que avisar, temos que avisar!
 				if (tempoAvisoPragas.passouTempo(segundosAvisoPragas))
 					avisoPrimeiraPraga = false;
@@ -526,10 +526,11 @@ void Halterofilismo::pragaAlada()
 	pragasAladas.push_back(praga);	// adicionar Sprite recém criada no final (back) do vetor
 
 	int sizePragas = pragasAladas.size();
-	if (xyPragas.size() < sizePragas) // queremos nos certificar de que a memória foi reservada
+	if (xyPragas.size() < sizePragas) { // queremos nos certificar de que a memória foi reservada
 		xyPragas.resize(pragasAladas.size());
-	if (chegouPraga.size() < sizePragas)
 		chegouPraga.resize(sizePragas);	// queremos nos certificar de que a memória foi reservada
+		direcaoPragas.resize(sizePragas);
+	}
 
 	int elementoAtual = sizePragas - 1;	// lembrar que size = id do último elemento + 1
 	xyPragas[elementoAtual].resize(2);	// precisamos de 2 elementos
@@ -564,11 +565,11 @@ void Halterofilismo::gerenciarPragas()
 	int xObjetivo, yObjetivo;
 	if (opcoesDeJogo[valorSexo] == protagonistaHomem) {
 		xObjetivo = coordenadasXY[cena][0] + xyFinaisSpritesPragas[protagonistaHomem][frameAtual][0];
-		yObjetivo = coordenadasXY[cena][1] - xyFinaisSpritesPragas[protagonistaHomem][frameAtual][1];
+		yObjetivo = coordenadasXY[cena][1] + xyFinaisSpritesPragas[protagonistaHomem][frameAtual][1];
 	}
 	else {
 		xObjetivo = coordenadasXY[cena][0] + xyFinaisSpritesPragas[protagonistaMulher][frameAtual][0];
-		yObjetivo = coordenadasXY[cena][1] - xyFinaisSpritesPragas[protagonistaMulher][frameAtual][1];
+		yObjetivo = coordenadasXY[cena][1] + xyFinaisSpritesPragas[protagonistaMulher][frameAtual][1];
 	}
 	for (int i = 0; i < sizePragas; i++) {
 		if (chegouPraga[i] != true && (xyPragas[i][0] != xObjetivo || xyPragas[i][1] != yObjetivo)) {	// ainda não chegamos lá
@@ -577,9 +578,9 @@ void Halterofilismo::gerenciarPragas()
 			if (rand() % 3) {	// módulo 3, nos dá 66% de chance de não ser 0 (false)
 				// vamos adicionar um pouco de ruído
 				if (rand() % 2)
-					xyPragas[i][0] -= rand() % 4;
+					xyPragas[i][0] -= rand() % 6;
 				else
-					xyPragas[i][0] += rand() % 4;
+					xyPragas[i][0] += rand() % 6;
 			}
 			else {	// vamos seguir um trajeto linear
 				if (xyPragas[i][0] > xObjetivo)
@@ -604,6 +605,10 @@ void Halterofilismo::gerenciarPragas()
 			}
 			if (xyPragas[i][0] == xObjetivo && xyPragas[i][1] == yObjetivo)
 				chegouPraga[i] = true;
+		}
+		else {	// já chegamos lá
+			// só queremos atuar no eixo x, pois não queremos dar a entender que as moscas estão voando
+			xyPragas[i][0] = xObjetivo + rand() % 30;
 		}
 		pragasAladas[i].desenhar(xyPragas[i][0], xyPragas[i][1]);
 	}
@@ -1032,6 +1037,7 @@ bool Halterofilismo::desenharMenuVitoria()
 	{
 		return true;
 	}
+	return false;
 }
 
 bool Halterofilismo::desenharMenuDerrota()
@@ -1040,5 +1046,5 @@ bool Halterofilismo::desenharMenuDerrota()
 	{
 		return true;
 	}
-
+	return false;
 }

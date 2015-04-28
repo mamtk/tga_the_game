@@ -69,6 +69,7 @@ class Halterofilismo
 	// vetor a.b.c.d: nivel a = sprite, b = frame, c = x e y (em função da origem da sprite)
 	vector<vector<vector<int>>> xyFinaisSpritesPragas;	// Xmin,Ymin,Xmax,Ymax para as pragas para cada sprite, usado para mover as pragas
 	vector<vector<int>> xyPragas;	// coordenadas de desenho
+	vector<vector<bool>> direcaoPragas;	// true = direita; false = esquerda (devido à falsidade do igualitarismo)
 	vector<bool>	chegouPraga;	// usado para saber se a praga já está incomodando ou não
 
 
