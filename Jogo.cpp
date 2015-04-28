@@ -472,17 +472,13 @@ void Jogo::gerenciarMenuVitoria()
 	}
 }
 
-void Jogo::AtivarRepetir()
-{
-	repetir = true;
-}
-
 void Jogo::gerenciarMenuDerrota()
 {
 	int opcaoEscolhida = menuDerrota.getOpcao();
 	switch (opcaoEscolhida) {
 	case escolhaRepetir:
-		AtivarRepetir();
+		halterofilia.resetarLevantamento();
+		halterofilia.ativarRepetir();
 		estado = jogoHalterofilismoCampanha;
 		break;
 	case escolhaMenuPrincipalDerrota:

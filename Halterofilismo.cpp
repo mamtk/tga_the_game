@@ -1076,3 +1076,8 @@ void Halterofilismo::avancarEtapa()
 	if (etapaAtual < 6)
 		etapaAtual++;
 }
+
+void Halterofilismo::ativarRepetir()
+{
+	repetir = true;
+}

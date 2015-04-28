@@ -134,4 +134,5 @@ public:
 
 	void resetarLevantamento();
 	void avancarEtapa();
+	void ativarRepetir();
 };

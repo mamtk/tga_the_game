@@ -46,7 +46,6 @@ class Jogo
 	int jogo = 0;
 
 	bool menuInstantaneoAtivo = false;	// essa variável nos diz se o menu instanâneo está ativado
-	bool repetir = false;
 
 	void gerenciarEstado();
 	void gerenciarMenuPrincipal();
@@ -66,6 +65,5 @@ public:
 
 	void executar();
 	void setEstado(int);
-	void AtivarRepetir();
 };
 
