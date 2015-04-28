@@ -281,6 +281,7 @@ void Jogo::gerenciarEstado()
 			ajuda.desenhar();	// desenhar o menu? a verdade é que o menu se desenha sozinho! haha, piada idiota.
 			if (ajuda.finalizado()) {	// verificar se o jogador decidiu voltar
 				principal.resetarMenu();
+				opcoesDeJogo = opcoes.getValores();
 				ajuda.resetarMenu();
 				estado = menuPrincipal;
 				if (opcoesDeJogo[valorDesativarMusicas] == 0)
@@ -291,6 +292,7 @@ void Jogo::gerenciarEstado()
 			creditos.desenhar();	// desenhar o menu? a verdade é que o menu se desenha sozinho! haha, piada idiota.
 			if (creditos.finalizado()) {	// verificar se o jogador decidiu voltar
 				principal.resetarMenu();
+				opcoesDeJogo = opcoes.getValores();
 				creditos.resetarMenu();
 				estado = menuPrincipal;
 				if (opcoesDeJogo[valorDesativarMusicas] == 0)
@@ -322,19 +324,23 @@ void Jogo::gerenciarMenuPrincipal()
 	switch (opcaoEscolhida) {
 	case escolhaJogar:
 		estado = menuJogos;
-		secundario.tocarMusica();
+		if (opcoesDeJogo[valorDesativarMusicas] == 0)
+			secundario.tocarMusica();
 		break;
 	case escolhaAjuda:
 		estado = menuAjuda;
-		ajuda.tocarMusica();
+		if (opcoesDeJogo[valorDesativarMusicas] == 0)
+			ajuda.tocarMusica();
 		break;
 	case escolhaOpcoes:
 		estado = menuOpcoes;
-		opcoes.tocarMusica();
+		if (opcoesDeJogo[valorDesativarMusicas] == 0)
+			opcoes.tocarMusica();
 		break;
 	case escolhaCreditos:
 		estado = menuCreditos;
-		creditos.tocarMusica();
+		if (opcoesDeJogo[valorDesativarMusicas] == 0)
+			creditos.tocarMusica();
 		break;
 	case escolhaSair:
 		aplicacao.sair = true;	// facilidade da libUnicornio
