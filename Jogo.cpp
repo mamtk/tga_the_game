@@ -32,7 +32,7 @@ void Jogo::inicializar()
 	recursos.carregarFonte("fonteGrande", "UbuntuMono-R.ttf", 27);
 	recursos.carregarFonte("fonteGrandeSombra", "UbuntuMono-B.ttf", 29);
 	// sons
-	/*recursos.carregarAudio("somfundo_HalterFazenda", "audio/somfundo/somfundo_HalterFazenda.ogg");
+	recursos.carregarAudio("somfundo_HalterFazenda", "audio/somfundo/somfundo_HalterFazenda.ogg");
 	recursos.carregarAudio("somfundo_HalterEsgoto", "audio/somfundo/somfundo_HalterEsgoto.ogg");
 	recursos.carregarAudio("somfundo_HalterCanil", "audio/somfundo/somfundo_HalterCanil.ogg");
 	recursos.carregarAudio("somfundo_HalterAcademiaSuburbio", "audio/somfundo/somfundo_HalterAcademiaSuburbio.ogg");
@@ -52,7 +52,7 @@ void Jogo::inicializar()
 	recursos.carregarAudio("somfundo_MenuPrincipal", "audio/music_02_Menu.ogg");
 	recursos.carregarAudio("somfundo_MenuOpcoes", "audio/music_03_Opcoes.ogg");
 	recursos.carregarAudio("somfundo_MenuAjuda", "audio/music_04_Ajuda.ogg");
-	recursos.carregarAudio("somfundo_MenuCreditos", "audio/music_05_Creditos.ogg");*/
+	recursos.carregarAudio("somfundo_MenuCreditos", "audio/music_05_Creditos.ogg");
 	// sprites
 	recursos.carregarSpriteSheet("fx_Esmaecer", "img/fx/fx_esmaecer.png", 1, 100);
 	recursos.carregarSpriteSheet("fx_Dot", "img/fx/fx_Dot.png", 1, 1);
