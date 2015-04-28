@@ -374,6 +374,7 @@ void Halterofilismo::campanha()
 void Halterofilismo::desenhar()
 {
 	int frameAtual = protagonista.getFrameAtual();
+	Sprite a;
 	uniDepurar("mouse.x", mouse.x);
 	uniDepurar("mouse.y", mouse.y);
 	uniDepurar("mouse.y", mouse.y);
@@ -385,6 +386,8 @@ void Halterofilismo::desenhar()
 		uniDepurar("xObjetivo", coordenadasXY[cena][0] + xyFinaisSpritesPragas[protagonistaMulher][frameAtual][0]);
 		uniDepurar("yObjetivo", coordenadasXY[cena][1] + xyFinaisSpritesPragas[protagonistaMulher][frameAtual][1]);
 	}
+	a.setSpriteSheet("fundo_Halter01");
+	
 	// switch case estado do jogo
 
 	// case sandbox
