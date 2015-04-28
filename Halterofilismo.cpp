@@ -363,7 +363,6 @@ void Halterofilismo::desenhar()
 	uniDepurar("mouse.y", mouse.y);
 	uniDepurar("xObjetivo", coordenadasXY[cena][0] + xyFinaisSpritesPragas[protagonistaHomem][frameAtual][0]);
 	uniDepurar("yObjetivo", coordenadasXY[cena][1] + xyFinaisSpritesPragas[protagonistaHomem][frameAtual][1]);
-	uniDesenharCirculo(coordenadasXY[cena][0] +xyFinaisSpritesPragas[protagonistaHomem][frameAtual][0], coordenadasXY[cena][1] + xyFinaisSpritesPragas[protagonistaHomem][frameAtual][1], 1, 9);
 	
 	// switch case estado do jogo
 
@@ -410,7 +409,7 @@ void Halterofilismo::desenhar()
 			}
 		}
 	}
-
+	uniDesenharCirculo(coordenadasXY[cena][0] + xyFinaisSpritesPragas[protagonistaHomem][frameAtual][0], coordenadasXY[cena][1] + xyFinaisSpritesPragas[protagonistaHomem][frameAtual][1], 5, 90);
 }
 // aqui desenhamos na tela os elementos necessários pela mecânica do jogo
 void Halterofilismo::desenharHUD()
