@@ -288,54 +288,64 @@ void Halterofilismo::prepararCampanha()
 		};
 	}
 
-	vector<string> sonsDeFundo = { "somfundo_HalterFazenda",
-		"somfundo_HalterEsgoto",
-		"somfundo_HalterCanil",
-		"somfundo_HalterAcademiaSuburbio",
-		"somfundo_HalterAcademiaCentro",
-		"somfundo_HalterOlimpiadas"
-	};
+	vector<string> sonsDeFundo;
+	if (opcoesDeJogo[valorDesativarSom] == 0)
+	{
+		sonsDeFundo.resize(6);
+		
+		sonsDeFundo	= {"somfundo_HalterFazenda",
+			"somfundo_HalterEsgoto",
+			"somfundo_HalterCanil",
+			"somfundo_HalterAcademiaSuburbio",
+			"somfundo_HalterAcademiaCentro",
+			"somfundo_HalterOlimpiadas"
+			};
+	}
+
 	vector<vector<vector<string>>> sonsDaHistoria;
 	// sons nas posições (etapa.linha.quando): 0.0.1; 0.2.2; 1.0.2; 1.1.2; 1.3.2; 2.2.2; 3.1.0; 3.3.0; 4.1.2; 4.2.2; 4.4.0; 5.2.1; 5.4.0
-	sonsDaHistoria.resize(6);	// usamos até a etapa 5
-	// etapa 0
-	sonsDaHistoria[0].resize(3);	// usamos até a linha 3
-	sonsDaHistoria[0][0].resize(3);	// usamos sons na a linha 1 da etapa 0
-	sonsDaHistoria[0][0][tocarMeioDaLinha] = "somfx_BebeChorando";
-	sonsDaHistoria[0][2].resize(3);	// usamos sons na a linha 3 da etapa 0
-	sonsDaHistoria[0][2][tocarFinalDaLinha] = "somfx_GrunhidosBolaBilhar";
-	// etapa 1
-	sonsDaHistoria[1].resize(4);	// usamos até a linha 4
-	sonsDaHistoria[1][0].resize(3);	// usamos sons na a linha 1 da etapa 1
-	sonsDaHistoria[1][0][tocarFinalDaLinha] = "somfx_CavaloDoido";
-	sonsDaHistoria[1][1].resize(3);	// usamos sons na a linha 2 da etapa 1
-	sonsDaHistoria[1][1][tocarFinalDaLinha] = "somfx_CarroLigando";
-	sonsDaHistoria[1][3].resize(3);	// usamos sons na a linha 4 da etapa 1
-	sonsDaHistoria[1][3][tocarFinalDaLinha] = "somfx_Ovelhas";
-	// etapa 2
-	sonsDaHistoria[2].resize(3);	// usamos até a linha 3
-	sonsDaHistoria[2][2].resize(3);	// usamos sons na a linha 3 da etapa 2
-	sonsDaHistoria[2][2][tocarFinalDaLinha] = "somfx_Enxame";
-	// etapa 3
-	sonsDaHistoria[3].resize(4);	// usamos até a linha 4
-	sonsDaHistoria[3][1].resize(3);	// usamos sons na a linha 2 da etapa 3
-	sonsDaHistoria[3][1][tocarComecoDaLinha] = "somfx_Trovao";
-	sonsDaHistoria[3][3].resize(3);	// usamos sons na a linha 4 da etapa 3
-	sonsDaHistoria[3][3][tocarComecoDaLinha] = "somfx_Trovao";
-	// etapa 4
-	sonsDaHistoria[4].resize(5);	// usamos até a linha 5
-	sonsDaHistoria[4][1].resize(3);	// usamos sons na a linha 2 da etapa 4
-	sonsDaHistoria[4][1][tocarFinalDaLinha] = "somfx_Espirro";
-	sonsDaHistoria[4][2].resize(3);	// usamos sons na a linha 3 da etapa 4
-	sonsDaHistoria[4][2][tocarFinalDaLinha] = "somfx_OssosQuebrando";
-	sonsDaHistoria[4][4].resize(3);	// usamos sons na a linha 5 da etapa 4
-	sonsDaHistoria[4][4][tocarComecoDaLinha] = "somfx_Trovao";
-	// etapa 5
-	sonsDaHistoria[5].resize(5);	// usamos até a linha 5
-	sonsDaHistoria[5][1].resize(3);	// usamos sons na a linha 2 da etapa 4
-	sonsDaHistoria[5][1][tocarMeioDaLinha] = "somfx_VozNoRadio";
-	sonsDaHistoria[5][4].resize(3);	// usamos sons na a linha 5 da etapa 4
-	sonsDaHistoria[5][4][tocarComecoDaLinha] = "somfx_Trovao";
+	if (opcoesDeJogo[valorDesativarMusicas] == 0)
+	{
+		sonsDaHistoria.resize(6);	// usamos até a etapa 5
+		// etapa 0
+		sonsDaHistoria[0].resize(3);	// usamos até a linha 3
+		sonsDaHistoria[0][0].resize(3);	// usamos sons na a linha 1 da etapa 0
+		sonsDaHistoria[0][0][tocarMeioDaLinha] = "somfx_BebeChorando";
+		sonsDaHistoria[0][2].resize(3);	// usamos sons na a linha 3 da etapa 0
+		sonsDaHistoria[0][2][tocarFinalDaLinha] = "somfx_GrunhidosBolaBilhar";
+		// etapa 1
+		sonsDaHistoria[1].resize(4);	// usamos até a linha 4
+		sonsDaHistoria[1][0].resize(3);	// usamos sons na a linha 1 da etapa 1
+		sonsDaHistoria[1][0][tocarFinalDaLinha] = "somfx_CavaloDoido";
+		sonsDaHistoria[1][1].resize(3);	// usamos sons na a linha 2 da etapa 1
+		sonsDaHistoria[1][1][tocarFinalDaLinha] = "somfx_CarroLigando";
+		sonsDaHistoria[1][3].resize(3);	// usamos sons na a linha 4 da etapa 1
+		sonsDaHistoria[1][3][tocarFinalDaLinha] = "somfx_Ovelhas";
+		// etapa 2
+		sonsDaHistoria[2].resize(3);	// usamos até a linha 3
+		sonsDaHistoria[2][2].resize(3);	// usamos sons na a linha 3 da etapa 2
+		sonsDaHistoria[2][2][tocarFinalDaLinha] = "somfx_Enxame";
+		// etapa 3
+		sonsDaHistoria[3].resize(4);	// usamos até a linha 4
+		sonsDaHistoria[3][1].resize(3);	// usamos sons na a linha 2 da etapa 3
+		sonsDaHistoria[3][1][tocarComecoDaLinha] = "somfx_Trovao";
+		sonsDaHistoria[3][3].resize(3);	// usamos sons na a linha 4 da etapa 3
+		sonsDaHistoria[3][3][tocarComecoDaLinha] = "somfx_Trovao";
+		// etapa 4
+		sonsDaHistoria[4].resize(5);	// usamos até a linha 5
+		sonsDaHistoria[4][1].resize(3);	// usamos sons na a linha 2 da etapa 4
+		sonsDaHistoria[4][1][tocarFinalDaLinha] = "somfx_Espirro";
+		sonsDaHistoria[4][2].resize(3);	// usamos sons na a linha 3 da etapa 4
+		sonsDaHistoria[4][2][tocarFinalDaLinha] = "somfx_OssosQuebrando";
+		sonsDaHistoria[4][4].resize(3);	// usamos sons na a linha 5 da etapa 4
+		sonsDaHistoria[4][4][tocarComecoDaLinha] = "somfx_Trovao";
+		// etapa 5
+		sonsDaHistoria[5].resize(5);	// usamos até a linha 5
+		sonsDaHistoria[5][1].resize(3);	// usamos sons na a linha 2 da etapa 4
+		sonsDaHistoria[5][1][tocarMeioDaLinha] = "somfx_VozNoRadio";
+		sonsDaHistoria[5][4].resize(3);	// usamos sons na a linha 5 da etapa 4
+		sonsDaHistoria[5][4][tocarComecoDaLinha] = "somfx_Trovao";
+	}
 	vector<string> fundosCampanha = { "fundo_HalterFazenda",
 		"fundo_HalterEsgoto",
 		"fundo_HalterCanil",
@@ -361,9 +371,14 @@ void Halterofilismo::desenhar()
 	uniDepurar("mouse.x", mouse.x);
 	uniDepurar("mouse.y", mouse.y);
 	uniDepurar("mouse.y", mouse.y);
-	uniDepurar("xObjetivo", coordenadasXY[cena][0] + xyFinaisSpritesPragas[protagonistaHomem][frameAtual][0]);
-	uniDepurar("yObjetivo", coordenadasXY[cena][1] + xyFinaisSpritesPragas[protagonistaHomem][frameAtual][1]);
-	
+	if (opcoesDeJogo[valorSexo] == protagonistaHomem) {
+		uniDepurar("xObjetivo", coordenadasXY[cena][0] + xyFinaisSpritesPragas[protagonistaHomem][frameAtual][0]);
+		uniDepurar("yObjetivo", coordenadasXY[cena][1] + xyFinaisSpritesPragas[protagonistaHomem][frameAtual][1]);
+	}
+	else {
+		uniDepurar("xObjetivo", coordenadasXY[cena][0] + xyFinaisSpritesPragas[protagonistaMulher][frameAtual][0]);
+		uniDepurar("yObjetivo", coordenadasXY[cena][1] + xyFinaisSpritesPragas[protagonistaMulher][frameAtual][1]);
+	}
 	// switch case estado do jogo
 
 	// case sandbox
@@ -409,7 +424,10 @@ void Halterofilismo::desenhar()
 			}
 		}
 	}
-	uniDesenharCirculo(coordenadasXY[cena][0] + xyFinaisSpritesPragas[protagonistaHomem][frameAtual][0], coordenadasXY[cena][1] + xyFinaisSpritesPragas[protagonistaHomem][frameAtual][1], 5, 90);
+	if (opcoesDeJogo[valorSexo] == protagonistaHomem)
+		uniDesenharCirculo(coordenadasXY[cena][0] + xyFinaisSpritesPragas[protagonistaHomem][frameAtual][0], coordenadasXY[cena][1] + xyFinaisSpritesPragas[protagonistaHomem][frameAtual][1], 5, 90);
+	else
+		uniDesenharCirculo(coordenadasXY[cena][0] + xyFinaisSpritesPragas[protagonistaMulher][frameAtual][0], coordenadasXY[cena][1] + xyFinaisSpritesPragas[protagonistaMulher][frameAtual][1], 5, 90);
 }
 // aqui desenhamos na tela os elementos necessários pela mecânica do jogo
 void Halterofilismo::desenharHUD()

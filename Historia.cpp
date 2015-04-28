@@ -106,7 +106,7 @@ void Historia::desenhar(int etapa)
 				historiaSonsDeFundo[etapaAtual].tocar();
 		}
 		// verificamos se há som para tocar no início da primeira linha
-		if (historiaSonsDefinidos[etapaAtual].size() > linhaAtual && historiaSonsDefinidos[etapa][linhaAtual][tocarComecoDaLinha])
+		if (historiaSonsDefinidos.size() > etapa && historiaSonsDefinidos[etapa].size() > linhaAtual && historiaSonsDefinidos[etapa][linhaAtual][tocarComecoDaLinha])
 			historiaSons[etapaAtual][linhaAtual][tocarComecoDaLinha].tocar();
 	}
 	// primeiro de tudo desenhar o fundo, se existir
@@ -124,11 +124,11 @@ void Historia::desenhar(int etapa)
 		letraAtual++;
 		// verificamos se há som para tocar na letra atual
 		if (letraAtual == (int)(sizeLinhas[linhaAtual] * .5)) {
-			if (historiaSonsDefinidos[etapa].size() > linhaAtual && historiaSonsDefinidos[etapa][linhaAtual][tocarMeioDaLinha])
+			if (historiaSonsDefinidos.size() > etapa && historiaSonsDefinidos[etapa].size() > linhaAtual && historiaSonsDefinidos[etapa][linhaAtual][tocarComecoDaLinha])
 				historiaSons[etapa][linhaAtual][tocarMeioDaLinha].tocar();
 		}
 		else if (letraAtual == sizeLinhas[linhaAtual] ) {
-			if (historiaSonsDefinidos[etapa].size() > linhaAtual && historiaSonsDefinidos[etapa][linhaAtual][tocarFinalDaLinha])
+			if (historiaSonsDefinidos.size() > etapa && historiaSonsDefinidos[etapa].size() > linhaAtual && historiaSonsDefinidos[etapa][linhaAtual][tocarComecoDaLinha])
 				historiaSons[etapa][linhaAtual][tocarFinalDaLinha].tocar();
 		}
 
@@ -156,7 +156,7 @@ void Historia::desenhar(int etapa)
 			linhaAtual++;
 			letraAtual = 0;
 			// verificar se há som para tocar no começo da linha
-			if (historiaSonsDefinidos[etapa].size() > linhaAtual && historiaSonsDefinidos[etapa][linhaAtual][tocarComecoDaLinha])
+			if (historiaSonsDefinidos.size() > etapa && historiaSonsDefinidos[etapa].size() > linhaAtual && historiaSonsDefinidos[etapa][linhaAtual][tocarComecoDaLinha])
 				historiaSons[etapa][linhaAtual][tocarComecoDaLinha].tocar();
 		}
 		else if (letraAtual != sizeLinhas[linhaAtual]) {	// jogador tem pressa
