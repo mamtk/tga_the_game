@@ -357,7 +357,14 @@ void Halterofilismo::campanha()
 // loop principal
 void Halterofilismo::desenhar()
 {
-	uniDepurar("fundo", fundo.getSpriteSheet()->getCaminhoDoArquivo());
+	int frameAtual = protagonista.getFrameAtual();
+	uniDepurar("mouse.x", mouse.x);
+	uniDepurar("mouse.y", mouse.y);
+	uniDepurar("mouse.y", mouse.y);
+	uniDepurar("xObjetivo", coordenadasXY[cena][0] + xyFinaisSpritesPragas[protagonistaHomem][frameAtual][0]);
+	uniDepurar("yObjetivo", coordenadasXY[cena][1] + xyFinaisSpritesPragas[protagonistaHomem][frameAtual][1]);
+	uniDesenharCirculo(coordenadasXY[cena][0] +xyFinaisSpritesPragas[protagonistaHomem][frameAtual][0], coordenadasXY[cena][1] + xyFinaisSpritesPragas[protagonistaHomem][frameAtual][1], 1, 9);
+	
 	// switch case estado do jogo
 
 	// case sandbox

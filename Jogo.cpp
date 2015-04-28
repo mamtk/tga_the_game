@@ -270,9 +270,11 @@ void Jogo::gerenciarEstado()
 			opcoes.desenhar();	// desenhar o menu? a verdade é que o menu se desenha sozinho! haha, piada idiota.
 			if (opcoes.finalizado()) {	// verificar se o jogador decidiu voltar
 				principal.resetarMenu();
+				opcoesDeJogo = opcoes.getValores();	// melhor pegar a mais, do que a menos
 				opcoes.resetarMenu();
 				estado = menuPrincipal;
-				principal.tocarMusica();
+				if (opcoesDeJogo[valorDesativarMusicas] == 0)
+					principal.tocarMusica();
 			}
 			break;
 		case menuAjuda:
@@ -281,7 +283,8 @@ void Jogo::gerenciarEstado()
 				principal.resetarMenu();
 				ajuda.resetarMenu();
 				estado = menuPrincipal;
-				principal.tocarMusica();
+				if (opcoesDeJogo[valorDesativarMusicas] == 0)
+					principal.tocarMusica();
 			}
 			break;
 		case menuCreditos:
@@ -290,7 +293,8 @@ void Jogo::gerenciarEstado()
 				principal.resetarMenu();
 				creditos.resetarMenu();
 				estado = menuPrincipal;
-				principal.tocarMusica();
+				if (opcoesDeJogo[valorDesativarMusicas] == 0)
+					principal.tocarMusica();
 			}
 			break;
 		case menuHalterofilismoSandbox:
