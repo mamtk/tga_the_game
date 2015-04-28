@@ -40,13 +40,11 @@ void Halterofilismo::inicializar(int estado, vector<int> valoresOpcoesDeJogo)
 		protagonista.setSpriteSheet("per_HalterMulher");
 
 	xyFinaisSpritesPragas.resize(2);	// alocamos a memória que vamos utilizar
-	xyFinaisSpritesPragas[protagonistaHomem] = { { 99, 239, 207, 239 }, { 104, 201, 209, 205 }, { 111, 150, 214, 159 }, { 104, 152, 206, 161 },
-	{ 101, 153, 203, 158 }, { 95, 165, 187, 173 }, { 102, 126, 202, 141 }, { 99, 90, 196, 104 }, { 92, 60, 199, 81 }, { 88, 73, 198, 84 },
-	{ 84, 47, 195, 60 }, { 92, 30, 196, 43 }, { 107, 71, 206, 83 }
+	xyFinaisSpritesPragas[protagonistaHomem] = { { -51, 142 }, { -47, 85 }, { -35, 9 }, { -45, 9 }, { -50, 9 }, { -60, 28 }, { -51, -26 }, { -52, -89 }, 
+	{ -62, -130 }, { -70, -109 }, { -75, -150 }, { -64, -176 }, { -47 , -117 }
 	};
-	xyFinaisSpritesPragas[protagonistaMulher] = { { 85, 239, 201, 237 }, { 87, 230, 203, 227 }, { 86, 217, 196, 217 }, { 89, 208, 202, 208 },
-	{ 87, 191, 199, 192 }, { 85, 176, 196, 179 }, { 91, 154, 198, 158 }, { 96, 137, 201, 142 }, { 94, 132, 199, 139 }, { 87, 152, 198, 157 },
-	{ 85, 170, 193, 176 }, { 74, 69, 190, 85 }, { 59, 52, 173, 30 }, { 60, 57, 175, 74 }, { 73, 24, 218, 47 }
+	xyFinaisSpritesPragas[protagonistaMulher] = { { -64, 144 }, { -62, 129 }, { -62, 111 }, { -57, 95 }, { -60, 70 }, { -63, 46 }, { -53, 12 }, 
+	{ -49, -13 }, { -51, -18 }, { -59, 7 }, { -63, 40 }, { -79, -114 }, { -100, -137 }, { -100, -130 }, { -78, -183 }
 	};
 
 	protagonista.setAnimacao(0);
@@ -390,8 +388,8 @@ void Halterofilismo::desenhar()
 		protagonista.setFrame(protagonista.getFrameAtual()+1);
 	fundo.desenhar(xCentro, yCentro);
 	if (barraProgresso.getFrameAtual() >= progressoMaximo) {
-		textoTemporizador.setWstring(L"Parabéns, você ganhou!");
-		textoTemporizador.desenhar(xCentro, yCentro);
+		terminouLevantamento = true;
+		venceu = terminouLevantamento;
 		// fadeout de ~5s, depois menu de vitória baseado no tipo de jogo
 	}
 	else {
@@ -416,8 +414,8 @@ void Halterofilismo::desenhar()
 		// desenhamos o hud antes apenas das pragas
 		desenharHUD();
 		if (!pausado) {	// se o jogo está pausado não queremos alterar nada
-			gerenciarPragas();
-			gerenciarLevantamento();	// temporizador, progresso, eventos
+			//gerenciarPragas();
+			//gerenciarLevantamento();	// temporizador, progresso, eventos
 			if (avisoPrimeiraPraga) { // se temos que avisar, temos que avisar!
 				if (tempoAvisoPragas.passouTempo(segundosAvisoPragas))
 					avisoPrimeiraPraga = false;
@@ -1043,4 +1041,16 @@ bool Halterofilismo::desenharMenuDerrota()
 		return false;
 	}
 
+}
+
+void Halterofilismo::resetarLevantamento()
+{
+	barraProgresso.setFrame(0);
+	protagonista.setFrame(0);
+	progresso = 0;
+}
+void Halterofilismo::avancarEtapa()
+{
+	if (etapaAtual < 6) 
+	   etapaAtual++;
 }

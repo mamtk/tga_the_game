@@ -203,11 +203,20 @@ void Jogo::inicializar()
 	// menu de vitoria
 	wstring textoCabecalhoVitoria = L"Escolha a opção desejada\n\nPressione [CIMA] ou [BAIXO] ou passe o mouse para mudar a seleção.\n\
 									 			\nPressione [ENTER] para iniciar o jogo com a opção destacada ou Menu Principal para voltar ao menu.";
-	vector<wstring> textoOpçõesCampanha = { L"Continuar", // [0]
+	vector<wstring> textoOpcoesCampanha = { L"Continuar", // [0]
 		L"Menu Principal", // [1]
 		L"Sair do jogo", // [2]
 	};
-	menuVitoria.inicializar
+	menuVitoria.inicializar(textoOpcoesCampanha, textoCabecalhoVitoria, " ", " ", { xCentro, (int)(yCentro*.3) }, 0, xCentro, (int)(yCentro), 0, 31, {}, {}, {}, true, "fonteNormalSombra");
+
+	// menu de derrota
+	wstring textoCabecalhoVitoria = L"Escolha a opção desejada\n\nPressione [CIMA] ou [BAIXO] ou passe o mouse para mudar a seleção.\n\
+									 									 			\nPressione [ENTER] para iniciar o jogo com a opção destacada ou Menu Principal para voltar ao menu.";
+	vector<wstring> textoOpcoesCampanha = { L"Repetir", // [0]
+		L"Menu Principal", // [1]
+		L"Sair do jogo", // [2]
+	};
+	menuVitoria.inicializar(textoOpcoesCampanha, textoCabecalhoVitoria, " ", " ", { xCentro, (int)(yCentro*.3) }, 0, xCentro, (int)(yCentro), 0, 31, {}, {}, {}, true, "fonteNormalSombra");
 }
 
 void Jogo::finalizar()
@@ -315,13 +324,11 @@ void Jogo::gerenciarEstado()
 			}
 			break;
 		case jogoHalterofilismoCampanha:
-			if (halterofilia.desenharMenuVitoria())
-			{
-				estado = menuVitoria;
+			if (halterofilia.desenharMenuVitoria()) { // exibir o menu de vitoria
+				estado = menuVitoriaEstado;
 			}
-			if (halterofilia.desenharMenuDerrota())
-			{
-				estado = menuDerrota;
+			if (halterofilia.desenharMenuDerrota()) { // exibir o menu de derrota
+				estado = menuDerrotaEstado;
 			}
 			else
 				halterofilia.campanha();
@@ -329,8 +336,16 @@ void Jogo::gerenciarEstado()
 		case jogoHalterofilismoSandbox:
 			halterofilia.sandbox();
 			break;
-		//case menuVitoria:
-			
+		case menuVitoriaEstado:
+			menuVitoria.desenhar();
+			if (menuVitoria.finalizado())
+				gerenciarMenuVitoria();
+			break;
+		case menuDerrotaEstado:
+			menuDerrota.desenhar();
+			if (menuVitoria.finalizado())
+				gerenciarMenuDerrota();
+			break;
 	}
 }
 
@@ -434,13 +449,24 @@ void Jogo::gerenciarMenuSandbox()
 	}
 }
 
-void Jogo::gerenciarMenuCampanha()
+void Jogo::gerenciarMenuVitoria()
 {
-	int opcaoEscolhida = menuCampanha.getOpcao();
+	int opcaoEscolhida = menuVitoria.getOpcao();
 	switch (opcaoEscolhida) {
 	case escolhaContinuar:
+		halterofilia.resetarLevantamento();
+		halterofilia.avancarEtapa();
+		estado = jogoHalterofilismoCampanha;
 		break;
-
+	case escolhaMenuPrincipal:
+		halterofilia.resetarLevantamento();
+		estado = menuPrincipal;
+		if (opcoesDeJogo[valorDesativarMusicas] == 0)
+			principal.tocarMusica();
+		break;
+	case escolhaSairMenuCampanha:
+		aplicacao.sair;
+		break;
 	default:
 		break;
 	}

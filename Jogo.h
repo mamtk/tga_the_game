@@ -10,7 +10,8 @@ class Jogo
 {
 	// estado do jogo, valores pretendem ser universais (entre as classes)
 	enum EstadoDoJogo {
-		menuPrincipal, menuJogos, menuOpcoes, menuAjuda, menuCreditos, menuHalterofilismoSandbox, jogoHalterofilismoCampanha, jogoHalterofilismoSandbox, menuVitoriaEstado, menuDerrota
+		menuPrincipal, menuJogos, menuOpcoes, menuAjuda, menuCreditos, menuHalterofilismoSandbox, jogoHalterofilismoCampanha, jogoHalterofilismoSandbox, 
+		menuVitoriaEstado, menuDerrotaEstado
 	};
 
 	// opções dos menus
@@ -50,7 +51,8 @@ class Jogo
 	void gerenciarMenuSecundario();
 	void gerenciarMenuInstantaneo();
 	void gerenciarMenuSandbox();
-	void gerenciarMenuCampanha();
+	void gerenciarMenuVitoria();
+	void gerenciarMenuDerrota();
 
 public:
 	Jogo();
