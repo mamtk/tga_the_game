@@ -376,20 +376,9 @@ void Halterofilismo::campanha()
 void Halterofilismo::desenhar()
 {
 	int frameAtual = protagonista.getFrameAtual();
-	Sprite a;
-	uniDepurar("mouse.x", mouse.x);
-	uniDepurar("mouse.y", mouse.y);
-	uniDepurar("mouse.y", mouse.y);
-	if (opcoesDeJogo[valorSexo] == protagonistaHomem) {
-		uniDepurar("xObjetivo", coordenadasXY[cena][0] + xyFinaisSpritesPragas[protagonistaHomem][frameAtual][0]);
-		uniDepurar("yObjetivo", coordenadasXY[cena][1] + xyFinaisSpritesPragas[protagonistaHomem][frameAtual][1]);
-	}
-	else {
-		uniDepurar("xObjetivo", coordenadasXY[cena][0] + xyFinaisSpritesPragas[protagonistaMulher][frameAtual][0]);
-		uniDepurar("yObjetivo", coordenadasXY[cena][1] + xyFinaisSpritesPragas[protagonistaMulher][frameAtual][1]);
-	}
-	a.setSpriteSheet("fundo_Halter01");
-	
+	uniDepurar("diferença X", mouse.x - coordenadasXY[cena][0]);
+	uniDepurar("diferença Y", mouse.y - coordenadasXY[cena][1]);
+
 	// switch case estado do jogo
 
 	// case sandbox
@@ -397,6 +386,8 @@ void Halterofilismo::desenhar()
 	
 	// iniciar jogo
 	// primeiro de tudo desenhar o fundo
+	if (teclado.soltou[TECLA_ESPACO])
+		protagonista.setFrame(protagonista.getFrameAtual()+1);
 	fundo.desenhar(xCentro, yCentro);
 	if (barraProgresso.getFrameAtual() >= progressoMaximo) {
 		textoTemporizador.setWstring(L"Parabéns, você ganhou!");
@@ -410,10 +401,11 @@ void Halterofilismo::desenhar()
 
 		if (!pausado) {	// se o jogo está pausado não queremos alterar nada
 			if (tempoDificultar.passouTempoMS(fatorDificuldade)) {
-				dificultar();
+				//dificultar();
 			}
-			if (tempoPragas.passouTempoMS(5000))
-				pragaAlada();
+			if (tempoPragas.passouTempoMS(5000)) {
+				//pragaAlada();
+			}
 		}
 		/****/
 

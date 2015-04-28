@@ -199,6 +199,15 @@ void Jogo::inicializar()
 		L"Voltar", // [7]
 	};
 	menuSandbox.inicializar(textoOpcoesSandbox, textoCabecalhoSandbox, "fundo_HalterMenuSandbox", "somfundo_MenuPrincipal", { xCentro, (int)(yCentro*.3) }, 0, xCentro, (int)(yCentro), 0, 31, {}, {}, {}, true, "fonteNormalSombra");
+	
+	// menu de vitoria
+	wstring textoCabecalhoVitoria = L"Escolha a opção desejada\n\nPressione [CIMA] ou [BAIXO] ou passe o mouse para mudar a seleção.\n\
+									 			\nPressione [ENTER] para iniciar o jogo com a opção destacada ou Menu Principal para voltar ao menu.";
+	vector<wstring> textoOpçõesCampanha = { L"Continuar", // [0]
+		L"Menu Principal", // [1]
+		L"Sair do jogo", // [2]
+	};
+	menuVitoria.inicializar
 }
 
 void Jogo::finalizar()
@@ -306,11 +315,11 @@ void Jogo::gerenciarEstado()
 			}
 			break;
 		case jogoHalterofilismoCampanha:
-			if (halterofilia.desenharMenuVitoria)
+			if (halterofilia.desenharMenuVitoria())
 			{
 				estado = menuVitoria;
 			}
-			if (halterofilia.desenharMenuDerrota)
+			if (halterofilia.desenharMenuDerrota())
 			{
 				estado = menuDerrota;
 			}
@@ -320,8 +329,8 @@ void Jogo::gerenciarEstado()
 		case jogoHalterofilismoSandbox:
 			halterofilia.sandbox();
 			break;
-		case menuVitoria:
-			h
+		//case menuVitoria:
+			
 	}
 }
 
@@ -429,8 +438,8 @@ void Jogo::gerenciarMenuCampanha()
 {
 	int opcaoEscolhida = menuCampanha.getOpcao();
 	switch (opcaoEscolhida) {
-	case continuar:
-
+	case escolhaContinuar:
+		break;
 
 	default:
 		break;

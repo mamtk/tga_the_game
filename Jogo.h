@@ -10,14 +10,14 @@ class Jogo
 {
 	// estado do jogo, valores pretendem ser universais (entre as classes)
 	enum EstadoDoJogo {
-		menuPrincipal, menuJogos, menuOpcoes, menuAjuda, menuCreditos, menuHalterofilismoSandbox, jogoHalterofilismoCampanha, jogoHalterofilismoSandbox, menuVitoria, menuDerrota
+		menuPrincipal, menuJogos, menuOpcoes, menuAjuda, menuCreditos, menuHalterofilismoSandbox, jogoHalterofilismoCampanha, jogoHalterofilismoSandbox, menuVitoriaEstado, menuDerrota
 	};
 
 	// opções dos menus
 	enum OpcoesMenuPrincipal { escolhaJogar, escolhaOpcoes, escolhaAjuda, escolhaCreditos, escolhaSair };
 	enum OpcoesMenuSecundario { escolhaHalterCampanha, escolhaHalterSandbox, escolhaTiroCampanha, escolhaTiroSandbox, Retornar };
 	enum OpcoesMenuSandbox { escolhaAleatorio, escolhaFazenda, escolhaEsgoto, escolhaCanil, escolhaAcademiaSuburbio, escolhaAcademiaCentro, escolhaOlimpiadas, escolhaVoltar };
-	enum OpcoesMenuCampanha { escolhaContinuar,  , escolhaSairMenuCampanha};
+	enum OpcoesMenuCampanha { escolhaContinuar, escolhaMenuPrincipal, escolhaSairMenuCampanha };
 	enum OpcoesMenuInstantaneo { escolhaContinuarJogo, escolhaSairDoJogo };
 
 	// valores dos menus
@@ -33,7 +33,8 @@ class Jogo
 	Menu instantaneo;
 	// menus de modo de jogo
 	Menu menuSandbox;
-	Menu menuCampanha;
+	Menu menuVitoria;
+	Menu menuDerrota;
 
 	Halterofilismo halterofilia;
 	EstadoDoJogo estado = menuPrincipal;
