@@ -69,6 +69,7 @@ void Historia::inicializar(vector<vector<wstring>> historia, vector<string> fund
 void Historia::desenhar(int etapa)
 {
 	if (etapaAtual != etapa && etapa <= totalEtapas) {	// passamos para uma nova etapa!
+		avancarEtapa = false;	// primeiro resetamos a entrada da etapa anterior
 		if (!stringsFundos.empty())	// se houver fundos definidos
 			sprFundo.setSpriteSheet(stringsFundos[etapa]);	// setar a sprite
 		tempoClique.reset();
@@ -146,7 +147,7 @@ void Historia::desenhar(int etapa)
 	if (!pausado && (teclado.soltou[TECLA_A] || teclado.soltou[TECLA_S] || teclado.soltou[TECLA_D] || teclado.soltou[TECLA_W] || \
 		teclado.soltou[TECLA_DIR] || teclado.soltou[TECLA_ESQ] || teclado.soltou[TECLA_CIMA] || teclado.soltou[TECLA_BAIXO] || \
 		teclado.soltou[TECLA_ENTER] || teclado.soltou[TECLA_ESPACO] || (mouse.soltou[BOTAO_ESQ] && tempoClique.passouTempoMS(300)))) {
-		if (linhaAtual < totalLinhasEtapaAtual - 1) {	// se linha atual menor que o tamanho - 1 (última posição)
+		if (linhaAtual < totalLinhasEtapaAtual - 1) {	// se linha atual for menor que a última posição (tamanho - 1)
 			if (letraAtual < sizeLinhas[linhaAtual]) {	// se ainda não terminamos de desenhar a linha
 				textoLinhas[linhaAtual].setWstring(historiaLinhas[etapaAtual][linhaAtual]);	// corrigir a wstring do objeto texto, do contrário a linha ficará incompleta
 				// também ajustar para a largura da tela
@@ -165,10 +166,17 @@ void Historia::desenhar(int etapa)
 			// também ajustar para a largura da tela
 			textoLinhas[linhaAtual].ajustarStringParaLargura(975);	// 95% de 1024 = ~970
 		}
+		else {	// jogador quer avançar após o fim da história, devemos avançar para o jogo
+			avancarEtapa = true;
+		}
 	}
 }
 
 bool Historia::terminouEtapa()
+{
+	return avancarEtapa;
+}
+bool Historia::desenhouTodasAsLinhas()
 {
 	if (linhaAtual == totalLinhasEtapaAtual - 1 && letraAtual == sizeLinhas[linhaAtual])
 		return true;

@@ -359,14 +359,14 @@ void Halterofilismo::prepararCampanha()
 // jogo com história (se ativa), e progresso linear baseado na dificuldade até um final
 void Halterofilismo::campanha()
 {
-	if (!historiaCampanha.terminouEtapa() && !repetir)
+	if (!repetir && !estaJogando)
 		historiaCampanha.desenhar(etapaAtual);
-	if (!pausado && historiaCampanha.terminouEtapa() && teclado.soltou[TECLA_ENTER]) {
-		repetir = false;
+	if (!pausado && historiaCampanha.terminouEtapa()) {
 		estaJogando = true;
 	}
 	if (estaJogando)
 	{
+		repetir = false;
 		cena = etapaAtual;
 		mudarFundo(cena);
 		temporizador.setTempo(60);

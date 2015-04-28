@@ -39,9 +39,13 @@ class Historia
 	int xCentro, yCentro;	// pra não precisar ficar chamando gets desnecessariamente
 
 	bool pausado = false;	// armazena se a história deve ser pausada
+	bool avancarEtapa = false;	// setamos como verdadeiro caso o jogador dá entrada após o fim do desenho
+
 public:
 	Historia();
-	bool terminouEtapa();		// se todas as linhas foram desenhadas completamente: retorna true
+	bool terminouEtapa();		// se todas as linhas foram desenhadas e o jogador avançou: retorna true
+	bool desenhouTodasAsLinhas();
+
 	void inicializar(vector<vector<wstring>> historia, vector<string> fundos = {}, vector<string> sonsDeFundo = {}, vector<vector<vector<string>>> sonsDaHistoria = {}, \
 		vector<vector<Sprite>> sprites = {},\
 		vector<vector<int>> spritesXY = {});

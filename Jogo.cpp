@@ -216,7 +216,7 @@ void Jogo::inicializar()
 		L"Menu Principal", // [1]
 		L"Sair do jogo", // [2]
 	};
-	menuVitoria.inicializar(textoOpcoesDerrota, textoCabecalhoDerrota, " ", " ", { xCentro, (int)(yCentro*.3) }, 0, xCentro, (int)(yCentro), 0, 31, {}, {}, {}, true, "fonteNormalSombra");
+	menuDerrota.inicializar(textoOpcoesDerrota, textoCabecalhoDerrota, " ", " ", { xCentro, (int)(yCentro*.3) }, 0, xCentro, (int)(yCentro), 0, 31, {}, {}, {}, true, "fonteNormalSombra");
 }
 
 void Jogo::finalizar()
