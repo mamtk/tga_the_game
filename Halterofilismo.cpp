@@ -25,7 +25,11 @@ void Halterofilismo::inicializar(int estado, vector<int> valoresOpcoesDeJogo)
 
 	// inicializar sprites
 	fundo.setSpriteSheet("fundo_Halter01");
-	protagonista.setSpriteSheet("per_HalterHomem0");
+	if (opcoesDeJogo[valorSexo] == protagonistaHomem)
+		protagonista.setSpriteSheet("per_HalterHomem0");
+	else
+		protagonista.setSpriteSheet("per_HalterMulher");
+
 	protagonista.setAnimacao(0);
 	//protagonista.setEscala(5, 5);
 	// sprites texto (códix assoviaris)
