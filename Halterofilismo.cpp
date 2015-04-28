@@ -608,7 +608,19 @@ void Halterofilismo::gerenciarPragas()
 		}
 		else {	// já chegamos lá
 			// só queremos atuar no eixo x, pois não queremos dar a entender que as moscas estão voando
-			xyPragas[i][0] = xObjetivo + rand() % 30;
+			int variacaoPseudoAleatoria = rand() % 30;
+			if (direcaoPragas[i]) {	// se devemos ir para a direita
+				if (xyPragas[i][0] + variacaoPseudoAleatoria < xObjetivo + 170)
+					xyPragas[i][0] = xObjetivo + variacaoPseudoAleatoria;
+				else
+					direcaoPragas[i] = false; // devemos ir para a esquerda
+			}
+			else {					// se devemos ir para a esquerda
+				if (xyPragas[i][0] - variacaoPseudoAleatoria > xObjetivo)
+					xyPragas[i][0] = xObjetivo - variacaoPseudoAleatoria;
+				else
+					direcaoPragas[i] = true; // devemos ir para a esquerda
+			}
 		}
 		pragasAladas[i].desenhar(xyPragas[i][0], xyPragas[i][1]);
 	}
