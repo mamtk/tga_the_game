@@ -1047,7 +1047,7 @@ void Halterofilismo::mudarFundo(int novoFundo)
 
 bool Halterofilismo::desenharMenuVitoria()
 {
-	if (venceu)
+	if (terminouLevantamento && venceu)
 	{
 		return true;
 	}
@@ -1056,7 +1056,7 @@ bool Halterofilismo::desenharMenuVitoria()
 
 bool Halterofilismo::desenharMenuDerrota()
 {
-	if (!venceu)
+	if (terminouLevantamento && !venceu)
 	{
 		return true;
 	}
