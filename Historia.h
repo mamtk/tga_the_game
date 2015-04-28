@@ -12,9 +12,12 @@ class Historia
 
 	// sprites usadas para elementos, incluindo efeitos
 	Sprite sprFundo, sprSobreCamada, sprEsmaecer;
-	// elementos que serao desenhados
+	// elementos que serao desenhados (não usado nem implementado nesse jogo)
 	vector<vector<Sprite>> sprElementos;	// isso vai ter vários espaços vazios, já que só podemos usar vetores
 	vector<vector<int>> elementosXY;		// coordenadas para desenhar as sprites
+
+	vector<string> stringsFundos;					// strings com os nomes das sprites para carregar cad fundo
+	// objetos texto das linhas
 	vector<Texto> textoLinhas;				// fica mais fácil (pra mim) gerenciar um objeto texto pra cada linha
 		// especialmente ao usar ajustarStringParaLargura, pois precisaremos da altura de cada "linha"
 
@@ -39,7 +42,7 @@ class Historia
 public:
 	Historia();
 	bool terminouEtapa();		// se todas as linhas foram desenhadas completamente: retorna true
-	void inicializar(vector<vector<wstring>> historia, string fundo = "", vector<string> sonsDeFundo = {}, vector<vector<vector<string>>> sonsDaHistoria = {}, \
+	void inicializar(vector<vector<wstring>> historia, vector<string> fundos = {}, vector<string> sonsDeFundo = {}, vector<vector<vector<string>>> sonsDaHistoria = {}, \
 		vector<vector<Sprite>> sprites = {},\
 		vector<vector<int>> spritesXY = {});
 	~Historia();

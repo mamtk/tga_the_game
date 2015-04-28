@@ -74,7 +74,13 @@ void Jogo::inicializar()
 	recursos.carregarSpriteSheet("per_HalterHomem0", "img/per/per_HalterHomem0.png", 0, 13);
 	recursos.carregarSpriteSheet("per_HalterMulher", "img/per/per_HalterMulher.png", 0, 15);
 	recursos.carregarSpriteSheet("per_HalterMosca", "img/per/per_HalterMosca.png");
-	//recursos.carregarSpriteSheet("per_HalterPomba", "img/per/per_HalterMosca.png");
+	recursos.carregarSpriteSheet("fundo_HalterFazenda", "img/fundos/fundo_HalterFazenda.png");
+	recursos.carregarSpriteSheet("fundo_HalterEsgoto", "img/fundos/fundo_HalterEsgoto.png");
+	recursos.carregarSpriteSheet("fundo_HalterCanil", "img/fundos/fundo_HalterCanil.png");
+	recursos.carregarSpriteSheet("fundo_HalterAcademiaSuburbio", "img/fundos/fundo_HalterAcademiaSuburbio.png");
+	recursos.carregarSpriteSheet("fundo_HalterAcademiaCentro", "img/fundos/fundo_HalterAcademiaCentro.png");
+	recursos.carregarSpriteSheet("fundo_HalterOlimpiadas", "img/fundos/fundo_HalterOlimpiadas.png");
+	//recursos.carregarSpriteSheet("per_HalterPomba", "img/per/per_HalterPomba.png");
 	recursos.carregarSpriteSheet("fx_HalterBarra", "img/fx/fx_HalterBar.png", 1, 11);
 
 	//********* MENUS

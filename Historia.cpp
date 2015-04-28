@@ -9,11 +9,11 @@ Historia::~Historia()
 }
 
 
-void Historia::inicializar(vector<vector<wstring>> historia, string fundo, vector<string> sonsDeFundo, vector<vector<vector<string>>> sonsDaHistoria, \
+void Historia::inicializar(vector<vector<wstring>> historia, vector<string> fundos, vector<string> sonsDeFundo, vector<vector<vector<string>>> sonsDaHistoria, \
 	vector<vector<Sprite>> sprites, vector<vector<int>> spritesXY)
 {
-	if (fundo.size() > 0)
-		sprFundo.setSpriteSheet(fundo);
+	if (fundos.size() >= historia.size())
+		stringsFundos = fundos;
 	if (sprites.size() > 0 && spritesXY.size() > 0) {	// isso aqui não vai ser implementado, mas poderia...
 		sprElementos = sprites;
 		elementosXY = spritesXY;
@@ -69,6 +69,8 @@ void Historia::inicializar(vector<vector<wstring>> historia, string fundo, vecto
 void Historia::desenhar(int etapa)
 {
 	if (etapaAtual != etapa && etapa <= totalEtapas) {	// passamos para uma nova etapa!
+		if (!stringsFundos.empty())	// se houver fundos definidos
+			sprFundo.setSpriteSheet(stringsFundos[etapa]);	// setar a sprite
 		tempoClique.reset();
 		etapaAtual = etapa;
 		linhaAtual = letraAtual = 0;
@@ -88,7 +90,7 @@ void Historia::desenhar(int etapa)
 			textoLinhas[linha].setFonte("fonteNormalSombra");
 			textoLinhas[linha].setCor(255, 255, 255);
 			textoLinhas[linha].ajustarStringParaLargura(970);	// 95% de 1024 = ~970
-			yTotal += textoLinhas[linha].getAltura() * 3;	// um espaço maior facilita a leitura
+			yTotal += textoLinhas[linha].getAltura() + 71;	// um espaço maior facilita a leitura
 			yLinhas.push_back(yTotal);	// adicionar a posição da linha atual no y das linhas
 		}
 		if (historiaSonsDeFundo.size() > etapaAtual) {	// se o som de fundo atual, ou posterior estiver definido
@@ -107,8 +109,9 @@ void Historia::desenhar(int etapa)
 		if (historiaSonsDefinidos[etapaAtual].size() > linhaAtual && historiaSonsDefinidos[etapa][linhaAtual][tocarComecoDaLinha])
 			historiaSons[etapaAtual][linhaAtual][tocarComecoDaLinha].tocar();
 	}
-	// primeiro de tudo desenhar o fundo
-	sprFundo.desenhar(xCentro, yCentro);
+	// primeiro de tudo desenhar o fundo, se existir
+	if (stringsFundos.size() > 0)
+		sprFundo.desenhar(xCentro, yCentro);
 	// depois a sobrecamada
 	sprSobreCamada.desenhar(xCentro, yCentro);
 	// finalmente desenhamos o texto passado, começando em x = 5%, e y% = 15%

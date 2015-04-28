@@ -318,7 +318,14 @@ void Halterofilismo::preparaCampanha()
 	sonsDaHistoria[5][4].resize(3);	// usamos sons na a linha 5 da etapa 4
 	sonsDaHistoria[5][4][tocarComecoDaLinha] = "somfx_Trovao";
 	etapaAtual = 0;
-	historiaCampanha.inicializar(historia, "fundo_teste", sonsDeFundo, sonsDaHistoria);
+	vector<string> fundosCampanha = { "fundo_HalterFazenda",
+		"fundo_HalterEsgoto",
+		"fundo_HalterCanil",
+		"fundo_HalterAcademiaSuburbio",
+		"fundo_HalterAcademiaCentro",
+		"fundo_HalterOlimpiadas"
+	};
+	historiaCampanha.inicializar(historia, fundosCampanha, sonsDeFundo, sonsDaHistoria);
 }
 
 // jogo com história (se ativa), e progresso linear baseado na dificuldade até um final
@@ -339,7 +346,10 @@ void Halterofilismo::gerenciarLevantamento()
 		// aqui gerenciamos a alteração no progresso pelas teclas de ação
 		if (teclado.soltou[TECLA_W] || teclado.soltou[TECLA_CIMA]) {
 			barraProgresso.avancarAnimacao();
-			protagonista.avancarAnimacao();
+			// só queremos avançar a animação se ela não for recomeçar
+			// TODO: tornar a velocidade proporcional ao número de frames da barra
+			if (protagonista.getFrameAtual() + 1 < protagonista.getSpriteSheet()->getNumFramesDaAnimacao(0))
+				protagonista.avancarAnimacao();
 			moverBarra();
 		}
 		if (teclado.soltou[TECLA_S] || teclado.soltou[TECLA_BAIXO]) {
