@@ -110,7 +110,7 @@ void Jogo::inicializar()
 	// inicializar menu de créditos
 	vector<wstring> opcoesSecundarias = { L"Halterofilismo (Campanha)", L"Halterofilismo (Sandbox)", L"Tiro (Campanha)", L"Tiro (Sandbox)", L"Voltar" };
 	vector<wstring> opcoesCreditos = { L"TGA - The Game é um jogo sério, muito sério;\n mas não deve ser levado muito a sério, \
-	já que é um jogo.\n\nCriado por Jean Lucca, Mattheus Menezes, Morris.\nSão Leopoldo, abril de 2015." };
+	já que é um jogo.\n\nCriado por Jean Luca, Mattheus Menezes, Morris.\nSão Leopoldo, abril de 2015." };
 	wstring cabecalhoCreditos = L"Aperte [ENTER], [ESPAÇO] ou clique com o botão esquerdo para voltar.";
 	creditos.inicializar(opcoesCreditos, cabecalhoCreditos, "fundo_MenuCreditos", "somfundo_MenuCreditos");
 	
@@ -175,7 +175,7 @@ void Jogo::inicializar()
 			stringsValores[nivel] = { L"Não", L"Sim" }; // opções para [5] (pular história)
 			break;
 		case 6: // variáveis possíveis para a opção [6] do textoOpcoes
-			stringsValores[nivel] = { L"Homem", L"Mulher" }; // opções para [5] (sexo do personagem)
+			stringsValores[nivel] = { L"Homem", L"Mulher" }; // opções para [6] (sexo do personagem)
 			break;
 		}
 	}
@@ -281,6 +281,7 @@ void Jogo::gerenciarEstado()
 				principal.resetarMenu();
 				ajuda.resetarMenu();
 				estado = menuPrincipal;
+				principal.tocarMusica();
 			}
 			break;
 		case menuCreditos:
@@ -289,6 +290,7 @@ void Jogo::gerenciarEstado()
 				principal.resetarMenu();
 				creditos.resetarMenu();
 				estado = menuPrincipal;
+				principal.tocarMusica();
 			}
 			break;
 		case menuHalterofilismoSandbox:
