@@ -451,7 +451,10 @@ void Jogo::gerenciarMenuSandbox()
 
 void Jogo::gerenciarMenuVitoria()
 {
-	int opcaoEscolhida = menuVitoria.getOpcao();
+	int opcaoEscolhida = menuVitoria.getOpcao(); // ober opção escolhida
+	// resetar estado do menu principal (se não ele não desenha)
+	menuVitoria.resetarMenu();
+
 	switch (opcaoEscolhida) {
 	case escolhaContinuar:
 		halterofilia.resetarLevantamento();
@@ -474,7 +477,10 @@ void Jogo::gerenciarMenuVitoria()
 
 void Jogo::gerenciarMenuDerrota()
 {
-	int opcaoEscolhida = menuDerrota.getOpcao();
+	int opcaoEscolhida = menuDerrota.getOpcao(); // ober opção escolhida
+	// resetar estado do menu principal (se não ele não desenha)
+	menuDerrota.resetarMenu();
+
 	switch (opcaoEscolhida) {
 	case escolhaRepetir:
 		halterofilia.resetarLevantamento();

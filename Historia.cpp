@@ -174,6 +174,12 @@ void Historia::desenhar(int etapa)
 
 bool Historia::terminouEtapa()
 {
+	if (avancarEtapa) {
+		int sizeSonsDeFundo = historiaSonsDeFundo.size();
+		for (int som = 0; som < sizeSonsDeFundo; som++)
+			historiaSonsDeFundo[som].parar();
+	}
+
 	return avancarEtapa;
 }
 bool Historia::desenhouTodasAsLinhas()
