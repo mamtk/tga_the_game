@@ -1040,7 +1040,7 @@ bool Halterofilismo::desenharMenuVitoria()
 {
 	if (venceu)
 	{
-		return true;
+		return false;
 	}
 }
 
@@ -1048,7 +1048,7 @@ bool Halterofilismo::desenharMenuDerrota()
 {
 	if (!venceu)
 	{
-		return true;
+		return false;
 	}
 
 }

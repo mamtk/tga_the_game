@@ -306,11 +306,22 @@ void Jogo::gerenciarEstado()
 			}
 			break;
 		case jogoHalterofilismoCampanha:
-			halterofilia.campanha();
+			if (halterofilia.desenharMenuVitoria)
+			{
+				estado = menuVitoria;
+			}
+			if (halterofilia.desenharMenuDerrota)
+			{
+				estado = menuDerrota;
+			}
+			else
+				halterofilia.campanha();
 			break;
 		case jogoHalterofilismoSandbox:
 			halterofilia.sandbox();
 			break;
+		case menuVitoria:
+			h
 	}
 }
 

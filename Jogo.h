@@ -17,7 +17,7 @@ class Jogo
 	enum OpcoesMenuPrincipal { escolhaJogar, escolhaOpcoes, escolhaAjuda, escolhaCreditos, escolhaSair };
 	enum OpcoesMenuSecundario { escolhaHalterCampanha, escolhaHalterSandbox, escolhaTiroCampanha, escolhaTiroSandbox, Retornar };
 	enum OpcoesMenuSandbox { escolhaAleatorio, escolhaFazenda, escolhaEsgoto, escolhaCanil, escolhaAcademiaSuburbio, escolhaAcademiaCentro, escolhaOlimpiadas, escolhaVoltar };
-	enum OpcoesMenuCampanha { continuar, menuPrincipal, escolhasair};
+	enum OpcoesMenuCampanha { escolhaContinuar,  , escolhaSairMenuCampanha};
 	enum OpcoesMenuInstantaneo { escolhaContinuarJogo, escolhaSairDoJogo };
 
 	// valores dos menus
