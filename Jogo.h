@@ -34,7 +34,8 @@ class Jogo
 	Menu instantaneo;
 	// menus de modo de jogo
 	Menu menuSandbox;
-	Menu menuCampanha;
+	Menu menuVitoria;
+	Menu menuDerrota;
 
 	Halterofilismo halterofilia;
 	EstadoDoJogo estado = menuPrincipal;
@@ -50,7 +51,8 @@ class Jogo
 	void gerenciarMenuSecundario();
 	void gerenciarMenuInstantaneo();
 	void gerenciarMenuSandbox();
-	void gerenciarMenuCampanha();
+	void gerenciarMenuVitoria();
+	void gerenciarMenuDerrota();
 
 public:
 	Jogo();

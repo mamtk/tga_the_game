@@ -89,7 +89,8 @@ class Halterofilismo
 	bool pausado = false;			// registra se o jogo está pausado
 	bool estaJogando = false; // registra se esta jogando
 	bool terminouLevantamento = false; // se o jogador terminou o levantamento
-	bool venceu = false;
+	bool venceu = false; // registra se venceu
+	bool repetirEtapa = false;
 
 	EstadoDoJogo estadoDoJogo;
 
@@ -130,4 +131,6 @@ public:
 	bool desenharMenuVitoria();
 	bool desenharMenuDerrota();
 
+	void resetarLevantamento();
+	void avancarEtapa();
 };

@@ -390,8 +390,8 @@ void Halterofilismo::desenhar()
 		protagonista.setFrame(protagonista.getFrameAtual()+1);
 	fundo.desenhar(xCentro, yCentro);
 	if (barraProgresso.getFrameAtual() >= progressoMaximo) {
-		textoTemporizador.setWstring(L"Parabéns, você ganhou!");
-		textoTemporizador.desenhar(xCentro, yCentro);
+		terminouLevantamento = true;
+		venceu = terminouLevantamento;
 		// fadeout de ~5s, depois menu de vitória baseado no tipo de jogo
 	}
 	else {
@@ -1059,4 +1059,17 @@ bool Halterofilismo::desenharMenuDerrota()
 		return true;
 	}
 	return false;
+}
+
+void Halterofilismo::resetarLevantamento() 
+{
+	barraProgresso.setFrame(0);
+	protagonista.setFrame(0);
+	progresso = 0;
+}
+
+void Halterofilismo::avancarEtapa() 
+{
+	if (etapaAtual < 6)
+		etapaAtual++;
 }
