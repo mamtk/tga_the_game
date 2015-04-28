@@ -418,8 +418,8 @@ void Jogo::gerenciarMenuCampanha()
 {
 	int opcaoEscolhida = menuCampanha.getOpcao();
 	switch (opcaoEscolhida) {
-	case continuar:
-
+	case escolhaContinuar:
+		break;
 
 	default:
 		break;
