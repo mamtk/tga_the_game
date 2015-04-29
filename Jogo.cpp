@@ -467,10 +467,9 @@ void Jogo::gerenciarMenuVitoria()
 		if (opcoesDeJogo[valorDesativarMusicas] == 0)
 			principal.tocarMusica();
 		break;
-	case escolhaSairMenuVitoria:
-		aplicacao.sair;
-		break;
 	default:
+	case escolhaSairMenuVitoria:
+		aplicacao.sair = true;
 		break;
 	}
 }
@@ -493,10 +492,9 @@ void Jogo::gerenciarMenuDerrota()
 		if (opcoesDeJogo[valorDesativarMusicas] == 0)
 			principal.tocarMusica();
 		break;
-	case escolhaSairMenuDerrota:
-		aplicacao.sair;
-		break;
 	default:
+	case escolhaSairMenuDerrota:
+		aplicacao.sair = true;
 		break;
 	}
 

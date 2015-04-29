@@ -370,6 +370,7 @@ void Halterofilismo::campanha()
 		cena = etapaAtual;
 		mudarFundo(cena);
 		temporizador.setTempo(60);
+		progressoMaximo = sizeBarraProgressoFrames - 1;	// reduzimos 1, pois: indice ultimo elemento = total - 1
 		desenhar();
 	}
 }
@@ -398,8 +399,6 @@ void Halterofilismo::desenhar()
 	}
 	else {
 		/****/
-		// isso aqui será definido em outra função ou num dos preparar ou em sandbox ou em campanha
-		progressoMaximo = sizeBarraProgressoFrames - 1;	// reduzimos 1, pois: indice ultimo elemento = total - 1
 
 		if (!pausado) {	// se o jogo está pausado não queremos alterar nada
 			if (tempoDificultar.passouTempoMS(fatorDificuldade)) {
@@ -467,7 +466,8 @@ void Halterofilismo::gerenciarLevantamento()
 {
 	// TODO: se progresso = 0 e diminuir = morte()
 	// SE a barra de progresso ainda não atingiu o objetivo, verificamos o intervalo das teclas
-	if (barraProgresso.getFrameAtual() < progressoMaximo) {
+	int a = barraProgresso.getFrameAtual();
+	if (a < progressoMaximo) {
 		// TODO && barraProgresso.getFrameAtual() >= progressoMaximo
 		// aqui gerenciamos a alteração no progresso pelas teclas de ação
 		if (teclado.soltou[TECLA_W] || teclado.soltou[TECLA_CIMA]) {
@@ -481,11 +481,6 @@ void Halterofilismo::gerenciarLevantamento()
 			barraProgresso.avancarAnimacao();
 			protagonista.avancarAnimacao();
 		}
-	}
-	// verificamos se ao final de tudo atingimos o objetivo final
-	// TODO || barraProgresso.getFrameAtual() >= progressoMaximo
-	if (barraProgresso.getFrameAtual() >= progressoMaximo) {	// atingimos o objetivo, fim do levantamento
-		
 	}
 }
 
@@ -1066,10 +1061,27 @@ bool Halterofilismo::desenharMenuDerrota()
 
 void Halterofilismo::resetarLevantamento() 
 {
+	// restar moscas
+	pragasAladas.resize(0);
+	xyPragas.resize(0);
+	chegouPraga.resize(0);
+	direcaoPragas.resize(0);
+	// resetar frase do poder
+	fraseAssovio = "";
+	// resetar estado do levantamento e animações
 	terminouLevantamento = false;
+	/*
+	//	ISSO AQUI, deu um problema do caramba, e é CONTRA intuitivo já que a LibUnicornio
+		salva o tempo da animação mesmo setando o frame pra 0...
+		o que significa que o avançar animação leva direto do frame 0 pro fim da animação
+
 	barraProgresso.setFrame(0);
 	protagonista.setFrame(0);
+	*/
+	barraProgresso.recomecarAnimacao();
+	protagonista.recomecarAnimacao();
 	progresso = 0;
+	cout << "";
 }
 
 void Halterofilismo::avancarEtapa() 
