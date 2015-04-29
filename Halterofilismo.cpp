@@ -167,8 +167,8 @@ void Halterofilismo::inicializar(int estado, vector<int> valoresOpcoesDeJogo)
 	sonsEfeitos[somfx_HalterImpossivelMorte].setAudio("somfx_HalterImpossivelMorte");
 	sonsEfeitos[somfx_HalterMedioMorte].setAudio("somfx_HalterMedioMorte");
 	sonsEfeitos[somfx_HalterImpossivelDurante].setAudio("somfx_HalterImpossivelDurante");
-	sonsEfeitos[somfx_HalterDesafio].setAudio("somfx_HalterDesafio");
-	sonsEfeitos[somfx_HalterDesafio].setAudio("somfx_HalterDesafioMulher");
+	sonsEfeitos[somfx_HalterDesafioDurante].setAudio("somfx_HalterDesafioDurante");
+	sonsEfeitos[somfx_HalterDesafioDuranteMulher].setAudio("somfx_HalterDesafioDuranteMulher");
 	sonsEfeitos[somfx_HalterDificilDurante].setAudio("somfx_HalterDificilDurante");
 	sonsEfeitos[somfx_HalterMedioDurante].setAudio("somfx_HalterMedioDurante");
 	sonsEfeitos[somfx_HalterAssovio1].setAudio("somfx_HalterAssovio1");
@@ -509,10 +509,12 @@ void Halterofilismo::desenharHUD()
 		textoTemporizador.setEscala(1.5, 1.5);
 		textoTemporizadorSombra.setEscala(1.5, 1.5);
 	}
-	else if (temporizador.getTempo() <= 0) {
+	else if (temporizador.getTempo() <= 0) {	// morte por tempo
 		venceu = false;
 		terminouLevantamento = true;
 		estaJogando = false;	// o levantamento terminous
+		if (!opcoesDeJogo[valorDesativarSom])	// se o som estiver ativado
+			tocarEfeitosDeMorte();	// tocar efeitos sonoros
 		return;					// mais nada a fazer aqui
 	}
 	if (estadoDoJogo == jogoHalterofilismoSandbox) {
@@ -544,6 +546,28 @@ void Halterofilismo::gerenciarLevantamento()
 			// TODO: tornar a velocidade proporcional ao número de frames da barra
 			if (protagonista.getFrameAtual() + 1 < protagonista.getSpriteSheet()->getNumFramesDaAnimacao(0))
 				protagonista.avancarAnimacao();
+
+			if (!opcoesDeJogo[valorDesativarSom]) {	// se o som estiver ativado
+				if (tempoSonsDeLevantamento.passouTempo(17)) {	// o som mais longo daqui tem 16 segundos
+					if (tipo == levantamentoFatality) {	// se estamos no modo desafio
+						if (opcoesDeJogo[valorSexo] == 0)
+							sonsEfeitos[somfx_HalterDesafioDurante].tocar();
+						else
+							sonsEfeitos[somfx_HalterDesafioDuranteMulher].tocar();
+					}
+					else if (opcoesDeJogo[valorDificuldade] > 1) {	// > 1 significa impossível
+						if (opcoesDeJogo[valorSexo] == 0)
+							sonsEfeitos[somfx_HalterImpossivelDurante].tocar();
+						else
+							sonsEfeitos[somfx_HalterImpossivelDuranteMulher].tocar();
+					}
+					else if (opcoesDeJogo[valorDificuldade] == 1) {	// se estamos no modo dificil
+						sonsEfeitos[somfx_HalterDificilDurante].tocar();
+					}
+					else	// do contrário usamos o som padrão
+						sonsEfeitos[somfx_HalterMedioDurante].tocar();
+				}
+			}
 		}
 		if (teclado.soltou[TECLA_S] || teclado.soltou[TECLA_BAIXO]) {
 			barraProgresso.avancarAnimacao();
@@ -554,6 +578,15 @@ void Halterofilismo::gerenciarLevantamento()
 		terminouLevantamento = true;
 		venceu = terminouLevantamento;
 		estaJogando = false;	// o levantamento terminou
+		if (!opcoesDeJogo[valorDesativarSom]) {	// se o som estiver ativado
+			// se modo desafio e dificuldade maior que dificil (=impossível)
+			if (tipo == levantamentoFatality && opcoesDeJogo[valorDificuldade] > 1)
+				sonsEfeitos[somfx_HalterDesafioImpossivelSucesso].tocar();
+			else if (opcoesDeJogo[valorDificuldade] > 1)	// ou se a dificuldade for impossível
+				sonsEfeitos[somfx_HalterImpossivelSucesso].tocar();
+			else	// do contrário tocar som padrão
+				sonsEfeitos[somfx_HalterMedioSucesso].tocar();
+		}
 		// fadeout de ~5s, depois menu de vitória baseado no tipo de jogo
 		return;		// mais nada a fazer aqui
 	}
@@ -582,6 +615,8 @@ void Halterofilismo::dificultar()
 			venceu = false;
 			terminouLevantamento = true;
 			estaJogando = false;	// o levantamento terminous
+			if (!opcoesDeJogo[valorDesativarSom])	// se o som estiver ativado
+				tocarEfeitosDeMorte();	// tocar efeitos sonoros
 			return;					// mais nada a fazer aqui
 		}
 	}
@@ -611,10 +646,16 @@ void Halterofilismo::pragaAlada()
 
 	Sprite praga;
 	// sem texto, apenas a cue de numa nova praga
-	if (tipo == levantamentoNormal)
+	if (tipo == levantamentoNormal) {
 		praga.setSpriteSheet("per_HalterMosca");
-	else
+		if (!opcoesDeJogo[valorDesativarSom] && !sonsEfeitos[somfx_HalterMoscaVindo].estaTocando())	// se o som estiver ativado, e o som ainda não estiver tocando
+			sonsEfeitos[somfx_HalterMoscaVindo].tocar();
+	}
+	else {
 		praga.setSpriteSheet("per_HalterPombo");
+		if (!opcoesDeJogo[valorDesativarSom] && !sonsEfeitos[somfx_HalterPombosVindo].estaTocando())	// se o som estiver ativado, e o som ainda não estiver tocando
+			sonsEfeitos[somfx_HalterPombosVindo].tocar();
+	}
 	//praga.setEscala(5, 5);
 
 	pragasAladas.push_back(praga);	// adicionar Sprite recém criada no final (back) do vetor
@@ -728,6 +769,9 @@ void Halterofilismo::gerenciarPragas()
 // espantar as pragas, elas vão embora!
 void Halterofilismo::espantarPragas()
 {
+	if (!opcoesDeJogo[valorDesativarSom])	// se o som estiver ativado
+		sonsEfeitos[somfx_HalterEspantarPragas].tocar();
+
 	int sizePragas = pragasAladas.size();
 	int totalForaDaTela = 0;
 
@@ -794,11 +838,22 @@ void Halterofilismo::assoviarPalavras()
 			desativarLetra(i);	// a função gerencia automaticamente o que for ou não espaço
 		}
 		primeiroInativo = 0;	// 0 é o novo primeiro inativo
+		if (!opcoesDeJogo[valorDesativarSom])	// se o som estiver ativado
+			sonsEfeitos[somfx_HalterSoluco].tocar();
 	}
 	// se soltou a letra inativa atual, mudar pra ativa, alterar sprite
 	if (pressionouCerto(fraseAssovio[primeiroInativo])) {	// se o jogador pressionou a letra correta atual
 		char letra = fraseAssovio[primeiroInativo];
 		ativarLetra(primeiroInativo);	// ativamos a letra
+		if (!opcoesDeJogo[valorDesativarSom]) {	// se o som estiver ativado
+			if (tempoAssovios.passouTempo(11)) {	// não queremos assovios o tempo todo
+				// além disso esse tempo nos garante que nenhum outro assovio vai estar tocando
+
+				// queremos numeros de 18 a 23, então isso significa que podemos tomar um rand de 0 a 5 ( % 6), e somar com 18
+				int assovio = rand() % 6 + 18;
+				sonsEfeitos[assovio].tocar();
+			}
+		}
 	}
 	// por fim, desenhamos a frase do poder
 	desenharPalavrasDoPoder();
@@ -1299,6 +1354,13 @@ void Halterofilismo::resetarLevantamento()
 		placarMaximoSombra.setString(placarMaximoStr);
 		pontuacaoAtual = 0;
 	}
+	// por fim parar todos os sons que possam estar tocando
+	if (!opcoesDeJogo[valorDesativarSom]) {	// se o som estiver ativado
+		int sizeSons = sonsEfeitos.size();
+		for (int som = 0; som < sizeSons; som++) {
+			sonsEfeitos[som].parar();
+		}
+	}
 }
 
 void Halterofilismo::avancarEtapa() 
@@ -1340,5 +1402,23 @@ void Halterofilismo::atualizarDificuldade()
 		//	etapa 1 aumenta 0, etapa 2 aumenta 1 em cima dos dois 0, a 3 aumenta 1 em cima do 1 e dos zeros, etc)
 		chancePraga = chancePraga - (etapaAtual * .5);	// reduzir o intervalo a cada 2 etapas
 		fatorDificuldade = 1000 / dificuldade;
+	}
+}
+
+void Halterofilismo::tocarEfeitosDeMorte()
+{
+	if (tipo != levantamentoFatality) {
+		sonsEfeitos[somfx_HalterTodasNaoDesafioMorte].tocar();
+		if (opcoesDeJogo[valorDificuldade] > 1)	// se opção for maior que 1 ela é um dos impossíveis
+			sonsEfeitos[somfx_HalterDesafioImpossivelMorte].tocar();
+		else
+			sonsEfeitos[somfx_HalterDesafioMorte].tocar();
+	}
+	else {
+		sonsEfeitos[somfx_HalterTodosDesafiosMorte].tocar();
+		if (opcoesDeJogo[valorDificuldade] > 1)	// se opção for maior que 1 ela é um dos impossíveis
+			sonsEfeitos[somfx_HalterImpossivelMorte].tocar();
+		else
+			sonsEfeitos[somfx_HalterMedioMorte].tocar();
 	}
 }

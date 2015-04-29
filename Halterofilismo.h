@@ -33,7 +33,7 @@ class Halterofilismo
 	enum TodosOsEfeitosSonoros { somfx_HalterImpossivelDuranteMulher, somfx_HalterTodosDesafiosMorte, somfx_HalterMoscaVindo, somfx_HalterTodasNaoDesafioMorte, \
 		somfx_HalterPombosVindo, somfx_HalterEspantarPragas, somfx_HalterDesafioImpossivelSucesso, somfx_HalterImpossivelSucesso, somfx_HalterMedioSucesso, \
 		somfx_HalterDesafioImpossivelMorte, somfx_HalterDesafioMorte, somfx_HalterImpossivelMorte, somfx_HalterMedioMorte, somfx_HalterImpossivelDurante, \
-		somfx_HalterDesafio, somfx_HalterDesafioMulher, somfx_HalterDificilDurante, somfx_HalterMedioDurante, somfx_HalterAssovio1, somfx_HalterAssovio2, \
+		somfx_HalterDesafioDurante, somfx_HalterDesafioDuranteMulher, somfx_HalterDificilDurante, somfx_HalterMedioDurante, somfx_HalterAssovio1, somfx_HalterAssovio2, \
 		somfx_HalterAssovio3, somfx_HalterAssovio4, somfx_HalterAssovio5, somfx_HalterAssovio6, somfx_HalterSoluco };
 
 	// Sprites usadas pela classe
@@ -58,6 +58,7 @@ class Halterofilismo
 
 	// temporizadores usados na classe
 	Temporizador temporizador, tempoMorte, tempoDificultar, tempoPragas, tempoAvisoPragas, tempoMovimentoLetras;
+	Temporizador tempoAssovios, tempoSonsDeLevantamento;		// não queremos sons tocando absolutamente 100% do tempo
 
 	// escolha feita no menuSandbox
 	OpcoesMenuSandbox mapaSandbox;
@@ -132,6 +133,7 @@ class Halterofilismo
 	void mudarFundo(int novoFundo);
 	void espantarPragas();
 	void atualizarDificuldade();
+	void tocarEfeitosDeMorte();
 public:
 	Halterofilismo();
 	~Halterofilismo();

@@ -66,8 +66,8 @@ void Jogo::inicializar()
 	recursos.carregarAudio("somfx_HalterImpossivelMorte", "audio/somfx/somfx_HalterImpossivelMorte.ogg");
 	recursos.carregarAudio("somfx_HalterMedioMorte", "audio/somfx/somfx_HalterMedioMorte.ogg");
 	recursos.carregarAudio("somfx_HalterImpossivelDurante", "audio/somfx/somfx_HalterImpossivelDurante.ogg");
-	recursos.carregarAudio("somfx_HalterDesafio", "audio/somfx/somfx_HalterDesafio.ogg");
-	recursos.carregarAudio("somfx_HalterDesafioMulher", "audio/somfx/somfx_HalterDesafioMulher.ogg");
+	recursos.carregarAudio("somfx_HalterDesafioDurante", "audio/somfx/somfx_HalterDesafioDurante.ogg");
+	recursos.carregarAudio("somfx_HalterDesafioDuranteMulher", "audio/somfx/somfx_HalterDesafioDuranteMulher.ogg");
 	recursos.carregarAudio("somfx_HalterDificilDurante", "audio/somfx/somfx_HalterDificilDurante.ogg");
 	recursos.carregarAudio("somfx_HalterMedioDurante", "audio/somfx/somfx_HalterMedioDurante.ogg");
 	recursos.carregarAudio("somfx_HalterAssovio1", "audio/somfx/somfx_HalterAssovio1.ogg");
