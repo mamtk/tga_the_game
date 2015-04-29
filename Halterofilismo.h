@@ -47,7 +47,7 @@ class Halterofilismo
 	//Menu derrota, derrotaFatality;	// fatality permite continuar
 
 	// temporizadores usados na classe
-	Temporizador temporizador, tempoDificultar, tempoPragas, tempoAvisoPragas, tempoMovimentoLetras;
+	Temporizador temporizador, tempoMorte, tempoDificultar, tempoPragas, tempoAvisoPragas, tempoMovimentoLetras;
 
 	// escolha feita no menuSandbox
 	OpcoesMenuSandbox mapaSandbox;
@@ -92,6 +92,9 @@ class Halterofilismo
 	bool venceu = false; // registra se venceu
 	bool repetirEtapa = false;
 	bool repetir = false;
+	bool pragasAtivas = true;		// não ativamos as pragas até o segundo mapa na campanha
+									//	pois é quando o protagonista recebe seu pingente
+	bool espantandoPragas = false;	// ativo enquanto as pragas são espantadas
 
 	EstadoDoJogo estadoDoJogo;
 
@@ -112,7 +115,9 @@ class Halterofilismo
 	void ativarLetra(int indice);
 	void limparFrase();
 	void ativarEspantarMoscas();
+	void desativarEspantarMoscas();
 	void mudarFundo(int novoFundo);
+	void espantarPragas();
 
 public:
 	Halterofilismo();

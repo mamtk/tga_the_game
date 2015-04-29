@@ -168,6 +168,8 @@ void Halterofilismo::prepararSandbox(int selecaoMapa)
 {
 	mapaSandbox = (OpcoesMenuSandbox)(selecaoMapa);
 	temporizador.setTempo(60);	// 60 segundos
+	tempoMorte.reset();			// resetamos o tempo da morte
+	tempoMorte.setTempo(5);		// setamos para 5s
 
 	if (selecaoMapa == escolhaAleatorio) {
 		cena = rand() % fundos.size();
@@ -360,8 +362,10 @@ void Halterofilismo::campanha()
 {
 	if (!repetir && !estaJogando)
 		historiaCampanha.desenhar(etapaAtual);
-	if (!pausado && historiaCampanha.terminouEtapa()) {
-		temporizador.reset();
+	if (!pausado && historiaCampanha.terminouEtapa() && !estaJogando) {
+		temporizador.reset();		// resetamos o tempo do temporizador
+		tempoMorte.reset();			// resetamos o tempo da morte
+		tempoMorte.setTempo(5);		// setamos para 5s
 		estaJogando = true;
 	}
 	if (estaJogando)
@@ -381,52 +385,40 @@ void Halterofilismo::desenhar()
 	int frameAtual = protagonista.getFrameAtual();
 	uniDepurar("diferença X", mouse.x - coordenadasXY[cena][0]);
 	uniDepurar("diferença Y", mouse.y - coordenadasXY[cena][1]);
-
-	// switch case estado do jogo
-
-	// case sandbox
-	// preparar
 	
 	// iniciar jogo
 	// primeiro de tudo desenhar o fundo
-	if (teclado.soltou[TECLA_ESPACO])
-		protagonista.setFrame(protagonista.getFrameAtual()+1);
 	fundo.desenhar(xCentro, yCentro);
-	if (barraProgresso.getFrameAtual() >= progressoMaximo) {
-		terminouLevantamento = true;
-		venceu = terminouLevantamento;
-		estaJogando = false;	// o levantamento temrinou
-		// fadeout de ~5s, depois menu de vitória baseado no tipo de jogo
-	}
-	else {
-		/****/
 
-		if (!pausado) {	// se o jogo está pausado não queremos alterar nada
-			if (tempoDificultar.passouTempoMS(fatorDificuldade)) {
-				dificultar();
-			}
-			if (tempoPragas.passouTempoMS(5000)) {
+	// primeiro desenhamos o protagonista
+	protagonista.desenhar(coordenadasXY[cena][0], coordenadasXY[cena][1]);
+	// desenhamos o hud antes apenas das pragas
+	desenharHUD();
+	if (!pausado) {	// se o jogo não está pausado, queremos acessar funções que alteram a dinâmica do jogo
+		if (pragasAtivas && !espantandoPragas) {	// se as pragas estiverem ativas na etapa atual e nas opções
+			//	_E_ não estivermos espantando elas
+			gerenciarPragas();	// gerenciamos as pragas
+
+			if (tempoPragas.passouTempoMS(5000)) {	// spawnar pragas
 				pragaAlada();
 			}
 		}
-		/****/
+		else if (espantandoPragas) {
+			espantarPragas();
+		}
 
-		//protagonista.setCor(50, 50, 50);
-		protagonista.desenhar(coordenadasXY[cena][0], coordenadasXY[cena][1]);
-		// desenhamos o hud antes apenas das pragas
-		desenharHUD();
-		if (!pausado) {	// se o jogo está pausado não queremos alterar nada
-			gerenciarPragas();
-			gerenciarLevantamento();	// temporizador, progresso, eventos
-			if (avisoPrimeiraPraga) { // se temos que avisar, temos que avisar!
-				if (tempoAvisoPragas.passouTempo(segundosAvisoPragas))
-					avisoPrimeiraPraga = false;
+		// sempre gerenciamos o levantamento de peso (junto com a dificuldade)
+		gerenciarLevantamento();	// temporizador, progresso, eventos
 
-				textoAvisoPragasSombra.desenhar(xCentro, yCentro);
-				textoAvisoPragas.desenhar(xCentro, yCentro);
-			}
+		if (avisoPrimeiraPraga) {	// se temos que avisar, temos que avisar!
+			if (tempoAvisoPragas.passouTempo(segundosAvisoPragas))
+				avisoPrimeiraPraga = false;
+
+			textoAvisoPragasSombra.desenhar(xCentro, yCentro);
+			textoAvisoPragas.desenhar(xCentro, yCentro);
 		}
 	}
+
 	if (opcoesDeJogo[valorSexo] == protagonistaHomem)
 		uniDesenharCirculo(coordenadasXY[cena][0] + xyFinaisSpritesPragas[protagonistaHomem][frameAtual][0], coordenadasXY[cena][1] + xyFinaisSpritesPragas[protagonistaHomem][frameAtual][1], 5, 90);
 	else
@@ -462,13 +454,13 @@ void Halterofilismo::desenharHUD()
 	textoTemporizador.desenhar(xTemporizador, yTemporizador);
 }
 
-// aqui: avançamos animações (barras, personagem), gerenciamos eventos (pragaAlada), encerramos o levantamento
+// aqui: avançamos animações (barras, personagem), dificultamos o jogo, encerramos o levantamento
 void Halterofilismo::gerenciarLevantamento()
 {
 	// TODO: se progresso = 0 e diminuir = morte()
 	// SE a barra de progresso ainda não atingiu o objetivo, verificamos o intervalo das teclas
-	int a = barraProgresso.getFrameAtual();
-	if (a < progressoMaximo) {
+	int progressoAtual = barraProgresso.getFrameAtual();
+	if (progressoAtual < progressoMaximo) {
 		// TODO && barraProgresso.getFrameAtual() >= progressoMaximo
 		// aqui gerenciamos a alteração no progresso pelas teclas de ação
 		if (teclado.soltou[TECLA_W] || teclado.soltou[TECLA_CIMA]) {
@@ -483,17 +475,37 @@ void Halterofilismo::gerenciarLevantamento()
 			protagonista.avancarAnimacao();
 		}
 	}
+	else {	// se o levantamento terminou com sucesso
+		terminouLevantamento = true;
+		venceu = terminouLevantamento;
+		estaJogando = false;	// o levantamento temrinou
+		// fadeout de ~5s, depois menu de vitória baseado no tipo de jogo
+		return;		// mais nada a fazer aqui
+	}
+	// dificultar o jogo, do contrário o jogo só acaba em vitória
+	if (tempoDificultar.passouTempoMS(fatorDificuldade)) {
+		dificultar();
+	}
 }
 
+// retrocedemos animações, detectamos a morte
 void Halterofilismo::dificultar()
 {
 	// deltaTempo é definido pela libUnicornio, ela que avança a animação
 	if (barraProgresso.getFrameAtual() > 0)	// deu subscript error, esse uso certamente não faz parte do projeto xP
 		barraProgresso.avancarAnimacao(-deltaTempo);	// como queremos um retrocederAnimacao, precisamos fazer na mão
+	else {		// morte
+		if (tempoMorte.getTempo() < 0) {	// não morrer nos primeiros 5s
+			venceu = false;
+			terminouLevantamento = true;
+			estaJogando = false;	// o levantamento terminous
+			return;					// mais nada a fazer aqui
+		}
+	}
 	if (protagonista.getFrameAtual() > 0)	// aprendi a lição com a barraProgresso
 		protagonista.avancarAnimacao(-deltaTempo);	// como queremos um retrocederAnimacao, precisamos fazer na mão
-	// para cada mosca, repetimos o "regredirAnimação", mas só se ela já chegou ao objetivo
-	int sizePragas = pragasAladas.size();
+	// para cada DUAS moscas, repetimos o "regredirAnimação", mas só se ela já chegou ao objetivo
+	int sizePragas = pragasAladas.size() * .5;
 	for (int i = 0; i < sizePragas; i++) {
 		if (chegouPraga[i]) {	// contabilizar apenas pragas efetivas (pousadas)
 			if (barraProgresso.getFrameAtual() > 0)	// deu subscript error, esse uso certamente não faz parte do projeto xP
@@ -502,7 +514,6 @@ void Halterofilismo::dificultar()
 				protagonista.avancarAnimacao(-deltaTempo);	// como queremos um retrocederAnimacao, precisamos fazer na mão
 		}
 	}
-
 }
 
 void Halterofilismo::pragaAlada()
@@ -581,9 +592,9 @@ void Halterofilismo::gerenciarPragas()
 			}
 			else {	// vamos seguir um trajeto linear
 				if (xyPragas[i][0] > xObjetivo)
-					xyPragas[i][0] -= 1;
+					xyPragas[i][0] -= 2;
 				else if (xyPragas[i][0] < xObjetivo)
-					xyPragas[i][0] += 1;
+					xyPragas[i][0] += 2;
 			}
 
 			// atuamos no eixo (y)
@@ -596,9 +607,9 @@ void Halterofilismo::gerenciarPragas()
 			}
 			else {	// vamos seguir um trajeto linear
 				if (xyPragas[i][1] > yObjetivo)
-					xyPragas[i][1] -= 1;
+					xyPragas[i][1] -= 2;
 				else if (xyPragas[i][1] < yObjetivo)
-					xyPragas[i][1] += 1;
+					xyPragas[i][1] += 2;
 			}
 			if (xyPragas[i][0] == xObjetivo && xyPragas[i][1] == yObjetivo)
 				chegouPraga[i] = true;
@@ -623,8 +634,9 @@ void Halterofilismo::gerenciarPragas()
 		}
 		pragasAladas[i].desenhar(xyPragas[i][0], xyPragas[i][1]);
 	}
-	// se totalChegouPraga > 0
-	assoviarPalavras();
+	// se totalChegouPraga > 0, apresentamos as letras do poder
+	if (chegouPraga.size() > 0)
+		assoviarPalavras();
 }
 
 // aqui gerenciamos o estado das letras, e desenhamos elas
@@ -633,9 +645,6 @@ void Halterofilismo::assoviarPalavras()
 	// se não há frase definida, inicializamos tudo
 	if (fraseAssovio.empty())
 		inicializarPalavrasDoPoder();
-
-	// gerenciar teclas pressionadas
-	// for loop a partir da primeira não ativa, se pressionou letra diferente (função dedicada, teclouErrado()), zera ativas, reseta sprites
 
 	// primeiro descobrimos qual a primeira letra das inativas
 	int sizeLetrasAtivadas = letrasAtivadas.size();
@@ -681,6 +690,9 @@ void Halterofilismo::inicializarPalavrasDoPoder()
 	letrasXYOriginal.resize(sizeLetrasAladas);
 	letrasXYAtual.resize(sizeLetrasAladas);
 	letrasAtivadas.resize(sizeLetrasAladas);
+	// queremos que a virgula seja o último caractere da linha
+	bool virgula = false;		// por isso armazenamos o numero de virgulas,
+	int posicaoAposVirgula = 0;	// e quantas posições após a virgula (para calcular o espaçamento em x)
 
 	for (int i = 0; i < sizeLetrasAladas; i++) {	// definimos os valores padrão
 		if (fraseAssovio[i] == ' '/*espaço*/) {
@@ -689,13 +701,26 @@ void Halterofilismo::inicializarPalavrasDoPoder()
 			// iniciar coordenadas âncora em 0
 			letrasXYOriginal[i][0] = 0;	// 0 significará não desenhar
 			letrasXYOriginal[i][1] = 0;	// 0 significará não desenhar
+			if (virgula && posicaoAposVirgula > 0)
+				posicaoAposVirgula++;	// aumentamos a posição após a vírgula, para incluir os espaços, menos o primeiro
 		}
 		else {
 			letrasAtivadas[i] = false;
 			letrasXYOriginal[i].resize(2);	// alocamos a memória que vamos utilizar
-			// iniciar coordenadas âncora para desenho das letras
-			letrasXYOriginal[i][1] = yCentro * 0.5;	// y original de cada letra (10%)
-			letrasXYOriginal[i][0] = .3 * xCentro + (27 * i);	// x original de cada letra: 5% + 276 * i
+			if (virgula) {
+				// iniciar coordenadas âncora para desenho das letras após a vírgula
+				letrasXYOriginal[i][0] = .1 * xCentro + (27 * posicaoAposVirgula);	// x original de cada letra: 5% + 276 * i
+				letrasXYOriginal[i][1] = yCentro * 1.85 + 31;	// y original de cada letra (92,5%)
+				posicaoAposVirgula++;	// aumentamos a posição apenas depois, já que queremos alinhamento com o elemento 0 na linha anterior
+			}
+			else {
+				// iniciar coordenadas âncora para desenho das letras antes da vírgula
+				letrasXYOriginal[i][0] = .1 * xCentro + (27 * i);	// x original de cada letra: 5% + 276 * i
+				letrasXYOriginal[i][1] = yCentro * 1.85;	// y original de cada letra (92,5%)
+			}
+			if (fraseAssovio[i] == ',') {	// contabilizamos a virgula apenas apos setar seu x e y
+				virgula = true;
+			}
 
 			// inicializar sprite
 			letrasAladas[i].setSpriteSheet("fx_Letras");
@@ -712,12 +737,8 @@ void Halterofilismo::desenharPalavrasDoPoder()
 	// TODO: desenhar só até a primeira virgula, depois que teclar tudo, desenhar a segunda parte
 	int primeiroAposVirgula = 0, variacaoPseudoAleatoria = 0;
 	int sizeLetrasAladas = letrasAladas.size();
-	// desenhar apenas até a primeira virgula nas coordenadas originais
+	// desenhar as letras nas coordenadas originais
 	for (int i = 0; i < sizeLetrasAladas; i++) {
-		if (i > 0 && fraseAssovio[i - 1] == ',') {	// se o anterior foi uma vírgula, saltar fora
-			primeiroAposVirgula = i;
-			break;
-		}
 		if (letrasXYOriginal[i][0] == 0)	// se a coordenada x da letra é 0, não desenhar
 			continue;		// continue = pular pra próxima execução do for
 
@@ -727,15 +748,6 @@ void Halterofilismo::desenharPalavrasDoPoder()
 		}
 		else {
 			letrasAladas[i].desenhar(letrasXYOriginal[i][0], letrasXYOriginal[i][1]);
-		}
-	}
-	for (int i = primeiroAposVirgula; i < sizeLetrasAladas; i++) {
-		if (!(rand() % 31)) {	// horrível de feio, mas funciona sem usar o random do c++11 que quem ia explicar!
-			variacaoPseudoAleatoria = rand() % 7;
-			letrasAladas[i].desenhar(letrasXYOriginal[i][0] - (primeiroAposVirgula * 27), letrasXYOriginal[i][1] + 100 + variacaoPseudoAleatoria);
-		}
-		else {
-			letrasAladas[i].desenhar(letrasXYOriginal[i][0] - (primeiroAposVirgula * 27), letrasXYOriginal[i][1] + 100);
 		}
 	}
 }
@@ -923,8 +935,13 @@ void Halterofilismo::ativarLetra(int indice)
 
 void Halterofilismo::ativarEspantarMoscas()
 {
-
+	espantandoPragas = true;
 }
+void Halterofilismo::desativarEspantarMoscas()
+{
+	espantandoPragas = false;
+}
+
 void Halterofilismo::limparFrase()
 {
 	fraseAssovio = "";
@@ -1094,4 +1111,17 @@ void Halterofilismo::avancarEtapa()
 void Halterofilismo::ativarRepetir()
 {
 	repetir = true;
+}
+
+void Halterofilismo::espantarPragas()
+{
+	int sizePragas = pragasAladas.size() * .5;
+	for (int i = 0; i < sizePragas; i++) {
+		if (chegouPraga[i]) {	// contabilizar apenas pragas efetivas (pousadas)
+			if (barraProgresso.getFrameAtual() > 0)	// deu subscript error, esse uso certamente não faz parte do projeto xP
+				barraProgresso.avancarAnimacao(-deltaTempo);	// como queremos um retrocederAnimacao, precisamos fazer na mão
+			if (protagonista.getFrameAtual() > 0)	// aprendi a lição com a barraProgresso
+				protagonista.avancarAnimacao(-deltaTempo);	// como queremos um retrocederAnimacao, precisamos fazer na mão
+		}
+	}
 }
