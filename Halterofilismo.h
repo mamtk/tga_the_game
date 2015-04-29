@@ -37,7 +37,7 @@ class Halterofilismo
 	Texto textoTemporizador, textoTemporizadorSombra;
 	Texto textoMensagem, textoAvisoPragas, textoAvisoPragasSombra;
 	// texto do placar máximo e atual
-	Texto placarMaximo, placarAtual;
+	Texto placarMaximo, placarAtual, placarMaximoSombra, placarAtualSombra;
 	// Tipo do levantamento sendo feito (normal, fatality)
 	TipoDeLevantamento tipo;
 	// história do modo campanha
@@ -76,11 +76,12 @@ class Halterofilismo
 
 
 	int xTemporizador, yTemporizador;		// coordenadas do temporizador
+	int xPlacarMaximo, yPlacarMaximo, xPlacarAtual, yPlacarAtual;		// coordenadas do placar
 	int etapaAtual;			// etapa atual no modo campanha ([0,5])
 	int cena;				// cena [0,5], mapa atualizado nas funções sandbox ou campanha
 	int dificuldade;		// define a taxa de espera antes de executar dificultar (internamenta fazemos um n maior resultar em um intervalo menor)
 	float fatorDificuldade;	// dificuldade efetiva (intervalo da função dificultar())
-	float pontuacaoMaximo, pontuacaoAtual;		// pontuações do modo sandbox
+	int pontuacaoMaxima = 0, pontuacaoAtual = 0;		// pontuações do modo sandbox
 	int xCentro, yCentro;	// coordenadas do centro da tela
 	int progressoMaximo;	// progresso máximo de um levantamento, pode variar de (0, ..., sizeBarraProgressoFrames - 1)
 	int chancePraga;		// chance de uma nova pragaAlada aparecer (aumenta com a dificuldade)

@@ -187,3 +187,15 @@ int Temporizador::getTempoMaximo()
 {
 	return tempoMaximoSegundos;
 }
+
+float Temporizador::getTempoPassadoMS()
+{
+	// só queremos quantos milissegundos se passaram desde o começo do temporizador
+	return clock() - pontoZero;
+}
+
+int Temporizador::getTempoPassado()
+{
+	// só queremos quantos segundos se passaram desde o começo do temporizador
+	return (clock() - pontoZero) / CLOCKS_PER_SEC;	// CLOCKS_PER_SEC é definido no <time.h>
+}

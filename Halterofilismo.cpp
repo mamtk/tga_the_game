@@ -84,6 +84,23 @@ void Halterofilismo::inicializar(int estado, vector<int> valoresOpcoesDeJogo)
 	coordenadasXY[5] = { 507, 475 };	// oimpíadas
 
 	// inicializar objetos texto
+	// placar
+	xPlacarAtual = xCentro * .45;
+	yPlacarAtual = yCentro * .15;
+	xPlacarMaximo = yCentro * .15;
+	yPlacarMaximo = yCentro * .77;
+	placarMaximo.setEspacamentoLinhas(1.5f);
+	placarMaximo.setCor(193, 255, 26); // verde limão
+	placarMaximo.setFonte("fonteGrande");
+	placarMaximoSombra.setEspacamentoLinhas(1.5f);
+	placarMaximoSombra.setCor(0, 0, 0); // branco
+	placarMaximoSombra.setFonte("fonteGrande");
+	placarAtual.setEspacamentoLinhas(1.5f);
+	placarAtual.setCor(36, 155, 0); // verde escuro
+	placarAtual.setFonte("fonteGrande");
+	placarAtualSombra.setEspacamentoLinhas(1.5f);
+	placarAtualSombra.setCor(0, 0, 0); // branco
+	placarAtualSombra.setFonte("fonteGrande");
 	// temporizador
 	xTemporizador = xCentro;
 	yTemporizador = yCentro * .15;
@@ -476,6 +493,22 @@ void Halterofilismo::desenharHUD()
 		textoTemporizador.setEscala(1.5, 1.5);
 		textoTemporizadorSombra.setEscala(1.5, 1.5);
 	}
+	else if (temporizador.getTempo() <= 0) {
+		venceu = false;
+		terminouLevantamento = true;
+		estaJogando = false;	// o levantamento terminous
+		return;					// mais nada a fazer aqui
+	}
+	if (estadoDoJogo == jogoHalterofilismoSandbox) {
+		// setar placar atual
+		placarAtual.setString(std::to_string(pontuacaoAtual));	// para um resultado melhor arredondamos pra int
+		placarAtualSombra.setString(std::to_string(pontuacaoAtual));
+		// desenhar pontuações
+		placarMaximo.desenhar(xPlacarMaximo, yPlacarMaximo);
+		placarMaximoSombra.desenhar(xPlacarMaximo, yPlacarMaximo);
+		placarAtual.desenhar(xPlacarAtual, yPlacarAtual);
+		placarAtualSombra.desenhar(xPlacarAtual, yPlacarAtual);
+	}
 
 	// primeiro desenhamos a sombra
 	textoTemporizadorSombra.desenhar(xTemporizador, yTemporizador);
@@ -485,11 +518,9 @@ void Halterofilismo::desenharHUD()
 // aqui: avançamos animações (barras, personagem), dificultamos o jogo, encerramos o levantamento
 void Halterofilismo::gerenciarLevantamento()
 {
-	// TODO: se progresso = 0 e diminuir = morte()
 	// SE a barra de progresso ainda não atingiu o objetivo, verificamos o intervalo das teclas
 	int progressoAtual = barraProgresso.getFrameAtual();
 	if (progressoAtual < progressoMaximo) {
-		// TODO && barraProgresso.getFrameAtual() >= progressoMaximo
 		// aqui gerenciamos a alteração no progresso pelas teclas de ação
 		if (teclado.soltou[TECLA_W] || teclado.soltou[TECLA_CIMA]) {
 			barraProgresso.avancarAnimacao();
@@ -506,7 +537,7 @@ void Halterofilismo::gerenciarLevantamento()
 	else {	// se o levantamento terminou com sucesso
 		terminouLevantamento = true;
 		venceu = terminouLevantamento;
-		estaJogando = false;	// o levantamento temrinou
+		estaJogando = false;	// o levantamento terminou
 		// fadeout de ~5s, depois menu de vitória baseado no tipo de jogo
 		return;		// mais nada a fazer aqui
 	}
@@ -543,6 +574,8 @@ void Halterofilismo::dificultar()
 				protagonista.avancarAnimacao(-deltaTempo);	// como queremos um retrocederAnimacao, precisamos fazer na mão
 		}
 	}
+	// pontuação = (tempoPassadoMS / fator de dificuldade)
+	pontuacaoAtual = temporizador.getTempoPassadoMS() / fatorDificuldade;
 }
 
 void Halterofilismo::pragaAlada()
@@ -1212,6 +1245,17 @@ void Halterofilismo::resetarLevantamento()
 	progresso = 0;
 	// melhor resetar a mais do que a menos
 	temporizador.reset();
+	// se sandbox
+	if (estadoDoJogo == jogoHalterofilismoSandbox) {
+		// atualizar placar maximo
+		if (pontuacaoAtual > pontuacaoMaxima)
+			pontuacaoMaxima = pontuacaoAtual;
+
+		string placarMaximoStr = "MAX: ";
+		placarMaximoStr += std::to_string(pontuacaoMaxima);	// para um resultado melhor arredondamos pra int
+		placarMaximo.setString(placarMaximoStr);
+		placarMaximoSombra.setString(placarMaximoStr);
+	}
 }
 
 void Halterofilismo::avancarEtapa() 
