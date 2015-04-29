@@ -588,7 +588,7 @@ void Halterofilismo::pragaAlada()
 
 	Sprite praga;
 	// sem texto, apenas a cue de numa nova praga
-	if (tipo == levantamentoNormal)
+	if (tipo != levantamentoNormal)
 		praga.setSpriteSheet("per_HalterMosca");
 	else
 		praga.setSpriteSheet("per_HalterPombo");
@@ -695,6 +695,7 @@ void Halterofilismo::gerenciarPragas()
 			}
 		}
 		pragasAladas[i].desenhar(xyPragas[i][0], xyPragas[i][1]);
+		pragasAladas[i].avancarAnimacao();
 	}
 	// se totalChegouPraga > 0, apresentamos as letras do poder
 	if (chegouPraga.size() > 0)
@@ -1255,6 +1256,7 @@ void Halterofilismo::resetarLevantamento()
 		placarMaximoStr += std::to_string(pontuacaoMaxima);	// para um resultado melhor arredondamos pra int
 		placarMaximo.setString(placarMaximoStr);
 		placarMaximoSombra.setString(placarMaximoStr);
+		pontuacaoAtual = 0;
 	}
 }
 
