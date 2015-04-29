@@ -256,6 +256,24 @@ void Jogo::inicializar()
 		L"Sair do jogo",
 	};
 	menuVitoriaRapidaSandbox.inicializar(textoOpcoesVitoriaRapidaSandbox, textoCabecalhoVitoriaRapidaSandbox, " ", " ", { xCentro, (int)(yCentro*.3) }, 0, xCentro, (int)(yCentro), 0, 31, {}, {}, {}, true, "fonteNormalSombra");
+	
+	// menu derrota rapida
+	wstring textoCabecalhoDerrotaRapida = L"Você perdeu no Desafio!\nEscolha a opção desejada\n\n[CIMA] ou [BAIXO] ou passe o mouse para mudar a seleção.\n\
+												  													\nPressione [ENTER] para iniciar o jogo com a opção destacada ou Menu Principal para voltar ao menu.";
+	vector<wstring> textoOpcoesDerrotaRapida = { L"Continuar", // [0]
+		L"Menu Principal", // [1]
+		L"Sair do jogo", // [2]
+	};
+	menuDerrotaRapida.inicializar(textoOpcoesDerrotaRapida, textoCabecalhoDerrotaRapida, " ", " ", { xCentro, (int)(yCentro*.3) }, 0, xCentro, (int)(yCentro), 0, 31, {}, {}, {}, true, "fonteNormalSombra");
+	
+	// menu derrota rapida sandbox
+	wstring textoCabecalhoDerrotaRapidaSandbox = L"Você perdeu no Desafio!\nEscolha a opção desejada\n\n[CIMA] ou [BAIXO] ou passe o mouse para mudar a seleção.\n\
+													\nPressione [ENTER] para iniciar o jogo com a opção destacada ou Menu Principal para voltar ao menu.";
+	vector<wstring> textoOpcoesDerrotaRapidaSandbox = { L"Continuar", // [0]
+		L"Menu Principal", // [1]
+		L"Sair do jogo", // [2]
+	};
+	menuDerrotaRapidaSandbox.inicializar(textoOpcoesDerrotaRapidaSandbox, textoCabecalhoDerrotaRapidaSandbox, " ", " ", { xCentro, (int)(yCentro*.3) }, 0, xCentro, (int)(yCentro), 0, 31, {}, {}, {}, true, "fonteNormalSombra");
 }
 
 void Jogo::finalizar()
@@ -372,6 +390,9 @@ void Jogo::gerenciarEstado()
 			else if (halterofilia.desenharMenuDerrota()) { // exibir o menu de derrota
 				estado = menuDerrotaEstado;
 			}
+			else if (halterofilia.desenharMenuDerrotaRapida()) {
+				estado = menuDerrotaRapidaEstado;
+			}
 			else
 				halterofilia.campanha();
 			break;
@@ -385,6 +406,9 @@ void Jogo::gerenciarEstado()
 			}
 			else if (halterofilia.desenharMenuDerrotaSandbox()) {
 				estado = menuDerrotaSandboxEstado;
+			}
+			else if (halterofilia.desenharMenuDerrotaRapidaSandbox()) {
+				estado = menuDerrotaRapidaSandboxEstado;
 			}
 			break;
 		case menuVitoriaEstado: 
@@ -416,6 +440,16 @@ void Jogo::gerenciarEstado()
 			menuVitoriaRapidaSandbox.desenhar();
 			if (menuVitoriaRapidaSandbox.finalizado())
 				gerenciarMenuVitoriaRapidaSandbox();
+			break;
+		case menuDerrotaRapidaEstado:
+			menuDerrotaRapida.desenhar();
+			if (menuDerrotaRapida.finalizado())
+				gerenciarMenuDerrotaRapida();
+			break;
+		case menuDerrotaRapidaSandboxEstado:
+			menuDerrotaRapidaSandbox.desenhar();
+			if (menuDerrotaRapidaSandbox.finalizado())
+				gerenciarMenuDerrotaRapidaSandbox;
 			break;
 	}
 }
@@ -628,7 +662,7 @@ void Jogo::gerenciarMenuVitoriaRapida()
 	menuVitoriaRapida.resetarMenu();
 	switch (opcoesEscolhidas)
 	{
-	case tentarDesafio:
+	case tentarDesafioCampanha:
 		halterofilia.resetarLevantamento();
 		halterofilia.ativarLevantamentoRapido();
 		estado = jogoHalterofilismoCampanha;
@@ -657,7 +691,7 @@ void Jogo::gerenciarMenuVitoriaRapidaSandbox()
 	menuVitoriaRapidaSandbox.resetarMenu();
 	switch (opcoesEscolhida)
 	{
-	case tentarDesafio:
+	case tentarDesafioSandbox:
 		halterofilia.resetarLevantamento();
 		halterofilia.ativarLevantamentoRapido();
 		estado = jogoHalterofilismoSandbox;
@@ -677,5 +711,55 @@ void Jogo::gerenciarMenuVitoriaRapidaSandbox()
 	case escolhaSairVitoriaRapidaSandbox:
 		aplicacao.sair = true;
 		break;
+	}
+}
+
+void Jogo::gerenciarMenuDerrotaRapida()
+{
+	int opcoesEscolhidas = menuDerrotaRapida.getOpcao();// obter opção escolhida
+	// resetar estado do menu principal (se não ele não desenha)
+	menuDerrotaRapida.resetarMenu();
+	switch (opcoesEscolhidas)
+	{
+	case escolhaContinuarDerrotaRapida:
+		halterofilia.resetarLevantamento();
+		halterofilia.avancarEtapa();
+		estado = jogoHalterofilismoCampanha;
+		break;
+	case escolhaMenuPrincipalDerrotaRapida:
+		halterofilia.resetarLevantamento();
+		estado = menuPrincipal;
+		if (opcoesDeJogo[valorDesativarMusicas] == 0)
+			principal.tocarMusica();
+		break;
+	default:
+	case escolhaSairMenuDerrotaRapida:
+		aplicacao.sair = true;
+		break;
+	}
+}
+
+void Jogo::gerenciarMenuDerrotaRapidaSandbox()
+{
+	int opcoesEscolhidas = menuDerrotaRapidaSandbox.getOpcao();// obter opção escolhida
+	// resetar estado do menu principal (se não ele não desenha)
+	menuDerrotaRapidaSandbox.resetarMenu();
+	switch (opcoesEscolhidas)
+	{
+	case escolhaContinuarDerrotaRapidaSandbox:
+		halterofilia.resetarLevantamento();
+		halterofilia.ativarJogando();
+		estado = jogoHalterofilismoSandbox;
+		break;
+	case escolhaMenuPrincipalDerrotaRapidaSandbox:
+		halterofilia.resetarLevantamento();
+		estado = menuPrincipal;
+		if (opcoesDeJogo[valorDesativarMusicas] == 0)
+			principal.tocarMusica();
+		break;
+		default:
+		case escolhaSairMenuDerrotaRapidaSandbox:
+			aplicacao.sair = true;
+			break;
 	}
 }

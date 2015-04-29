@@ -145,8 +145,10 @@ public:
 	bool desenharMenuDerrotaSandbox();
 
 	bool desenharMenuVitoriaRapida();
-	bool desenharMenuVitoriaRapidaSandbox();
+	bool desenharMenuDerrotaRapida();
 
+	bool desenharMenuVitoriaRapidaSandbox();
+	bool desenharMenuDerrotaRapidaSandbox();
 
 	void resetarLevantamento();
 	void avancarEtapa();

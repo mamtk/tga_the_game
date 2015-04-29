@@ -11,7 +11,8 @@ class Jogo
 	// estado do jogo, valores pretendem ser universais (entre as classes)
 	enum EstadoDoJogo {
 		menuPrincipal, menuJogos, menuOpcoes, menuAjuda, menuCreditos, menuHalterofilismoSandbox, jogoHalterofilismoCampanha, jogoHalterofilismoSandbox,
-		menuVitoriaEstado, menuDerrotaEstado, menuVitoriaSandboxEstado, menuDerrotaSandboxEstado, menuVitoriaRapidaEstado, menuVitoriaRapidaSandboxEstado
+		menuVitoriaEstado, menuDerrotaEstado, menuVitoriaSandboxEstado, menuDerrotaSandboxEstado, menuVitoriaRapidaEstado, menuVitoriaRapidaSandboxEstado,
+		menuDerrotaRapidaEstado, menuDerrotaRapidaSandboxEstado
 	};
 
 	// opções dos menus
@@ -22,8 +23,10 @@ class Jogo
 	enum opcoesMenuDerrota { escolhaRepetir, escolhaMenuPrincipalDerrota, escolhaSairMenuDerrota };
 	enum OpcoesMenuVitoriaSandbox { escolhaContinuarSandbox, escolhaMenuPrincipalVitoriaSandbox, escolhaSairVitoriaSandbox };
 	enum OpcoesMenuDerrotaSandbox { escolhaRecomecarSandbox, escolhaMenuPrincipalDerrotaSandbox, escolhaSairDerrotaSandbox };
-	enum OpcoesMenuVitoriaRapida { tentarDesafio, escolhaContinuarRapida, escolhaMenuPrincipalVitoriaRapida, escolhaSairMenuVitoriaRapida };
+	enum OpcoesMenuVitoriaRapida { tentarDesafioCampanha, escolhaContinuarRapida, escolhaMenuPrincipalVitoriaRapida, escolhaSairMenuVitoriaRapida };
+	enum OpcoesMenuDerrotaRapida { escolhaContinuarDerrotaRapida, escolhaMenuPrincipalDerrotaRapida, escolhaSairMenuDerrotaRapida };
 	enum OpcoesMenuVitoriaRapidaSandbox { tentarDesafioSandbox, escolhaContinuarRapidaSandbox, escolhaMenuPrincipalVitoriaRapidaSandbox, escolhaSairVitoriaRapidaSandbox };
+	enum OpcoesMenuDerrotaRapidaSandbox { escolhaContinuarDerrotaRapidaSandbox, escolhaMenuPrincipalDerrotaRapidaSandbox, escolhaSairMenuDerrotaRapidaSandbox };
 	enum OpcoesMenuInstantaneo { escolhaContinuarJogo, escolhaSairDoJogo };
 
 	// valores dos menus
@@ -44,7 +47,9 @@ class Jogo
 	Menu menuVitoriaSandbox;
 	Menu menuDerrotaSandbox;
 	Menu menuVitoriaRapida;
+	Menu menuDerrotaRapida;
 	Menu menuVitoriaRapidaSandbox;
+	Menu menuDerrotaRapidaSandbox;
 
 	Halterofilismo halterofilia;
 	EstadoDoJogo estado = menuPrincipal;
@@ -65,7 +70,9 @@ class Jogo
 	void gerenciarMenuVitoriaSandbox();
 	void gerenciarMenuDerrotaSandbox();
 	void gerenciarMenuVitoriaRapida();
+	void gerenciarMenuDerrotaRapida();
 	void gerenciarMenuVitoriaRapidaSandbox();
+	void gerenciarMenuDerrotaRapidaSandbox();
 
 public:
 	Jogo();
