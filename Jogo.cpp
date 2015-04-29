@@ -380,7 +380,7 @@ void Jogo::gerenciarEstado()
 				estado = menuVitoriaSandboxEstado;
 			}
 			else if (halterofilia.desenharMenuVitoriaRapidaSandbox()) {
-				estado = menuVitoriaRapidaSandboxEstado
+				estado = menuVitoriaRapidaSandboxEstado;
 			}
 			else if (halterofilia.desenharMenuDerrotaSandbox()) {
 				estado = menuDerrotaSandboxEstado;
