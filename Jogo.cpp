@@ -352,6 +352,7 @@ void Jogo::gerenciarEstado()
 				halterofilia.campanha();
 			break;
 		case jogoHalterofilismoSandbox:
+			halterofilia.sandbox();
 			if (halterofilia.desenharMenuVitoriaSandbox()) {
 				estado = menuVitoriaSandboxEstado;
 			}
