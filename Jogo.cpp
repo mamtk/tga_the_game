@@ -544,6 +544,7 @@ void Jogo::gerenciarMenuVitoriaSandbox()
 	{
 	case escolhaContinuarSandbox:
 		halterofilia.resetarLevantamento();
+		halterofilia.ativarJogando();
 		estado = jogoHalterofilismoSandbox;
 		break;
 	case escolhaMenuPrincipalVitoriaSandbox:

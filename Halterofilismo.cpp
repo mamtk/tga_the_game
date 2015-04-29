@@ -1176,3 +1176,8 @@ void Halterofilismo::ativarRepetir()
 {
 	repetir = true;
 }
+
+void Halterofilismo::ativarJogando()
+{
+	estaJogando = true;
+}
