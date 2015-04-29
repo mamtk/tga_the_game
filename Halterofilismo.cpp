@@ -179,13 +179,28 @@ void Halterofilismo::inicializar(int estado, vector<int> valoresOpcoesDeJogo)
 	sonsEfeitos[somfx_HalterAssovio6].setAudio("somfx_HalterAssovio6");
 	sonsEfeitos[somfx_HalterSoluco].setAudio("somfx_HalterSoluco");
 
-
 	// inicializar palavras do poder de espantar pragas
 	queriaPalavrasLista = { "aulista", "bulista", "selista", "biblista", "coralista", "violista", "gaulista", "oculista", "simplista", "cafelista", "paulista", \
 		"niilista", "noelista", "pugilista" };
 	acabeiPalavrasEiro = { "aneiro", "boeiro", "bueiro", "geeiro", "nieiro", "oveiro", "rueiro", "useiro", "agosteiro", \
 		"capeiro", "careiro", "coreiro", "dureiro", "fateiro", "fiteiro", "foreiro", "guieiro", "sineiro", "mineiro",
 		"agoureiro", "assadeiro", "barulheiro", "benzedeiro", "faqueiro", "fogareiro", "letreiro", "milagreiro" };
+
+	// inicializar vetor com nomes dos sons de fundo
+	nomesSonsDeFundo.resize(6);
+	nomesSonsDeFundo = { "somfundo_HalterFazenda",
+		"somfundo_HalterEsgoto",
+		"somfundo_HalterCanil",
+		"somfundo_HalterAcademiaSuburbio",
+		"somfundo_HalterAcademiaCentro",
+		"somfundo_HalterOlimpiadas"
+	};
+	// inicializar objetos som dos sons de fundo
+	int sizeSonsDeFundo = nomesSonsDeFundo.size();
+	sonsDeFundo.resize(sizeSonsDeFundo);
+	for (int som = 0; som < sizeSonsDeFundo; som++) {
+		sonsDeFundo[som].setAudio(nomesSonsDeFundo[som]);
+	}
 
 	// iniciar temporizador
 	temporizador.reset();
@@ -221,6 +236,9 @@ void Halterofilismo::sandbox()
 		if (mapaSandbox == escolhaAleatorio)	// caso mapa deva ser aleatório
 			cena = rand() % fundos.size();		// sorteamos
 
+		// se som ativado e etapa atual possui som de fundo definido nessa classe
+		if (!opcoesDeJogo[valorDesativarSom] && cena < sonsDeFundo.size())
+			sonsDeFundo[cena].tocar();
 		estaJogando = true;
 		avancarEtapa();
 		atualizarDificuldade();
@@ -330,65 +348,51 @@ void Halterofilismo::prepararCampanha()
 		};
 	}
 
-	vector<string> sonsDeFundo;
 	vector<vector<vector<string>>> sonsDaHistoria;
 
-	// se valor desativar som for não, então alocar sons
-	if (opcoesDeJogo[valorDesativarSom] == 0 /* não */) {
-		sonsDeFundo.resize(6);
-		
-		sonsDeFundo	= { "somfundo_HalterFazenda",
-			"somfundo_HalterEsgoto",
-			"somfundo_HalterCanil",
-			"somfundo_HalterAcademiaSuburbio",
-			"somfundo_HalterAcademiaCentro",
-			"somfundo_HalterOlimpiadas"
-		};
-
-		// sons nas posições (etapa.linha.quando): 0.0.1; 0.2.2; 1.0.2; 1.1.2; 1.3.2; 2.2.2; 3.1.0; 3.3.0; 4.1.2; 4.2.2; 4.4.0; 5.2.1; 5.4.0
-		sonsDaHistoria.resize(6);	// usamos até a etapa 5
-		// etapa 0
-		sonsDaHistoria[0].resize(3);	// usamos até a linha 3
-		sonsDaHistoria[0][0].resize(3);	// usamos sons na a linha 1 da etapa 0
-		sonsDaHistoria[0][0][tocarComecoDaLinha] = "somfx_BebeChorando";
-		sonsDaHistoria[0][2].resize(3);	// usamos sons na a linha 3 da etapa 0
-		if (opcoesDeJogo[valorSexo] == 0)
-			sonsDaHistoria[0][2][tocarFinalDaLinha] = "somfx_GrunhidosBolaBilhar";
-		else
-			sonsDaHistoria[0][2][tocarFinalDaLinha] = "somfx_GrunhidosBolaBilharMulher";
-		// etapa 1
-		sonsDaHistoria[1].resize(4);	// usamos até a linha 4
-		sonsDaHistoria[1][0].resize(3);	// usamos sons na a linha 1 da etapa 1
-		sonsDaHistoria[1][0][tocarFinalDaLinha] = "somfx_CavaloDoido";
-		sonsDaHistoria[1][1].resize(3);	// usamos sons na a linha 2 da etapa 1
-		sonsDaHistoria[1][1][tocarFinalDaLinha] = "somfx_CarroLigando";
-		sonsDaHistoria[1][3].resize(3);	// usamos sons na a linha 4 da etapa 1
-		sonsDaHistoria[1][3][tocarFinalDaLinha] = "somfx_Ovelhas";
-		// etapa 2
-		sonsDaHistoria[2].resize(3);	// usamos até a linha 3
-		sonsDaHistoria[2][2].resize(3);	// usamos sons na a linha 3 da etapa 2
-		sonsDaHistoria[2][2][tocarFinalDaLinha] = "somfx_Enxame";
-		// etapa 3
-		sonsDaHistoria[3].resize(4);	// usamos até a linha 4
-		sonsDaHistoria[3][1].resize(3);	// usamos sons na a linha 2 da etapa 3
-		sonsDaHistoria[3][1][tocarComecoDaLinha] = "somfx_Trovao";
-		sonsDaHistoria[3][3].resize(3);	// usamos sons na a linha 4 da etapa 3
-		sonsDaHistoria[3][3][tocarComecoDaLinha] = "somfx_Trovao";
-		// etapa 4
-		sonsDaHistoria[4].resize(5);	// usamos até a linha 5
-		sonsDaHistoria[4][1].resize(3);	// usamos sons na a linha 2 da etapa 4
-		sonsDaHistoria[4][1][tocarFinalDaLinha] = "somfx_Espirro";
-		sonsDaHistoria[4][2].resize(3);	// usamos sons na a linha 3 da etapa 4
-		sonsDaHistoria[4][2][tocarFinalDaLinha] = "somfx_OssosQuebrando";
-		sonsDaHistoria[4][4].resize(3);	// usamos sons na a linha 5 da etapa 4
-		sonsDaHistoria[4][4][tocarComecoDaLinha] = "somfx_Trovao";
-		// etapa 5
-		sonsDaHistoria[5].resize(5);	// usamos até a linha 5
-		sonsDaHistoria[5][1].resize(3);	// usamos sons na a linha 2 da etapa 4
-		sonsDaHistoria[5][1][tocarMeioDaLinha] = "somfx_VozNoRadio";
-		sonsDaHistoria[5][4].resize(3);	// usamos sons na a linha 5 da etapa 4
-		sonsDaHistoria[5][4][tocarComecoDaLinha] = "somfx_Trovao";
-	}
+	// sons nas posições (etapa.linha.quando): 0.0.1; 0.2.2; 1.0.2; 1.1.2; 1.3.2; 2.2.2; 3.1.0; 3.3.0; 4.1.2; 4.2.2; 4.4.0; 5.2.1; 5.4.0
+	sonsDaHistoria.resize(6);	// usamos até a etapa 5
+	// etapa 0
+	sonsDaHistoria[0].resize(3);	// usamos até a linha 3
+	sonsDaHistoria[0][0].resize(3);	// usamos sons na a linha 1 da etapa 0
+	sonsDaHistoria[0][0][tocarComecoDaLinha] = "somfx_BebeChorando";
+	sonsDaHistoria[0][2].resize(3);	// usamos sons na a linha 3 da etapa 0
+	if (opcoesDeJogo[valorSexo] == 0)
+		sonsDaHistoria[0][2][tocarFinalDaLinha] = "somfx_GrunhidosBolaBilhar";
+	else
+		sonsDaHistoria[0][2][tocarFinalDaLinha] = "somfx_GrunhidosBolaBilharMulher";
+	// etapa 1
+	sonsDaHistoria[1].resize(4);	// usamos até a linha 4
+	sonsDaHistoria[1][0].resize(3);	// usamos sons na a linha 1 da etapa 1
+	sonsDaHistoria[1][0][tocarFinalDaLinha] = "somfx_CavaloDoido";
+	sonsDaHistoria[1][1].resize(3);	// usamos sons na a linha 2 da etapa 1
+	sonsDaHistoria[1][1][tocarFinalDaLinha] = "somfx_CarroLigando";
+	sonsDaHistoria[1][3].resize(3);	// usamos sons na a linha 4 da etapa 1
+	sonsDaHistoria[1][3][tocarFinalDaLinha] = "somfx_Ovelhas";
+	// etapa 2
+	sonsDaHistoria[2].resize(3);	// usamos até a linha 3
+	sonsDaHistoria[2][2].resize(3);	// usamos sons na a linha 3 da etapa 2
+	sonsDaHistoria[2][2][tocarFinalDaLinha] = "somfx_Enxame";
+	// etapa 3
+	sonsDaHistoria[3].resize(4);	// usamos até a linha 4
+	sonsDaHistoria[3][1].resize(3);	// usamos sons na a linha 2 da etapa 3
+	sonsDaHistoria[3][1][tocarComecoDaLinha] = "somfx_Trovao";
+	sonsDaHistoria[3][3].resize(3);	// usamos sons na a linha 4 da etapa 3
+	sonsDaHistoria[3][3][tocarComecoDaLinha] = "somfx_Trovao";
+	// etapa 4
+	sonsDaHistoria[4].resize(5);	// usamos até a linha 5
+	sonsDaHistoria[4][1].resize(3);	// usamos sons na a linha 2 da etapa 4
+	sonsDaHistoria[4][1][tocarFinalDaLinha] = "somfx_Espirro";
+	sonsDaHistoria[4][2].resize(3);	// usamos sons na a linha 3 da etapa 4
+	sonsDaHistoria[4][2][tocarFinalDaLinha] = "somfx_OssosQuebrando";
+	sonsDaHistoria[4][4].resize(3);	// usamos sons na a linha 5 da etapa 4
+	sonsDaHistoria[4][4][tocarComecoDaLinha] = "somfx_Trovao";
+	// etapa 5
+	sonsDaHistoria[5].resize(5);	// usamos até a linha 5
+	sonsDaHistoria[5][1].resize(3);	// usamos sons na a linha 2 da etapa 4
+	sonsDaHistoria[5][1][tocarMeioDaLinha] = "somfx_VozNoRadio";
+	sonsDaHistoria[5][4].resize(3);	// usamos sons na a linha 5 da etapa 4
+	sonsDaHistoria[5][4][tocarComecoDaLinha] = "somfx_Trovao";
 
 	vector<string> fundosCampanha = { "fundo_HalterFazenda",
 		"fundo_HalterEsgoto",
@@ -397,7 +401,11 @@ void Halterofilismo::prepararCampanha()
 		"fundo_HalterAcademiaCentro",
 		"fundo_HalterOlimpiadas"
 	};
-	historiaCampanha.inicializar(historia, fundosCampanha, sonsDeFundo, sonsDaHistoria);
+
+	if (!opcoesDeJogo[valorDesativarMusicas])	// sons ativados
+		historiaCampanha.inicializar(historia, fundosCampanha, nomesSonsDeFundo, sonsDaHistoria);
+	else	// sons desativados
+		historiaCampanha.inicializar(historia, fundosCampanha, {}, {});
 }
 
 // jogo com história (se ativa), e progresso linear baseado na dificuldade até um final
@@ -415,6 +423,9 @@ void Halterofilismo::campanha()
 		tempoMorte.setTempo(5);		// setamos para 5s
 		estaJogando = true;
 		atualizarDificuldade();		// atualizar dificuldade para a etapaAtual
+		// se som ativado e etapa atual possui som de fundo definido nessa classe
+		if (!opcoesDeJogo[valorDesativarSom] && etapaAtual < sonsDeFundo.size())
+			sonsDeFundo[etapaAtual].tocar();
 	}
 	// se estiver jogando
 	else if (estaJogando)
@@ -1359,6 +1370,10 @@ void Halterofilismo::resetarLevantamento()
 		int sizeSons = sonsEfeitos.size();
 		for (int som = 0; som < sizeSons; som++) {
 			sonsEfeitos[som].parar();
+		}
+		int sizeSonsFundo = sonsDeFundo.size();
+		for (int som = 0; som < sizeSonsFundo; som++) {
+			sonsDeFundo[som].parar();
 		}
 	}
 }

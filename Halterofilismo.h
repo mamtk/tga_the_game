@@ -35,12 +35,15 @@ class Halterofilismo
 		somfx_HalterDesafioImpossivelMorte, somfx_HalterDesafioMorte, somfx_HalterImpossivelMorte, somfx_HalterMedioMorte, somfx_HalterImpossivelDurante, \
 		somfx_HalterDesafioDurante, somfx_HalterDesafioDuranteMulher, somfx_HalterDificilDurante, somfx_HalterMedioDurante, somfx_HalterAssovio1, somfx_HalterAssovio2, \
 		somfx_HalterAssovio3, somfx_HalterAssovio4, somfx_HalterAssovio5, somfx_HalterAssovio6, somfx_HalterSoluco };
+	enum TodosOsSonsDeFundo {  };
 
 	// Sprites usadas pela classe
 	Sprite fundo, protagonista, barraProgresso;
 	vector<Sprite> pragasAladas, letrasAladas;
-	// vetor com os efeitos sonoros usados pela classe
-	vector<Som> sonsEfeitos;
+
+	vector<Som> sonsEfeitos;			// vetor com os efeitos sonoros usados pela classe
+	vector<Som> sonsDeFundo;			// vetor com os sons de fundo
+	vector<string> nomesSonsDeFundo;	// vetor com strings contendo o nome dos sons de fundo
 	// Textos usados pela class
 	Texto textoTemporizador, textoTemporizadorSombra;
 	Texto textoMensagem, textoAvisoPragas, textoAvisoPragasSombra;

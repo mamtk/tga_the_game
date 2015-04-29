@@ -328,7 +328,6 @@ void Jogo::finalizar()
 {
 	//	O resto da finaliza鈬o vem aqui (provavelmente, em ordem inversa a inicializa鈬o)!
 	//	...
-	recursos.descarregarTodasFontes();
 	recursos.descarregarTudo();
 
 	uniFinalizar();
