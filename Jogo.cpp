@@ -557,7 +557,7 @@ void Jogo::gerenciarMenuDerrotaSandbox()
 {
 	int opcaoEscolhida = menuDerrotaSandbox.getOpcao();// obter opção escolhida
 	// resetar estado do menu principal (se não ele não desenha)
-	menuDerrotaSandbox.resetarMenu;
+	menuDerrotaSandbox.resetarMenu();
 	switch (opcaoEscolhida)
 	{
 	default:
