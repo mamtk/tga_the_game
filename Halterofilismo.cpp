@@ -476,6 +476,15 @@ void Halterofilismo::desenharHUD()
 		textoTemporizador.setEscala(1.5, 1.5);
 		textoTemporizadorSombra.setEscala(1.5, 1.5);
 	}
+	else if (temporizador.getTempo() <= 0) {
+		venceu = false;
+		terminouLevantamento = true;
+		estaJogando = false;	// o levantamento terminous
+		return;					// mais nada a fazer aqui
+	}
+	if (estadoDoJogo == jogoHalterofilismoSandbox) {
+		// desenhar placar
+	}
 
 	// primeiro desenhamos a sombra
 	textoTemporizadorSombra.desenhar(xTemporizador, yTemporizador);
@@ -485,11 +494,9 @@ void Halterofilismo::desenharHUD()
 // aqui: avançamos animações (barras, personagem), dificultamos o jogo, encerramos o levantamento
 void Halterofilismo::gerenciarLevantamento()
 {
-	// TODO: se progresso = 0 e diminuir = morte()
 	// SE a barra de progresso ainda não atingiu o objetivo, verificamos o intervalo das teclas
 	int progressoAtual = barraProgresso.getFrameAtual();
 	if (progressoAtual < progressoMaximo) {
-		// TODO && barraProgresso.getFrameAtual() >= progressoMaximo
 		// aqui gerenciamos a alteração no progresso pelas teclas de ação
 		if (teclado.soltou[TECLA_W] || teclado.soltou[TECLA_CIMA]) {
 			barraProgresso.avancarAnimacao();
@@ -506,7 +513,7 @@ void Halterofilismo::gerenciarLevantamento()
 	else {	// se o levantamento terminou com sucesso
 		terminouLevantamento = true;
 		venceu = terminouLevantamento;
-		estaJogando = false;	// o levantamento temrinou
+		estaJogando = false;	// o levantamento terminou
 		// fadeout de ~5s, depois menu de vitória baseado no tipo de jogo
 		return;		// mais nada a fazer aqui
 	}
