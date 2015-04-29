@@ -412,8 +412,7 @@ void Halterofilismo::desenhar()
 			}
 		}
 		else if (espantandoPragas) {
-			if (!(rand()%31))	// pras pragas não fugirem rápido demais
-				espantarPragas();	// tem 33% de chance de não rodar no frame atual
+			espantarPragas();
 		}
 
 		// sempre gerenciamos o levantamento de peso (junto com a dificuldade)
@@ -653,26 +652,31 @@ void Halterofilismo::espantarPragas()
 {
 	int sizePragas = pragasAladas.size();
 	int totalForaDaTela = 0;
+
 	for (int i = 0; i < sizePragas; i++) {
 		pragasAladas[i].desenhar(xyPragas[i][0], xyPragas[i][1]);
 
-		if (xyPragas[i][0] >= xCentro) {	// se estamos mais à direita do centro, ou exatamente à direita
-			xyPragas[i][0] += 3;	// vamos fugir pela direita!
-		}
-		else {	// se estamos mais a esquerda
-			xyPragas[i][0] -= 3;	// esquerda
-		}
-		if (xyPragas[i][1] >= yCentro) {	// se estamos mais acima do centro, ou exatamente no centro
-			xyPragas[i][1] += 3;	// vamos fugir pra cima!
-		}
-		else {	// se estamos mais ABAIXO do centro
-			xyPragas[i][1] -= 3;	// baixo
-		}
-		// detectar pragas fora da tela
-		if ((xyPragas[i][1] > yCentro * 2 || xyPragas[i][1] < 1) && (xyPragas[i][0] > xCentro * 2 || xyPragas[i][0] < 1)) {
-			totalForaDaTela++;
+		//	não queremos mover as pragas todo frame, tem ~3% de chance de não rodar no frame atual
+		if (!(rand() % 11)) {	// horrível de feio, mas funciona sem muita complexidade
+			if (xyPragas[i][0] >= xCentro) {	// se estamos mais à direita do centro, ou exatamente à direita
+				xyPragas[i][0] += 3;	// vamos fugir pela direita!
+			}
+			else {	// se estamos mais a esquerda
+				xyPragas[i][0] -= 3;	// esquerda
+			}
+			if (xyPragas[i][1] >= yCentro) {	// se estamos mais acima do centro, ou exatamente no centro
+				xyPragas[i][1] += 3;	// vamos fugir pra cima!
+			}
+			else {	// se estamos mais ABAIXO do centro
+				xyPragas[i][1] -= 3;	// baixo
+			}
+			// detectar pragas fora da tela
+			if ((xyPragas[i][1] > yCentro * 2 || xyPragas[i][1] < 1) && (xyPragas[i][0] > xCentro * 2 || xyPragas[i][0] < 1)) {
+				totalForaDaTela++;
+			}
 		}
 	}
+
 	if (totalForaDaTela >= sizePragas) {	// terminamos nossa fuga!
 		espantandoPragas = false;
 		// resetar pragas
