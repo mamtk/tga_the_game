@@ -87,8 +87,8 @@ void Halterofilismo::inicializar(int estado, vector<int> valoresOpcoesDeJogo)
 	// placar
 	xPlacarAtual = xCentro * .45;
 	yPlacarAtual = yCentro * .15;
-	xPlacarMaximo = yCentro * .15;
-	yPlacarMaximo = yCentro * .77;
+	xPlacarMaximo = yCentro * .77;
+	yPlacarMaximo = yCentro * .15;
 	placarMaximo.setEspacamentoLinhas(1.5f);
 	placarMaximo.setCor(193, 255, 26); // verde limão
 	placarMaximo.setFonte("fonteGrande");
