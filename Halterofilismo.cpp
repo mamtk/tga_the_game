@@ -1278,3 +1278,4 @@ void Halterofilismo::ativarLevantamentoRapido()
 {
 	tipo = levantamentoFatality;
 }
+

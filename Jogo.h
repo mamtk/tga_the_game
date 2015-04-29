@@ -12,7 +12,7 @@ class Jogo
 	enum EstadoDoJogo {
 		menuPrincipal, menuJogos, menuOpcoes, menuAjuda, menuCreditos, menuHalterofilismoSandbox, jogoHalterofilismoCampanha, jogoHalterofilismoSandbox,
 		menuVitoriaEstado, menuDerrotaEstado, menuVitoriaSandboxEstado, menuDerrotaSandboxEstado, menuVitoriaRapidaEstado, menuVitoriaRapidaSandboxEstado,
-		menuDerrotaRapidaEstado, menuDerrotaRapidaSandboxEstado
+		menuDerrotaRapidaEstado, menuDerrotaRapidaSandboxEstado, menuFinale
 	};
 
 	// opções dos menus
@@ -27,6 +27,7 @@ class Jogo
 	enum OpcoesMenuDerrotaRapida { escolhaContinuarDerrotaRapida, escolhaMenuPrincipalDerrotaRapida, escolhaSairMenuDerrotaRapida };
 	enum OpcoesMenuVitoriaRapidaSandbox { tentarDesafioSandbox, escolhaContinuarRapidaSandbox, escolhaMenuPrincipalVitoriaRapidaSandbox, escolhaSairVitoriaRapidaSandbox };
 	enum OpcoesMenuDerrotaRapidaSandbox { escolhaContinuarDerrotaRapidaSandbox, escolhaMenuPrincipalDerrotaRapidaSandbox, escolhaSairMenuDerrotaRapidaSandbox };
+	enum OpcoesMenuFinale { escolhaMenuPrincipalFinale, escolhaSairMenuFinale};
 	enum OpcoesMenuInstantaneo { escolhaContinuarJogo, escolhaSairDoJogo };
 
 	// valores dos menus
@@ -50,6 +51,7 @@ class Jogo
 	Menu menuDerrotaRapida;
 	Menu menuVitoriaRapidaSandbox;
 	Menu menuDerrotaRapidaSandbox;
+	Menu menuFinale;
 
 	Halterofilismo halterofilia;
 	EstadoDoJogo estado = menuPrincipal;
@@ -73,6 +75,7 @@ class Jogo
 	void gerenciarMenuDerrotaRapida();
 	void gerenciarMenuVitoriaRapidaSandbox();
 	void gerenciarMenuDerrotaRapidaSandbox();
+	void gerenciarMenuFinale();
 
 public:
 	Jogo();

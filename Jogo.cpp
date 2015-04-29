@@ -273,6 +273,8 @@ void Jogo::inicializar()
 		L"Sair do jogo", // [2]
 	};
 	menuDerrotaRapidaSandbox.inicializar(textoOpcoesDerrotaRapidaSandbox, textoCabecalhoDerrotaRapidaSandbox, " ", " ", { xCentro, (int)(yCentro*.3) }, 0, xCentro, (int)(yCentro), 0, 31, {}, {}, {}, true, "fonteNormalSombra");
+
+	// menu finale
 }
 
 void Jogo::finalizar()
