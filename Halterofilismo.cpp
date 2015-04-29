@@ -361,6 +361,7 @@ void Halterofilismo::campanha()
 	if (!repetir && !estaJogando)
 		historiaCampanha.desenhar(etapaAtual);
 	if (!pausado && historiaCampanha.terminouEtapa()) {
+		temporizador.reset();
 		estaJogando = true;
 	}
 	if (estaJogando)
@@ -931,7 +932,6 @@ void Halterofilismo::limparFrase()
 	letrasXYOriginal.resize(0);
 	letrasXYAtual.resize(0);
 	letrasAtivadas.resize(0);
-
 }
 
 int Halterofilismo::traduzLetraFrame(char letra)	// se não for função, vai ficar cheio de linha sem significância
@@ -1081,7 +1081,8 @@ void Halterofilismo::resetarLevantamento()
 	barraProgresso.recomecarAnimacao();
 	protagonista.recomecarAnimacao();
 	progresso = 0;
-	cout << "";
+	// melhor resetar a mais do que a menos
+	temporizador.reset();
 }
 
 void Halterofilismo::avancarEtapa() 
