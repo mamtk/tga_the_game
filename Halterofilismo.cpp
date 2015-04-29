@@ -368,21 +368,30 @@ void Halterofilismo::prepararCampanha()
 // jogo com história (se ativa), e progresso linear baseado na dificuldade até um final
 void Halterofilismo::campanha()
 {
-	if (!repetir && !estaJogando)
+	// opcoesDeJogo[valorDesativarHistoria]: 0 = historia ativa, 1 = historia inativa
+	if (!repetir && !estaJogando && !opcoesDeJogo[valorDesativarHistoria])
 		historiaCampanha.desenhar(etapaAtual);
-	if (!pausado && historiaCampanha.terminouEtapa() && !estaJogando) {
+	// caso o jogo não esteja pausado, e já tenha terminado a história, ou tenha desativado-a
+	//	e ainda não seteja jogando
+	if (!pausado && (historiaCampanha.terminouEtapa() || opcoesDeJogo[valorDesativarHistoria]) && !estaJogando) {
+		// preparar jogo
 		temporizador.reset();		// resetamos o tempo do temporizador
 		tempoMorte.reset();			// resetamos o tempo da morte
 		tempoMorte.setTempo(5);		// setamos para 5s
 		estaJogando = true;
 	}
-	if (estaJogando)
+	// se estiver jogando
+	else if (estaJogando)
 	{
 		repetir = false;
 		cena = etapaAtual;
 		mudarFundo(cena);
 		temporizador.setTempo(60);
 		progressoMaximo = sizeBarraProgressoFrames - 1;	// reduzimos 1, pois: indice ultimo elemento = total - 1
+		if (etapaAtual == 0)
+			pragasAtivas = false;
+		else
+			pragasAtivas = true;
 		desenhar();
 	}
 }
@@ -403,7 +412,8 @@ void Halterofilismo::desenhar()
 	// desenhamos o hud antes apenas das pragas
 	desenharHUD();
 	if (!pausado) {	// se o jogo não está pausado, queremos acessar funções que alteram a dinâmica do jogo
-		if (pragasAtivas && !espantandoPragas) {	// se as pragas estiverem ativas na etapa atual e nas opções
+		// opcoesDeJogo[valorDesativarPragas]: 0 = não desativar, 1 = desativar
+		if (pragasAtivas && !opcoesDeJogo[valorDesativarPragas] && !espantandoPragas) {	// se as pragas estiverem ativas na etapa atual e nas opções
 			//	_E_ não estivermos espantando elas
 			gerenciarPragas();	// gerenciamos as pragas
 
@@ -427,10 +437,12 @@ void Halterofilismo::desenhar()
 		}
 	}
 
+	/* depuração que desenha circulo no alvo das pragas (usado para testar pontos nos diferentes frames
 	if (opcoesDeJogo[valorSexo] == protagonistaHomem)
 		uniDesenharCirculo(coordenadasXY[cena][0] + xyFinaisSpritesPragas[protagonistaHomem][frameAtual][0], coordenadasXY[cena][1] + xyFinaisSpritesPragas[protagonistaHomem][frameAtual][1], 5, 90);
 	else
 		uniDesenharCirculo(coordenadasXY[cena][0] + xyFinaisSpritesPragas[protagonistaMulher][frameAtual][0], coordenadasXY[cena][1] + xyFinaisSpritesPragas[protagonistaMulher][frameAtual][1], 5, 90);
+		*/
 }
 // aqui desenhamos na tela os elementos necessários pela mecânica do jogo
 void Halterofilismo::desenharHUD()

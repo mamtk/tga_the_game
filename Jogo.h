@@ -19,13 +19,13 @@ class Jogo
 	enum OpcoesMenuSecundario { escolhaHalterCampanha, escolhaHalterSandbox, escolhaTiroCampanha, escolhaTiroSandbox, Retornar };
 	enum OpcoesMenuSandbox { escolhaAleatorio, escolhaFazenda, escolhaEsgoto, escolhaCanil, escolhaAcademiaSuburbio, escolhaAcademiaCentro, escolhaOlimpiadas, escolhaVoltar };
 	enum OpcoesMenuVitoria { escolhaContinuar, escolhaMenuPrincipalVitoria, escolhaSairMenuVitoria };
-	enum opcoesMenuDerrota {escolhaRepetir, escolhaMenuPrincipalDerrota, escolhaSairMenuDerrota};
-	enum OpcoesMenuVitoriaSandbox {escolhaContinuarSandbox, escolhaMenuPrincipalVitoriaSandbox, escolhaSairVitoriaSandbox};
-	enum OpcoesMenuDerrotaSandbox {escolhaRecomecarSandbox, escolhaMenuPrincipalDerrotaSandbox, escolhaSairDerrotaSandbox};
+	enum opcoesMenuDerrota { escolhaRepetir, escolhaMenuPrincipalDerrota, escolhaSairMenuDerrota };
+	enum OpcoesMenuVitoriaSandbox { escolhaContinuarSandbox, escolhaMenuPrincipalVitoriaSandbox, escolhaSairVitoriaSandbox };
+	enum OpcoesMenuDerrotaSandbox { escolhaRecomecarSandbox, escolhaMenuPrincipalDerrotaSandbox, escolhaSairDerrotaSandbox };
 	enum OpcoesMenuInstantaneo { escolhaContinuarJogo, escolhaSairDoJogo };
 
 	// valores dos menus
-	enum ValoresMenuOpcoes { valorDificuldade, valorDesativarEventos, valorDesativarFatality, valorDesativarSom, valorDesativarMusicas, valorDesativarHistoria, valorSexo };
+	enum ValoresMenuOpcoes { valorDificuldade, valorDesativarPragas, valorDesativarDesafios, valorDesativarSom, valorDesativarMusicas, valorDesativarHistoria, valorSexo };
 
 	Texto texto;
 	Menu principal;
