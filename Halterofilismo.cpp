@@ -1122,6 +1122,24 @@ bool Halterofilismo::desenharMenuDerrota()
 	return false;
 }
 
+bool Halterofilismo::desenharMenuVitoriaSandbox()
+{
+	if (terminouLevantamento && venceu)
+	{
+		return true;
+	}
+	return false;
+}
+
+bool Halterofilismo::desenharMenuDerrotaSandbox()
+{
+	if (terminouLevantamento && !venceu)
+	{
+		return true;
+	}
+	return false;
+}
+
 void Halterofilismo::resetarLevantamento() 
 {
 	// resetar pragas

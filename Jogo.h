@@ -21,7 +21,7 @@ class Jogo
 	enum OpcoesMenuVitoria { escolhaContinuar, escolhaMenuPrincipalVitoria, escolhaSairMenuVitoria };
 	enum opcoesMenuDerrota {escolhaRepetir, escolhaMenuPrincipalDerrota, escolhaSairMenuDerrota};
 	enum OpcoesMenuVitoriaSandbox {escolhaContinuarSandbox, escolhaMenuPrincipalVitoriaSandbox, escolhaSairVitoriaSandbox};
-	enum OpcoesMenuDerrotaSandbox {escolhaRecomcarSandbox, escolhaMenuPrincipalDerrotaSandbox, escolhaSairDerrotaSandbox};
+	enum OpcoesMenuDerrotaSandbox {escolhaRecomecarSandbox, escolhaMenuPrincipalDerrotaSandbox, escolhaSairDerrotaSandbox};
 	enum OpcoesMenuInstantaneo { escolhaContinuarJogo, escolhaSairDoJogo };
 
 	// valores dos menus
