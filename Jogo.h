@@ -57,6 +57,9 @@ class Jogo
 	EstadoDoJogo estado = menuPrincipal;
 	EstadoDoJogo estadoAnterior = menuPrincipal;
 
+	// sons do menu Finale
+	Som musicaFinale, efeitosSonorosFinale;
+
 	std::vector<int> opcoesDeJogo;
 	int jogo = 0;
 

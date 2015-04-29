@@ -77,13 +77,14 @@ void Jogo::inicializar()
 	recursos.carregarAudio("somfx_HalterAssovio5", "audio/somfx/somfx_HalterAssovio5.ogg");
 	recursos.carregarAudio("somfx_HalterAssovio6", "audio/somfx/somfx_HalterAssovio6.ogg");
 	recursos.carregarAudio("somfx_HalterSoluco", "audio/somfx/somfx_HalterSoluco.ogg");
-	recursos.carregarAudio("somfx_HalterFinaleFogos", "audio/somfx/somfx_HalterFinaleFogos.ogg");
+	recursos.carregarAudio("somfx_HalterFinaleFogosArtificio", "audio/somfx/somfx_HalterFinaleFogosArtificio.ogg");
 	// menus
 	recursos.carregarAudio("somfx_MenuInstantaneo", "audio/somfx/somfx_MenuInstantaneo.ogg");
 	recursos.carregarAudio("somfundo_MenuPrincipal", "audio/music_02_Menu.ogg");
 	recursos.carregarAudio("somfundo_MenuOpcoes", "audio/music_03_Opcoes.ogg");
 	recursos.carregarAudio("somfundo_MenuAjuda", "audio/music_04_Ajuda.ogg");
 	recursos.carregarAudio("somfundo_MenuCreditos", "audio/music_05_Creditos.ogg");
+	recursos.carregarAudio("somfundo_MenuFinale", "audio/music_0X_ending.ogg");
 	// sprites
 	recursos.carregarSpriteSheet("fx_Esmaecer", "img/fx/fx_esmaecer.png", 1, 100);
 	recursos.carregarSpriteSheet("fx_Dot", "img/fx/fx_Dot.png", 1, 1);
@@ -317,6 +318,10 @@ void Jogo::inicializar()
 		L"Sair do jogo",
 	};
 	menuFinale.inicializar(textoOpcoesMenuFinale, textoCabecalhoMenuFinale, "fundo_HalterFinale", "", { xCentro, (int)(yCentro*.3) }, 0, xCentro, (int)(yCentro), 0, 31, {}, {}, {}, true, "fonteNormalSombra");
+
+	// setar audios
+	musicaFinale.setAudio("somfundo_MenuFinale");
+	efeitosSonorosFinale.setAudio("somfx_HalterFinaleFogosArtificio");
 }
 
 void Jogo::finalizar()
@@ -447,6 +452,14 @@ void Jogo::gerenciarEstado()
 			// checamos do menu mais específico para o menos específico
 			if (halterofilia.desenharMenuFinale()) {
 				estado = menuFinaleEstado;
+				if (!opcoesDeJogo[valorDesativarSom]) {	// se o som estiver ativado
+					bool repetir = true;
+					efeitosSonorosFinale.tocar(repetir);
+				}
+				if (!opcoesDeJogo[valorDesativarMusicas]) {	// se a música estiver ativada
+					bool repetir = true;
+					musicaFinale.tocar(repetir);
+				}
 			}
 			else if (halterofilia.desenharMenuVitoriaRapida()) {
 				estado = menuVitoriaRapidaEstado;
@@ -522,8 +535,13 @@ void Jogo::gerenciarEstado()
 			break;
 		case menuFinaleEstado:
 			menuFinale.desenhar();
-			if (menuFinale.finalizado())
+			if (menuFinale.finalizado()) {	// a escolha foi feita
+				// parar sons
+				efeitosSonorosFinale.parar();
+				musicaFinale.parar();
+
 				gerenciarMenuFinale();
+			}
 			break;
 	}
 }
