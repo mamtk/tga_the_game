@@ -176,3 +176,14 @@ bool Temporizador::getPausado()
 {
 	return pausado;
 }
+
+// milissegundos
+float Temporizador::getTempoMaximoMS()
+{
+	return tempoMaximoMS;
+}
+// segundos
+int Temporizador::getTempoMaximo()
+{
+	return tempoMaximoSegundos;
+}

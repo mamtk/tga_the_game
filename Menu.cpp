@@ -32,6 +32,11 @@ void Menu::inicializar(vector<wstring> vetorOpcoes, wstring cabecalhoParam, stri
 		possuiFundo = true;
 		fundo.setSpriteSheet(fundilho);
 	}
+	else if (fundilho == ""){
+		possuiFundo = true;
+		fundo.setSpriteSheet("fundo_MenuPrincipal01");
+	}
+
 	stringsOpcoesMenu = vetorOpcoes;
 	espacamentoOpcoesX = xEspacamento;
 	espacamentoOpcoesY = yEspacamento;

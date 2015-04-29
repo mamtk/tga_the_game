@@ -14,7 +14,7 @@ class Halterofilismo
 	};
 
 	// valores do menu de opcoes
-	enum ValoresMenuOpcoes { valorDificuldade, valorDesativarEventos, valorDesativarFatality, valorDesativarSom, valorDesativarMusicas, valorDesativarHistoria, valorSexo };
+	enum ValoresMenuOpcoes { valorDificuldade, valorDesativarPragas, valorDesativarDesafios, valorDesativarSom, valorDesativarMusicas, valorDesativarHistoria, valorSexo };
 	enum ValoresSexo { protagonistaHomem, protagonistaMulher };
 	// valores do menu sandbox
 	enum OpcoesMenuSandbox { escolhaAleatorio, escolhaFazenda, escolhaEsgoto, escolhaCanil, escolhaAcademiaSuburbio, escolhaAcademiaCentro, escolhaOlimpiadas, escolhaVoltar };
