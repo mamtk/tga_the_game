@@ -657,7 +657,7 @@ void Halterofilismo::espantarPragas()
 		pragasAladas[i].desenhar(xyPragas[i][0], xyPragas[i][1]);
 
 		//	não queremos mover as pragas todo frame, tem ~33% de chance de não rodar no frame atual
-		if (!(rand() % 3)) {	// horrível de feio, mas funciona sem muita complexidade
+		if (!(rand() % 2)) {	// horrível de feio, mas funciona sem muita complexidade
 			if (xyPragas[i][0] >= xCentro) {	// se estamos mais à direita do centro, ou exatamente à direita
 				xyPragas[i][0] += 3;	// vamos fugir pela direita!
 			}

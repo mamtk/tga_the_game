@@ -4,10 +4,10 @@
 
 class Temporizador
 {
-	clock_t pontoZero;		// ponto inicial "no tempo"
-	clock_t tickAoPausar;	// ponto do pause "no tempo"
-	float tempoMaximoMS;	// milissegundos
-	int tempoMaximoSegundos;	// segundos
+	clock_t pontoZero;			// ponto inicial "no tempo"
+	clock_t tickAoPausar;		// ponto do pause "no tempo"
+	float tempoMaximoMS;		// tempo máximo total em milissegundos
+	int tempoMaximoSegundos;	// tempo máximo total em segundos
 
 	int horasMaximas, minutosMaximos, segundosMaximos;	// pra não calcular toda hora
 	bool autoReset, pausado = false;
@@ -19,6 +19,8 @@ public:
 	
 	float getTempoMS();					// milissegundos
 	int getTempo();						// segundos
+	float getTempoMaximoMS();			// milissegundos
+	int getTempoMaximo();				// segundos
 	std::string getTempoFormatado();	// horas:minutos:segundos
 	bool passouTempo(int segundos);		// automaticamente reseta o pontoZero se passou do limite
 	bool passouTempoMS(int milissegundos);	// automaticamente reseta o pontoZero se passou do limite
