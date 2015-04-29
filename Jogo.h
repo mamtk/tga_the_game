@@ -11,7 +11,7 @@ class Jogo
 	// estado do jogo, valores pretendem ser universais (entre as classes)
 	enum EstadoDoJogo {
 		menuPrincipal, menuJogos, menuOpcoes, menuAjuda, menuCreditos, menuHalterofilismoSandbox, jogoHalterofilismoCampanha, jogoHalterofilismoSandbox, 
-		menuVitoriaEstado, menuDerrotaEstado
+		menuVitoriaEstado, menuDerrotaEstado, menuVitoriaSandboxEstado, menuDerrotaSandboxEstado,
 	};
 
 	// opções dos menus
@@ -20,6 +20,8 @@ class Jogo
 	enum OpcoesMenuSandbox { escolhaAleatorio, escolhaFazenda, escolhaEsgoto, escolhaCanil, escolhaAcademiaSuburbio, escolhaAcademiaCentro, escolhaOlimpiadas, escolhaVoltar };
 	enum OpcoesMenuVitoria { escolhaContinuar, escolhaMenuPrincipalVitoria, escolhaSairMenuVitoria };
 	enum opcoesMenuDerrota {escolhaRepetir, escolhaMenuPrincipalDerrota, escolhaSairMenuDerrota};
+	enum OpcoesMenuVitoriaSandbox {escolhaContinuarSandbox, escolhaMenuPrincipalVitoriaSandbox, escolhaSairVitoriaSandbox};
+	enum OpcoesMenuDerrotaSandbox {escolhaRecomcarSandbox, escolhaMenuPrincipalDerrotaSandbox, escolhaSairDerrotaSandbox};
 	enum OpcoesMenuInstantaneo { escolhaContinuarJogo, escolhaSairDoJogo };
 
 	// valores dos menus
@@ -37,6 +39,8 @@ class Jogo
 	Menu menuSandbox;
 	Menu menuVitoria;
 	Menu menuDerrota;
+	Menu menuVitoriaSandbox;
+	Menu menuDerrotaSandbox;
 
 	Halterofilismo halterofilia;
 	EstadoDoJogo estado = menuPrincipal;
@@ -54,6 +58,8 @@ class Jogo
 	void gerenciarMenuSandbox();
 	void gerenciarMenuVitoria();
 	void gerenciarMenuDerrota();
+	void gerenciarMenuVitoriaSandbox();
+	void gerenciarMenuDerrotaSandbox();
 
 public:
 	Jogo();

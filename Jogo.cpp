@@ -200,8 +200,8 @@ void Jogo::inicializar()
 	};
 	menuSandbox.inicializar(textoOpcoesSandbox, textoCabecalhoSandbox, "fundo_HalterMenuSandbox", "somfundo_MenuPrincipal", { xCentro, (int)(yCentro*.3) }, 0, xCentro, (int)(yCentro), 0, 31, {}, {}, {}, true, "fonteNormalSombra");
 	
-	// menu de vitoria
-	wstring textoCabecalhoVitoria = L"Escolha a opção desejada\n\nPressione [CIMA] ou [BAIXO] ou passe o mouse para mudar a seleção.\n\
+	// menu de vitoria campanha
+	wstring textoCabecalhoVitoria = L"Parabéns, você ganhou!\nEscolha a opção desejada\n\nPressione [CIMA] ou [BAIXO] ou passe o mouse para mudar a seleção.\n\
 		\nPressione [ENTER] para iniciar o jogo com a opção destacada ou Menu Principal para voltar ao menu.";
 	vector<wstring> textoOpcoesVitoria = { L"Continuar", // [0]
 		L"Menu Principal", // [1]
@@ -209,14 +209,32 @@ void Jogo::inicializar()
 	};
 	menuVitoria.inicializar(textoOpcoesVitoria, textoCabecalhoVitoria, " ", " ", { xCentro, (int)(yCentro*.3) }, 0, xCentro, (int)(yCentro), 0, 31, {}, {}, {}, true, "fonteNormalSombra");
 
-	// menu de derrota
-	wstring textoCabecalhoDerrota = L"Escolha a opção desejada\n\nPressione [CIMA] ou [BAIXO] ou passe o mouse para mudar a seleção.\n\
+	// menu de derrota campanha
+	wstring textoCabecalhoDerrota = L"Você perdeu!\nEscolha a opção desejada\n\nPressione [CIMA] ou [BAIXO] ou passe o mouse para mudar a seleção.\n\
 		\nPressione [ENTER] para iniciar o jogo com a opção destacada ou Menu Principal para voltar ao menu.";
 	vector<wstring> textoOpcoesDerrota = { L"Repetir", // [0]
 		L"Menu Principal", // [1]
 		L"Sair do jogo", // [2]
 	};
 	menuDerrota.inicializar(textoOpcoesDerrota, textoCabecalhoDerrota, " ", " ", { xCentro, (int)(yCentro*.3) }, 0, xCentro, (int)(yCentro), 0, 31, {}, {}, {}, true, "fonteNormalSombra");
+
+	// menu de vitoria sandbox
+	wstring textoCabecalhoVitoriaSandbox = L"Parabéns, você ganhou!\nEscolha a opção desejada\n\nPressione [CIMA] ou [BAIXO] ou passe o mouse para mudar a seleção.\n\
+													\nPressione [ENTER] para iniciar o jogo com a opção destacada ou Menu Principal para voltar ao menu.";
+	vector<wstring> textoOpcoesVitoriaSandbox = { L"Continuar", // [0]
+		L"Menu Principal", // [1]
+		L"Sair do jogo", // [2]
+	};
+	menuVitoriaSandbox.inicializar(textoOpcoesVitoriaSandbox, textoCabecalhoVitoriaSandbox, " ", " ", { xCentro, (int)(yCentro*.3) }, 0, xCentro, (int)(yCentro), 0, 31, {}, {}, {}, true, "fonteNormalSombra");
+
+	// menu de derrota sandbox
+	wstring textoCabecalhoDerrotaSandbox = L"Você perdeu!\nEscolha a opção desejada\n\n[CIMA] ou [BAIXO] ou passe o mouse para mudar a seleção.\n\
+													\nPressione [ENTER] para iniciar o jogo com a opção destacada ou Menu Principal para voltar ao menu.";
+	vector<wstring> textoOpcoesDerrotaSandbox = { L"Recomeçar", // [0]
+		L"Menu Principal", // [1]
+		L"Sair do jogo", // [2]
+	};
+	menuDerrotaSandbox.inicializar(textoOpcoesDerrotaSandbox, textoCabecalhoDerrotaSandbox, " ", " ", { xCentro, (int)(yCentro*.3) }, 0, xCentro, (int)(yCentro), 0, 31, {}, {}, {}, true, "fonteNormalSombra");
 }
 
 void Jogo::finalizar()
@@ -336,15 +354,25 @@ void Jogo::gerenciarEstado()
 		case jogoHalterofilismoSandbox:
 			halterofilia.sandbox();
 			break;
-		case menuVitoriaEstado:
+		case menuVitoriaEstado: 
 			menuVitoria.desenhar();
 			if (menuVitoria.finalizado())
 				gerenciarMenuVitoria();
 			break;
 		case menuDerrotaEstado:
 			menuDerrota.desenhar();
-			if (menuVitoria.finalizado())
+			if (menuDerrota.finalizado())
 				gerenciarMenuDerrota();
+			break;
+		case menuVitoriaSandboxEstado:
+			menuVitoriaSandbox.desenhar();
+			if (menuVitoriaSandbox.finalizado())
+				gerenciarMenuVitoriaSandbox();
+			break;
+		case menuDerrotaSandboxEstado:
+			menuDerrotaSandbox.desenhar();
+			if (menuDerrotaSandbox.finalizado())
+				gerenciarMenuDerrotaSandbox();
 			break;
 	}
 }
@@ -430,7 +458,7 @@ void Jogo::gerenciarMenuInstantaneo()
 
 void Jogo::gerenciarMenuSandbox()
 {
-	int opcaoEscolhida = menuSandbox.getOpcao(); // ober opção escolhida
+	int opcaoEscolhida = menuSandbox.getOpcao(); // obter opção escolhida
 	// resetar estado do menu principal (se não ele não desenha)
 	menuSandbox.resetarMenu();
 
@@ -451,7 +479,7 @@ void Jogo::gerenciarMenuSandbox()
 
 void Jogo::gerenciarMenuVitoria()
 {
-	int opcaoEscolhida = menuVitoria.getOpcao(); // ober opção escolhida
+	int opcaoEscolhida = menuVitoria.getOpcao(); // obter opção escolhida
 	// resetar estado do menu principal (se não ele não desenha)
 	menuVitoria.resetarMenu();
 
@@ -476,7 +504,7 @@ void Jogo::gerenciarMenuVitoria()
 
 void Jogo::gerenciarMenuDerrota()
 {
-	int opcaoEscolhida = menuDerrota.getOpcao(); // ober opção escolhida
+	int opcaoEscolhida = menuDerrota.getOpcao(); // obter opção escolhida
 	// resetar estado do menu principal (se não ele não desenha)
 	menuDerrota.resetarMenu();
 
@@ -495,6 +523,44 @@ void Jogo::gerenciarMenuDerrota()
 	default:
 	case escolhaSairMenuDerrota:
 		aplicacao.sair = true;
+		break;
+	}
+
+}
+
+void Jogo::gerenciarMenuVitoriaSandbox()
+{
+	int opcaoEscolhida = menuVitoriaSandbox.getOpcao();// obter opção escolhida
+	// resetar estado do menu principal (se não ele não desenha)
+	menuVitoriaSandbox.resetarMenu();
+
+	switch (opcaoEscolhida)
+	{
+	case escolhaContinuarSandbox:
+		halterofilia.resetarLevantamento();
+		estado = jogoHalterofilismoSandbox;
+		break;
+	case escolhaMenuPrincipalVitoriaSandbox:
+		halterofilia.resetarLevantamento();
+		estado = menuPrincipal;
+		if (opcoesDeJogo[valorDesativarMusicas] == 0)
+			principal.tocarMusica();
+		break;
+	default:
+	case escolhaSairVitoriaSandbox:
+		aplicacao.sair = true;
+		break;
+	}
+}
+
+void Jogo::gerenciarMenuDerrotaSandbox()
+{
+	int opcaoEscolhida = menuDerrotaSandbox.getOpcao();// obter opção escolhida
+	// resetar estado do menu principal (se não ele não desenha)
+	menuDerrotaSandbox.resetarMenu;
+	switch (opcaoEscolhida)
+	{
+	default:
 		break;
 	}
 

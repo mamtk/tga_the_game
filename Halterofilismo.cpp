@@ -177,13 +177,21 @@ void Halterofilismo::prepararSandbox(int selecaoMapa)
 	}
 
 	mudarFundo(cena);
+	estaJogando = true;
 }
 
 // jogo sem fim, mas com opção de sair a cada rodada; dificuldade aumenta a cada rodada vencida
 //	mantemos um contador de vitórias (fatality conta como derrota, mas pode ser pulado)
 void Halterofilismo::sandbox()
 {
-	desenhar();
+	if (estaJogando) {
+		desenhar();
+	}
+	else 
+		if (mapaSandbox == escolhaAleatorio) {
+			cena = rand() % fundos.size();
+		}
+	mudarFundo(cena);
 }
 // aqui oferecemos opções de jogo ao usuário: nome do personagem, sexo do protagonista, 
 //	sprite do personagem (slider, incluindo opção pseudoaleatório),
