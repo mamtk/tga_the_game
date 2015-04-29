@@ -116,20 +116,20 @@ void Halterofilismo::inicializar(int estado, vector<int> valoresOpcoesDeJogo)
 	// a parte complicada de escolher o multiplicador da dificuldade é tornar a progressão gradual, por causa do sandbox (modo contínuo)
 	switch (valoresOpcoesDeJogo[valorDificuldade]) {	// por isso aqui definimos valores com uma distância cada vez menor
 	case 0:	// medio
-		dificuldade = 1;	// 7
-		chancePraga = 60;	// 1 chance em 60 (por segundo)
+		dificuldade = 7;	// 7
+		chancePraga = 11;	// 1 chance em 11 (por segundo)
 		break;
 	case 1:	// difícil
 		dificuldade = 12;	// 11
-		chancePraga = 30;	// 1 chance em 30
+		chancePraga = 7;	// 1 chance em 7 (por segundo)
 		break;
 	case 2:	// impossível
 		dificuldade = 15;	// 15
-		chancePraga = 15;	// 1 chance em 15
+		chancePraga = 5;	// 1 chance em 5 (por segundo)
 		break;
 	case 3:	// impossível?
 		dificuldade = 17;	// 17, e duvido!
-		chancePraga = 7;	// 1 chance em 7
+		chancePraga = 3;	// 1 chance em 3 (por segundo)
 		break;
 	}
 	fatorDificuldade = 1000 / dificuldade;
@@ -417,8 +417,16 @@ void Halterofilismo::desenhar()
 			//	_E_ não estivermos espantando elas
 			gerenciarPragas();	// gerenciamos as pragas
 
-			if (tempoPragas.passouTempoMS(5000)) {	// spawnar pragas
-				pragaAlada();
+			// spawnar pragas
+			if (tipo == levantamentoFatality) {	// caso levantamento == desafio, reduzir ~33%
+				if (tempoPragas.passouTempo(chancePraga * .66)) {
+					pragaAlada();
+				}
+			}
+			else {
+				if (tempoPragas.passouTempo(chancePraga)) {
+					pragaAlada();
+				}
 			}
 		}
 		else if (espantandoPragas) {
@@ -503,6 +511,7 @@ void Halterofilismo::gerenciarLevantamento()
 		return;		// mais nada a fazer aqui
 	}
 	// dificultar o jogo, do contrário o jogo só acaba em vitória
+	//	caso tipo = fatality/desafio, spawnar pragas no dobro da velocidade
 	if (tempoDificultar.passouTempoMS(fatorDificuldade)) {
 		dificultar();
 	}
