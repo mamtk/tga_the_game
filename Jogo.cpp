@@ -229,7 +229,7 @@ void Jogo::inicializar()
 
 	// menu de derrota sandbox
 	wstring textoCabecalhoDerrotaSandbox = L"Você perdeu!\nEscolha a opção desejada\n\n[CIMA] ou [BAIXO] ou passe o mouse para mudar a seleção.\n\
-													\nPressione [ENTER] para iniciar o jogo com a opção destacada ou Menu Principal para voltar ao menu.";
+		\nPressione [ENTER] para iniciar o jogo com a opção destacada ou Menu Principal para voltar ao menu.";
 	vector<wstring> textoOpcoesDerrotaSandbox = { L"Recomeçar", // [0]
 		L"Menu Principal", // [1]
 		L"Sair do jogo", // [2]
