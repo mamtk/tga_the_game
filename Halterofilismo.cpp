@@ -1297,4 +1297,13 @@ void Halterofilismo::ativarLevantamentoRapido()
 	tipo = levantamentoFatality;
 }
 
+bool Halterofilismo::desenharMenuFinale()
+{
+	if (etapaAtual == 6) {
+		return true;
+	}
+	return false;
+}
+
+
 

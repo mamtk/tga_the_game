@@ -276,6 +276,12 @@ void Jogo::inicializar()
 	menuDerrotaRapidaSandbox.inicializar(textoOpcoesDerrotaRapidaSandbox, textoCabecalhoDerrotaRapidaSandbox, " ", " ", { xCentro, (int)(yCentro*.3) }, 0, xCentro, (int)(yCentro), 0, 31, {}, {}, {}, true, "fonteNormalSombra");
 
 	// menu finale
+	wstring textoCabecalhoMenuFinale = L"Parabéns, você terminou o jogo.\nEscolha a opção desejada\n\n[CIMA] ou [BAIXO] ou passe o mouse para mudar a seleção.\n\
+												\nPressione [ENTER] para iniciar o jogo com a opção destacada ou Menu Principal para voltar ao menu.";
+	vector<wstring> textoOpcoesMenuFinale = { L"Menu Principal",
+		L"Sair do jogo",
+	};
+	menuFinale.inicializar(textoOpcoesMenuFinale, textoCabecalhoMenuFinale, " ", " ", { xCentro, (int)(yCentro*.3) }, 0, xCentro, (int)(yCentro), 0, 31, {}, {}, {}, true, "fonteNormalSombra");
 }
 
 void Jogo::finalizar()
@@ -395,6 +401,9 @@ void Jogo::gerenciarEstado()
 			else if (halterofilia.desenharMenuDerrotaRapida()) {
 				estado = menuDerrotaRapidaEstado;
 			}
+			else if (halterofilia.desenharMenuFinale()) {
+				estado = menuFinaleEstado;
+			}
 			else
 				halterofilia.campanha();
 			break;
@@ -452,6 +461,11 @@ void Jogo::gerenciarEstado()
 			menuDerrotaRapidaSandbox.desenhar();
 			if (menuDerrotaRapidaSandbox.finalizado())
 				gerenciarMenuDerrotaRapidaSandbox();
+			break;
+		case menuFinaleEstado:
+			menuFinale.desenhar();
+			if (menuFinale.finalizado())
+				gerenciarMenuFinale();
 			break;
 	}
 }
@@ -763,5 +777,25 @@ void Jogo::gerenciarMenuDerrotaRapidaSandbox()
 		case escolhaSairMenuDerrotaRapidaSandbox:
 			aplicacao.sair = true;
 			break;
+	}
+}
+
+void Jogo::gerenciarMenuFinale()
+{
+	int opcoesEscolhidas = menuFinale.getOpcao();// obter opção escolhida
+	// resetar estado do menu principal (se não ele não desenha)
+	menuFinale.resetarMenu();
+	switch (opcoesEscolhidas)
+	{
+	case escolhaMenuPrincipalFinale:
+		halterofilia.resetarLevantamento();
+		estado = menuPrincipal;
+		if (opcoesDeJogo[valorDesativarMusicas] == 0)
+			principal.tocarMusica();
+		break;
+	default:
+	case escolhaSairMenuFinale:
+		aplicacao.sair == true;
+		break;
 	}
 }
