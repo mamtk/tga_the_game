@@ -143,4 +143,5 @@ public:
 	void resetarLevantamento();
 	void avancarEtapa();
 	void ativarRepetir();
+	void ativarJogando();
 };
