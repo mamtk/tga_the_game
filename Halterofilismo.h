@@ -137,6 +137,9 @@ public:
 	bool desenharMenuVitoria();
 	bool desenharMenuDerrota();
 
+	bool desenharMenuVitoriaSandbox();
+	bool desenharMenuDerrotaSandbox();
+
 	void resetarLevantamento();
 	void avancarEtapa();
 	void ativarRepetir();

@@ -345,14 +345,19 @@ void Jogo::gerenciarEstado()
 			if (halterofilia.desenharMenuVitoria()) { // exibir o menu de vitoria
 				estado = menuVitoriaEstado;
 			}
-			if (halterofilia.desenharMenuDerrota()) { // exibir o menu de derrota
+			else if (halterofilia.desenharMenuDerrota()) { // exibir o menu de derrota
 				estado = menuDerrotaEstado;
 			}
 			else
 				halterofilia.campanha();
 			break;
 		case jogoHalterofilismoSandbox:
-			halterofilia.sandbox();
+			if (halterofilia.desenharMenuVitoriaSandbox()) {
+				estado = menuVitoriaSandboxEstado;
+			}
+			else if (halterofilia.desenharMenuDerrotaSandbox()) {
+				estado = menuDerrotaSandboxEstado;
+			}
 			break;
 		case menuVitoriaEstado: 
 			menuVitoria.desenhar();
@@ -557,11 +562,22 @@ void Jogo::gerenciarMenuDerrotaSandbox()
 {
 	int opcaoEscolhida = menuDerrotaSandbox.getOpcao();// obter opção escolhida
 	// resetar estado do menu principal (se não ele não desenha)
-	menuDerrotaSandbox.resetarMenu;
+	menuDerrotaSandbox.resetarMenu();
 	switch (opcaoEscolhida)
 	{
+	case escolhaRecomecarSandbox:
+		halterofilia.resetarLevantamento();
+		estado = menuHalterofilismoSandbox;
+		break;
+	case escolhaMenuPrincipalDerrotaSandbox:
+		halterofilia.resetarLevantamento();
+		estado = menuPrincipal;
+		if (opcoesDeJogo[valorDesativarMusicas] == 0)
+			principal.tocarMusica();
+		break;
 	default:
+	case escolhaSairDerrotaSandbox:
+		aplicacao.sair = true;
 		break;
 	}
-
 }
