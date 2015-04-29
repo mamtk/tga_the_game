@@ -395,6 +395,7 @@ void Halterofilismo::desenhar()
 	if (barraProgresso.getFrameAtual() >= progressoMaximo) {
 		terminouLevantamento = true;
 		venceu = terminouLevantamento;
+		estaJogando = false;	// o levantamento temrinou
 		// fadeout de ~5s, depois menu de vitória baseado no tipo de jogo
 	}
 	else {
