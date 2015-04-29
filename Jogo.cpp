@@ -235,6 +235,26 @@ void Jogo::inicializar()
 		L"Sair do jogo", // [2]
 	};
 	menuDerrotaSandbox.inicializar(textoOpcoesDerrotaSandbox, textoCabecalhoDerrotaSandbox, " ", " ", { xCentro, (int)(yCentro*.3) }, 0, xCentro, (int)(yCentro), 0, 31, {}, {}, {}, true, "fonteNormalSombra");
+
+	// menu de vitoria rapida
+	wstring textoCabecalhoVitoriaRapida = L"Parece que esta partida não o desafio o suficiente, deseja tentar o Desafio ( Não elimina)\nEscolha a opção desejada\n\nPressione [CIMA] ou [BAIXO] ou passe o mouse para mudar a seleção.\n\
+										   				\nPressione [ENTER] para iniciar o jogo com a opção destacada ou Menu Principal para voltar ao menu.";
+	vector<wstring> textoOpcoesVitoriaRapida = { L" Tentar Desafio",
+		L"Continuar",
+		L"Menu Principal",
+		L"Sair do jogo",
+	};
+	menuVitoriaRapida.inicializar(textoOpcoesVitoriaRapida, textoCabecalhoVitoriaRapida, " ", " ", { xCentro, (int)(yCentro*.3) }, 0, xCentro, (int)(yCentro), 0, 31, {}, {}, {}, true, "fonteNormalSombra");
+
+	// menu de vitoria rapida sandbox
+	wstring textoCabecalhoVitoriaRapidaSandbox = L"Parece que esta partida não o desafio o suficiente, deseja tentar o Desafio ( Não elimina)\nEscolha a opção desejada\n\nPressione [CIMA] ou [BAIXO] ou passe o mouse para mudar a seleção.\n\
+												  		\nPressione [ENTER] para iniciar o jogo com a opção destacada ou Menu Principal para voltar ao menu.";
+	vector<wstring> textoOpcoesVitoriaRapidaSandbox = { L" Tentar Desafio",
+		L"Continuar",
+		L"Menu Principal",
+		L"Sair do jogo",
+	};
+	menuVitoriaRapidaSandbox.inicializar(textoOpcoesVitoriaRapidaSandbox, textoCabecalhoVitoriaRapidaSandbox, " ", " ", { xCentro, (int)(yCentro*.3) }, 0, xCentro, (int)(yCentro), 0, 31, {}, {}, {}, true, "fonteNormalSombra");
 }
 
 void Jogo::finalizar()
@@ -345,6 +365,9 @@ void Jogo::gerenciarEstado()
 			if (halterofilia.desenharMenuVitoria()) { // exibir o menu de vitoria
 				estado = menuVitoriaEstado;
 			}
+			else if (halterofilia.desenharMenuVitoriaRapida()) {
+				estado = menuVitoriaRapidaEstado;
+			}
 			else if (halterofilia.desenharMenuDerrota()) { // exibir o menu de derrota
 				estado = menuDerrotaEstado;
 			}
@@ -355,6 +378,9 @@ void Jogo::gerenciarEstado()
 			halterofilia.sandbox();
 			if (halterofilia.desenharMenuVitoriaSandbox()) {
 				estado = menuVitoriaSandboxEstado;
+			}
+			else if (halterofilia.desenharMenuVitoriaRapidaSandbox()) {
+				estado = menuVitoriaRapidaSandboxEstado
 			}
 			else if (halterofilia.desenharMenuDerrotaSandbox()) {
 				estado = menuDerrotaSandboxEstado;
@@ -379,6 +405,16 @@ void Jogo::gerenciarEstado()
 			menuDerrotaSandbox.desenhar();
 			if (menuDerrotaSandbox.finalizado())
 				gerenciarMenuDerrotaSandbox();
+			break;
+		case menuVitoriaRapidaEstado:
+			menuVitoriaRapida.desenhar();
+			if (menuVitoriaRapida.finalizado())
+				gerenciarMenuVitoriaRapida();
+			break;
+		case menuVitoriaRapidaSandboxEstado:
+			menuVitoriaRapidaSandbox.desenhar();
+			if (menuVitoriaRapidaSandbox.finalizado())
+				gerenciarMenuVitoriaRapidaSandbox();
 			break;
 	}
 }
@@ -579,6 +615,65 @@ void Jogo::gerenciarMenuDerrotaSandbox()
 		break;
 	default:
 	case escolhaSairDerrotaSandbox:
+		aplicacao.sair = true;
+		break;
+	}
+}
+
+void Jogo::gerenciarMenuVitoriaRapida()
+{
+	int opcoesEscolhidas = menuVitoriaRapida.getOpcao();// obter opção escolhida
+	// resetar estado do menu principal (se não ele não desenha)
+	menuVitoriaRapida.resetarMenu();
+	switch (opcoesEscolhidas)
+	{
+	case tentarDesafio:
+		halterofilia.resetarLevantamento();
+		halterofilia.ativarLevantamentoRapido();
+		estado = jogoHalterofilismoCampanha;
+		break;
+	case escolhaContinuarRapida:
+		halterofilia.resetarLevantamento();
+		halterofilia.avancarEtapa();
+		estado = jogoHalterofilismoCampanha;
+		break;
+	case escolhaMenuPrincipalVitoriaRapida:
+		halterofilia.resetarLevantamento();
+		estado = menuPrincipal;
+		if (opcoesDeJogo[valorDesativarMusicas] == 0)
+			principal.tocarMusica();
+		break;
+	default:
+	case escolhaSairMenuVitoriaRapida:
+		aplicacao.sair = true;
+		break;
+	}
+}
+void Jogo::gerenciarMenuVitoriaRapidaSandbox()
+{
+	int opcoesEscolhida = menuVitoriaRapidaSandbox.getOpcao();// obter opção escolhida
+	// resetar estado do menu principal (se não ele não desenha)
+	menuVitoriaRapidaSandbox.resetarMenu();
+	switch (opcoesEscolhida)
+	{
+	case tentarDesafio:
+		halterofilia.resetarLevantamento();
+		halterofilia.ativarLevantamentoRapido();
+		estado = jogoHalterofilismoSandbox;
+		break;
+	case escolhaContinuarRapidaSandbox:
+		halterofilia.resetarLevantamento();
+		halterofilia.ativarJogando();
+		estado = jogoHalterofilismoSandbox;
+		break;
+	case escolhaMenuPrincipalVitoriaRapidaSandbox:
+		halterofilia.resetarLevantamento();
+		estado = menuPrincipal;
+		if (opcoesDeJogo[valorDesativarMusicas] == 0)
+			principal.tocarMusica();
+		break;
+	default:
+	case escolhaSairVitoriaRapidaSandbox:
 		aplicacao.sair = true;
 		break;
 	}

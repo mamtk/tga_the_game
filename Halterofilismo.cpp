@@ -1144,9 +1144,30 @@ bool Halterofilismo::desenharMenuDerrotaSandbox()
 	return false;
 }
 
+bool Halterofilismo::desenharMenuVitoriaRapida()
+{
+	if (terminouLevantamento && venceu){
+		if (temporizador.getTempo() / temporizador.getTempo() > .5) {
+			return true;
+		}
+	}
+	return false;
+}
+
+bool Halterofilismo::desenharMenuVitoriaRapidaSandbox()
+{
+	if (terminouLevantamento && venceu){
+		if (temporizador.getTempo() / temporizador.getTempo() > .5) {
+			return true;
+		}
+	}
+	return false;
+}
+
 void Halterofilismo::resetarLevantamento() 
 {
 	// resetar pragas
+	tipo = levantamentoNormal;
 	pragasAladas.resize(0);
 	xyPragas.resize(0);
 	chegouPraga.resize(0);
@@ -1163,6 +1184,8 @@ void Halterofilismo::resetarLevantamento()
 	barraProgresso.setFrame(0);
 	protagonista.setFrame(0);
 	*/
+	tempoMorte.reset();			// resetamos o tempo da morte
+	tempoMorte.setTempo(5);		// setamos para 5s
 	barraProgresso.recomecarAnimacao();
 	protagonista.recomecarAnimacao();
 	progresso = 0;
@@ -1184,4 +1207,9 @@ void Halterofilismo::ativarRepetir()
 void Halterofilismo::ativarJogando()
 {
 	estaJogando = true;
+}
+
+void Halterofilismo::ativarLevantamentoRapido()
+{
+	tipo = levantamentoFatality;
 }

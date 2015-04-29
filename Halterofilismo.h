@@ -140,8 +140,13 @@ public:
 	bool desenharMenuVitoriaSandbox();
 	bool desenharMenuDerrotaSandbox();
 
+	bool desenharMenuVitoriaRapida();
+	bool desenharMenuVitoriaRapidaSandbox();
+
+
 	void resetarLevantamento();
 	void avancarEtapa();
 	void ativarRepetir();
 	void ativarJogando();
+	void ativarLevantamentoRapido();
 };
