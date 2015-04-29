@@ -116,7 +116,7 @@ void Halterofilismo::inicializar(int estado, vector<int> valoresOpcoesDeJogo)
 	// a parte complicada de escolher o multiplicador da dificuldade é tornar a progressão gradual, por causa do sandbox (modo contínuo)
 	switch (valoresOpcoesDeJogo[valorDificuldade]) {	// por isso aqui definimos valores com uma distância cada vez menor
 	case 0:	// medio
-		dificuldade = 7;	// 7
+		dificuldade = 1;	// 7
 		chancePraga = 60;	// 1 chance em 60 (por segundo)
 		break;
 	case 1:	// difícil
@@ -412,7 +412,8 @@ void Halterofilismo::desenhar()
 			}
 		}
 		else if (espantandoPragas) {
-			espantarPragas();
+			if (!(rand()%31))	// pras pragas não fugirem rápido demais
+				espantarPragas();	// tem 33% de chance de não rodar no frame atual
 		}
 
 		// sempre gerenciamos o levantamento de peso (junto com a dificuldade)
@@ -645,6 +646,41 @@ void Halterofilismo::gerenciarPragas()
 	// se totalChegouPraga > 0, apresentamos as letras do poder
 	if (chegouPraga.size() > 0)
 		assoviarPalavras();
+}
+
+// espantar as pragas, elas vão embora!
+void Halterofilismo::espantarPragas()
+{
+	int sizePragas = pragasAladas.size();
+	int totalForaDaTela = 0;
+	for (int i = 0; i < sizePragas; i++) {
+		pragasAladas[i].desenhar(xyPragas[i][0], xyPragas[i][1]);
+
+		if (xyPragas[i][0] >= xCentro) {	// se estamos mais à direita do centro, ou exatamente à direita
+			xyPragas[i][0] += 3;	// vamos fugir pela direita!
+		}
+		else {	// se estamos mais a esquerda
+			xyPragas[i][0] -= 3;	// esquerda
+		}
+		if (xyPragas[i][1] >= yCentro) {	// se estamos mais acima do centro, ou exatamente no centro
+			xyPragas[i][1] += 3;	// vamos fugir pra cima!
+		}
+		else {	// se estamos mais ABAIXO do centro
+			xyPragas[i][1] -= 3;	// baixo
+		}
+		// detectar pragas fora da tela
+		if ((xyPragas[i][1] > yCentro * 2 || xyPragas[i][1] < 1) && (xyPragas[i][0] > xCentro * 2 || xyPragas[i][0] < 1)) {
+			totalForaDaTela++;
+		}
+	}
+	if (totalForaDaTela >= sizePragas) {	// terminamos nossa fuga!
+		espantandoPragas = false;
+		// resetar pragas
+		pragasAladas.resize(0);
+		xyPragas.resize(0);
+		chegouPraga.resize(0);
+		direcaoPragas.resize(0);
+	}
 }
 
 // aqui gerenciamos o estado das letras, e desenhamos elas
@@ -918,6 +954,7 @@ bool Halterofilismo::pressionouCerto(char letra)
 	}
 	return false;
 }
+
 void Halterofilismo::desativarLetra(int indice)
 {
 	if (fraseAssovio[indice] == ' ')	// se for um espaço, nada fazer
@@ -930,6 +967,7 @@ void Halterofilismo::desativarLetra(int indice)
 	// marcar como inativa
 	letrasAtivadas[indice] = false;
 }
+
 void Halterofilismo::ativarLetra(int indice)
 {
 	// setar sprite
@@ -1104,7 +1142,7 @@ bool Halterofilismo::desenharMenuDerrotaSandbox()
 
 void Halterofilismo::resetarLevantamento() 
 {
-	// restar moscas
+	// resetar pragas
 	pragasAladas.resize(0);
 	xyPragas.resize(0);
 	chegouPraga.resize(0);
@@ -1137,17 +1175,4 @@ void Halterofilismo::avancarEtapa()
 void Halterofilismo::ativarRepetir()
 {
 	repetir = true;
-}
-
-void Halterofilismo::espantarPragas()
-{
-	int sizePragas = pragasAladas.size() * .5;
-	for (int i = 0; i < sizePragas; i++) {
-		if (chegouPraga[i]) {	// contabilizar apenas pragas efetivas (pousadas)
-			if (barraProgresso.getFrameAtual() > 0)	// deu subscript error, esse uso certamente não faz parte do projeto xP
-				barraProgresso.avancarAnimacao(-deltaTempo);	// como queremos um retrocederAnimacao, precisamos fazer na mão
-			if (protagonista.getFrameAtual() > 0)	// aprendi a lição com a barraProgresso
-				protagonista.avancarAnimacao(-deltaTempo);	// como queremos um retrocederAnimacao, precisamos fazer na mão
-		}
-	}
 }

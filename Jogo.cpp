@@ -474,7 +474,7 @@ void Jogo::gerenciarMenuSandbox()
 		estado = menuJogos;
 		secundario.tocarMusica();
 		break;
-	default:
+	default:			// as outras opções são mapas
 		estado = jogoHalterofilismoSandbox;
 		menuSandbox.resetarMenu();
 		halterofilia.inicializar(estado, opcoesDeJogo);
