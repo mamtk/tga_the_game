@@ -289,23 +289,21 @@ void Halterofilismo::prepararCampanha()
 	}
 
 	vector<string> sonsDeFundo;
-	if (opcoesDeJogo[valorDesativarSom] == 0)
-	{
+	vector<vector<vector<string>>> sonsDaHistoria;
+
+	// se valor desativar som for não, então alocar sons
+	if (opcoesDeJogo[valorDesativarSom] == 0 /* não */) {
 		sonsDeFundo.resize(6);
 		
-		sonsDeFundo	= {"somfundo_HalterFazenda",
+		sonsDeFundo	= { "somfundo_HalterFazenda",
 			"somfundo_HalterEsgoto",
 			"somfundo_HalterCanil",
 			"somfundo_HalterAcademiaSuburbio",
 			"somfundo_HalterAcademiaCentro",
 			"somfundo_HalterOlimpiadas"
-			};
-	}
+		};
 
-	vector<vector<vector<string>>> sonsDaHistoria;
-	// sons nas posições (etapa.linha.quando): 0.0.1; 0.2.2; 1.0.2; 1.1.2; 1.3.2; 2.2.2; 3.1.0; 3.3.0; 4.1.2; 4.2.2; 4.4.0; 5.2.1; 5.4.0
-	if (opcoesDeJogo[valorDesativarMusicas] == 0)
-	{
+		// sons nas posições (etapa.linha.quando): 0.0.1; 0.2.2; 1.0.2; 1.1.2; 1.3.2; 2.2.2; 3.1.0; 3.3.0; 4.1.2; 4.2.2; 4.4.0; 5.2.1; 5.4.0
 		sonsDaHistoria.resize(6);	// usamos até a etapa 5
 		// etapa 0
 		sonsDaHistoria[0].resize(3);	// usamos até a linha 3
@@ -346,6 +344,7 @@ void Halterofilismo::prepararCampanha()
 		sonsDaHistoria[5][4].resize(3);	// usamos sons na a linha 5 da etapa 4
 		sonsDaHistoria[5][4][tocarComecoDaLinha] = "somfx_Trovao";
 	}
+
 	vector<string> fundosCampanha = { "fundo_HalterFazenda",
 		"fundo_HalterEsgoto",
 		"fundo_HalterCanil",

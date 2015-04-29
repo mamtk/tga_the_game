@@ -125,11 +125,11 @@ void Historia::desenhar(int etapa)
 		letraAtual++;
 		// verificamos se há som para tocar na letra atual
 		if (letraAtual == (int)(sizeLinhas[linhaAtual] * .5)) {
-			if (historiaSonsDefinidos.size() > etapa && historiaSonsDefinidos[etapa].size() > linhaAtual && historiaSonsDefinidos[etapa][linhaAtual][tocarComecoDaLinha])
+			if (historiaSonsDefinidos.size() > etapa && historiaSonsDefinidos[etapa].size() > linhaAtual && historiaSonsDefinidos[etapa][linhaAtual][tocarMeioDaLinha])
 				historiaSons[etapa][linhaAtual][tocarMeioDaLinha].tocar();
 		}
-		else if (letraAtual == sizeLinhas[linhaAtual] ) {
-			if (historiaSonsDefinidos.size() > etapa && historiaSonsDefinidos[etapa].size() > linhaAtual && historiaSonsDefinidos[etapa][linhaAtual][tocarComecoDaLinha])
+		else if (letraAtual == sizeLinhas[linhaAtual]) {
+			if (historiaSonsDefinidos.size() > etapa && historiaSonsDefinidos[etapa].size() > linhaAtual && historiaSonsDefinidos[etapa][linhaAtual][tocarFinalDaLinha])
 				historiaSons[etapa][linhaAtual][tocarFinalDaLinha].tocar();
 		}
 

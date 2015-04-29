@@ -202,7 +202,7 @@ void Jogo::inicializar()
 	
 	// menu de vitoria
 	wstring textoCabecalhoVitoria = L"Escolha a opção desejada\n\nPressione [CIMA] ou [BAIXO] ou passe o mouse para mudar a seleção.\n\
-									 			\nPressione [ENTER] para iniciar o jogo com a opção destacada ou Menu Principal para voltar ao menu.";
+		\nPressione [ENTER] para iniciar o jogo com a opção destacada ou Menu Principal para voltar ao menu.";
 	vector<wstring> textoOpcoesVitoria = { L"Continuar", // [0]
 		L"Menu Principal", // [1]
 		L"Sair do jogo", // [2]
@@ -211,7 +211,7 @@ void Jogo::inicializar()
 
 	// menu de derrota
 	wstring textoCabecalhoDerrota = L"Escolha a opção desejada\n\nPressione [CIMA] ou [BAIXO] ou passe o mouse para mudar a seleção.\n\
-									 									 			\nPressione [ENTER] para iniciar o jogo com a opção destacada ou Menu Principal para voltar ao menu.";
+		\nPressione [ENTER] para iniciar o jogo com a opção destacada ou Menu Principal para voltar ao menu.";
 	vector<wstring> textoOpcoesDerrota = { L"Repetir", // [0]
 		L"Menu Principal", // [1]
 		L"Sair do jogo", // [2]
