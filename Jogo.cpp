@@ -75,6 +75,7 @@ void Jogo::inicializar()
 	recursos.carregarSpriteSheet("per_HalterHomem0", "img/per/per_HalterHomem0.png", 0, 13);
 	recursos.carregarSpriteSheet("per_HalterMulher", "img/per/per_HalterMulher.png", 0, 15);
 	recursos.carregarSpriteSheet("per_HalterMosca", "img/per/per_HalterMosca.png");
+	recursos.carregarSpriteSheet("per_HalterPombo", "img/per/per_HalterPombo.png", 0, 4);
 	recursos.carregarSpriteSheet("fundo_HalterFazenda", "img/fundos/fundo_HalterFazenda.png");
 	recursos.carregarSpriteSheet("fundo_HalterEsgoto", "img/fundos/fundo_HalterEsgoto.png");
 	recursos.carregarSpriteSheet("fundo_HalterCanil", "img/fundos/fundo_HalterCanil.png");
