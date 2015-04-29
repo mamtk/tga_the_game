@@ -87,7 +87,7 @@ void Halterofilismo::inicializar(int estado, vector<int> valoresOpcoesDeJogo)
 	// placar
 	xPlacarAtual = xCentro * .45;
 	yPlacarAtual = yCentro * .15;
-	xPlacarMaximo = yCentro * .77;
+	xPlacarMaximo = yCentro * 1.67;
 	yPlacarMaximo = yCentro * .15;
 	placarMaximo.setEspacamentoLinhas(1.5f);
 	placarMaximo.setCor(193, 255, 26); // verde limão
@@ -149,19 +149,36 @@ void Halterofilismo::inicializar(int estado, vector<int> valoresOpcoesDeJogo)
 		chancePraga = 3;	// 1 chance em 3 (por segundo)
 		break;
 	}
-	fatorDificuldade = 1000 / dificuldade;
+	fatorDificuldade = 7700 / dificuldade;
 
-	// inicializar menus
-	// vitoria
-	/*vector<wstring> vitoriaFatalityInativoStr = { L"Prosseguir", L"Repetir", L"Voltar ao menu", L"Sair do jogo" };
-	vector<wstring> vitoriaFatalityAtivoStr = { L"Prosseguir", L"Tentar desafio", L"Repetir", L"Voltar ao menu", L"Sair do jogo" };
-	vitoriaFatalityAtivo.inicializar(vitoriaFatalityInativoStr);
-	vitoriaFatalityInativo.inicializar(vitoriaFatalityAtivoStr);
-	// derrota
-	vector<wstring> derrotaStr = { L"Repetir", L"Reiniciar", L"Voltar ao menu", L"Sair do jogo" };	// reiniciar volta para o preparar jogo
-	vector<wstring> derrotaFatalityStr = { L"Continuar", L"Reiniciar", L"Voltar ao menu", L"Sair do jogo" };	// só aparece no modo campanha
-	derrota.inicializar(derrotaStr);
-	derrotaFatality.inicializar(derrotaFatalityStr);*/
+	// inicializar efeitos sonoros
+	sonsEfeitos.resize(25);	// 25, por enquanto
+	sonsEfeitos[somfx_HalterImpossivelDuranteMulher].setAudio("somfx_HalterImpossivelDuranteMulher");
+	sonsEfeitos[somfx_HalterTodosDesafiosMorte].setAudio("somfx_HalterTodosDesafiosMorte");
+	sonsEfeitos[somfx_HalterMoscaVindo].setAudio("somfx_HalterMoscaVindo");
+	sonsEfeitos[somfx_HalterTodasNaoDesafioMorte].setAudio("somfx_HalterTodasNaoDesafioMorte");
+	sonsEfeitos[somfx_HalterPombosVindo].setAudio("somfx_HalterPombosVindo");
+	sonsEfeitos[somfx_HalterEspantarPragas].setAudio("somfx_HalterEspantarPragas");
+	sonsEfeitos[somfx_HalterDesafioImpossivelSucesso].setAudio("somfx_HalterDesafioImpossivelSucesso");
+	sonsEfeitos[somfx_HalterImpossivelSucesso].setAudio("somfx_HalterImpossivelSucesso");
+	sonsEfeitos[somfx_HalterMedioSucesso].setAudio("somfx_HalterMedioSucesso");
+	sonsEfeitos[somfx_HalterDesafioImpossivelMorte].setAudio("somfx_HalterDesafioImpossivelMorte");
+	sonsEfeitos[somfx_HalterDesafioMorte].setAudio("somfx_HalterDesafioMorte");
+	sonsEfeitos[somfx_HalterImpossivelMorte].setAudio("somfx_HalterImpossivelMorte");
+	sonsEfeitos[somfx_HalterMedioMorte].setAudio("somfx_HalterMedioMorte");
+	sonsEfeitos[somfx_HalterImpossivelDurante].setAudio("somfx_HalterImpossivelDurante");
+	sonsEfeitos[somfx_HalterDesafio].setAudio("somfx_HalterDesafio");
+	sonsEfeitos[somfx_HalterDesafio].setAudio("somfx_HalterDesafioMulher");
+	sonsEfeitos[somfx_HalterDificilDurante].setAudio("somfx_HalterDificilDurante");
+	sonsEfeitos[somfx_HalterMedioDurante].setAudio("somfx_HalterMedioDurante");
+	sonsEfeitos[somfx_HalterAssovio1].setAudio("somfx_HalterAssovio1");
+	sonsEfeitos[somfx_HalterAssovio2].setAudio("somfx_HalterAssovio2");
+	sonsEfeitos[somfx_HalterAssovio3].setAudio("somfx_HalterAssovio3");
+	sonsEfeitos[somfx_HalterAssovio4].setAudio("somfx_HalterAssovio4");
+	sonsEfeitos[somfx_HalterAssovio5].setAudio("somfx_HalterAssovio5");
+	sonsEfeitos[somfx_HalterAssovio6].setAudio("somfx_HalterAssovio6");
+	sonsEfeitos[somfx_HalterSoluco].setAudio("somfx_HalterSoluco");
+
 
 	// inicializar palavras do poder de espantar pragas
 	queriaPalavrasLista = { "aulista", "bulista", "selista", "biblista", "coralista", "violista", "gaulista", "oculista", "simplista", "cafelista", "paulista", \
@@ -188,29 +205,27 @@ void Halterofilismo::prepararSandbox(int selecaoMapa)
 	tempoMorte.reset();			// resetamos o tempo da morte
 	tempoMorte.setTempo(5);		// setamos para 5s
 
-	if (selecaoMapa == escolhaAleatorio) {
-		cena = rand() % fundos.size();
-	}
-	else {
-		cena = selecaoMapa - 1;	// reduzimos 1 pois a primeira opção é aleatório
-	}
+	cena = selecaoMapa - 1;		// reduzimos 1 pois a primeira opção é aleatório
 
 	mudarFundo(cena);
-	estaJogando = true;
 }
 
 // jogo sem fim, mas com opção de sair a cada rodada; dificuldade aumenta a cada rodada vencida
 //	mantemos um contador de vitórias (fatality conta como derrota, mas pode ser pulado)
 void Halterofilismo::sandbox()
 {
-	if (estaJogando) {
-		desenhar();
+	if (estaJogando) {		// se já estávamos levantando peso
+		desenhar();			// continuamos
 	}
-	else 
-		if (mapaSandbox == escolhaAleatorio) {
-			cena = rand() % fundos.size();
-		}
-	mudarFundo(cena);
+	else  {		// do contrário
+		if (mapaSandbox == escolhaAleatorio)	// caso mapa deva ser aleatório
+			cena = rand() % fundos.size();		// sorteamos
+
+		estaJogando = true;
+		avancarEtapa();
+		atualizarDificuldade();
+		mudarFundo(cena);
+	}
 }
 // aqui oferecemos opções de jogo ao usuário: nome do personagem, sexo do protagonista, 
 //	sprite do personagem (slider, incluindo opção pseudoaleatório),
@@ -335,9 +350,12 @@ void Halterofilismo::prepararCampanha()
 		// etapa 0
 		sonsDaHistoria[0].resize(3);	// usamos até a linha 3
 		sonsDaHistoria[0][0].resize(3);	// usamos sons na a linha 1 da etapa 0
-		sonsDaHistoria[0][0][tocarMeioDaLinha] = "somfx_BebeChorando";
+		sonsDaHistoria[0][0][tocarComecoDaLinha] = "somfx_BebeChorando";
 		sonsDaHistoria[0][2].resize(3);	// usamos sons na a linha 3 da etapa 0
-		sonsDaHistoria[0][2][tocarFinalDaLinha] = "somfx_GrunhidosBolaBilhar";
+		if (opcoesDeJogo[valorSexo] == 0)
+			sonsDaHistoria[0][2][tocarFinalDaLinha] = "somfx_GrunhidosBolaBilhar";
+		else
+			sonsDaHistoria[0][2][tocarFinalDaLinha] = "somfx_GrunhidosBolaBilharMulher";
 		// etapa 1
 		sonsDaHistoria[1].resize(4);	// usamos até a linha 4
 		sonsDaHistoria[1][0].resize(3);	// usamos sons na a linha 1 da etapa 1
@@ -396,6 +414,7 @@ void Halterofilismo::campanha()
 		tempoMorte.reset();			// resetamos o tempo da morte
 		tempoMorte.setTempo(5);		// setamos para 5s
 		estaJogando = true;
+		atualizarDificuldade();		// atualizar dificuldade para a etapaAtual
 	}
 	// se estiver jogando
 	else if (estaJogando)
@@ -416,11 +435,7 @@ void Halterofilismo::campanha()
 // loop principal
 void Halterofilismo::desenhar()
 {
-	int frameAtual = protagonista.getFrameAtual();
-	uniDepurar("diferença X", mouse.x - coordenadasXY[cena][0]);
-	uniDepurar("diferença Y", mouse.y - coordenadasXY[cena][1]);
-	
-	// iniciar jogo
+	// iniciar levantamento
 	// primeiro de tudo desenhar o fundo
 	fundo.desenhar(xCentro, yCentro);
 
@@ -463,6 +478,7 @@ void Halterofilismo::desenhar()
 	}
 
 	/* depuração que desenha circulo no alvo das pragas (usado para testar pontos nos diferentes frames
+	int frameAtual = protagonista.getFrameAtual();
 	if (opcoesDeJogo[valorSexo] == protagonistaHomem)
 		uniDesenharCirculo(coordenadasXY[cena][0] + xyFinaisSpritesPragas[protagonistaHomem][frameAtual][0], coordenadasXY[cena][1] + xyFinaisSpritesPragas[protagonistaHomem][frameAtual][1], 5, 90);
 	else
@@ -543,8 +559,15 @@ void Halterofilismo::gerenciarLevantamento()
 	}
 	// dificultar o jogo, do contrário o jogo só acaba em vitória
 	//	caso tipo = fatality/desafio, spawnar pragas no dobro da velocidade
-	if (tempoDificultar.passouTempoMS(fatorDificuldade)) {
-		dificultar();
+	if (tipo == levantamentoFatality) {	// caso levantamento == desafio, reduzir ~50% do intervalo de dificultar
+		if (tempoDificultar.passouTempoMS(fatorDificuldade * .5)) {
+			dificultar();
+		}
+	}
+	else {
+		if (tempoDificultar.passouTempoMS(fatorDificuldade)) {
+			dificultar();
+		}
 	}
 }
 
@@ -588,7 +611,7 @@ void Halterofilismo::pragaAlada()
 
 	Sprite praga;
 	// sem texto, apenas a cue de numa nova praga
-	if (tipo != levantamentoNormal)
+	if (tipo == levantamentoNormal)
 		praga.setSpriteSheet("per_HalterMosca");
 	else
 		praga.setSpriteSheet("per_HalterPombo");
@@ -1202,7 +1225,8 @@ bool Halterofilismo::desenharMenuDerrotaSandbox()
 bool Halterofilismo::desenharMenuVitoriaRapida()
 {
 	if (terminouLevantamento && venceu){
-		if (temporizador.getTempo() / temporizador.getTempo() > .5) {
+		float porcentoDoTempoMaximoQueSobrou = (temporizador.getTempoPassado() / (float)(temporizador.getTempoMaximo())) * 100.0;
+		if (porcentoDoTempoMaximoQueSobrou < 50) {
 			return true;
 		}
 	}
@@ -1211,7 +1235,7 @@ bool Halterofilismo::desenharMenuVitoriaRapida()
 
 bool Halterofilismo::desenharMenuDerrotaRapida()
 {
-	if (terminouLevantamento && !venceu) {
+	if (terminouLevantamento && !venceu && tipo == levantamentoFatality) {
 		return true;
 	}
 	return false;
@@ -1219,7 +1243,7 @@ bool Halterofilismo::desenharMenuDerrotaRapida()
 
 bool Halterofilismo::desenharMenuDerrotaRapidaSandbox()
 {
-	if (terminouLevantamento && !venceu) {
+	if (terminouLevantamento && !venceu && tipo == levantamentoFatality) {
 		return true;
 	}
 	return false;
@@ -1228,7 +1252,8 @@ bool Halterofilismo::desenharMenuDerrotaRapidaSandbox()
 bool Halterofilismo::desenharMenuVitoriaRapidaSandbox()
 {
 	if (terminouLevantamento && venceu){
-		if (temporizador.getTempo() / temporizador.getTempo() > .5) {
+		float porcentoDoTempoMaximoQueSobrou = (temporizador.getTempoPassado() / (float)(temporizador.getTempoMaximo())) * 100.0;
+		if (porcentoDoTempoMaximoQueSobrou < 50) {
 			return true;
 		}
 	}
@@ -1305,5 +1330,15 @@ bool Halterofilismo::desenharMenuFinale()
 	return false;
 }
 
-
-
+void Halterofilismo::atualizarDificuldade()
+{
+	if (etapasDificuldadeAdicionada.size() < etapaAtual) {	// se ainda não contabilizamos a dificuldade para a etapaAtual
+		etapasDificuldadeAdicionada.push_back(true);	// adicionamos um true no final do vetor, para contar o nivel atual
+		// adicionamos o valor para a etapa atual
+		// a variação é o valor da etapaAtual
+		dificuldade += etapaAtual * .5;							// aumentar a dificuldade pelo número da etapa (etapa 0 aumenta 0, 
+		//	etapa 1 aumenta 0, etapa 2 aumenta 1 em cima dos dois 0, a 3 aumenta 1 em cima do 1 e dos zeros, etc)
+		chancePraga = chancePraga - (etapaAtual * .5);	// reduzir o intervalo a cada 2 etapas
+		fatorDificuldade = 1000 / dificuldade;
+	}
+}

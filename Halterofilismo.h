@@ -29,10 +29,18 @@ class Halterofilismo
 	// fica mais fácil usar um enum para acessar o frame de cada letra
 	enum FramesDasLetrasSprite { letraA, letraB, letraC, letraD, letraE, letraF, letraG, letraH, letraI, letraJ, letraK, letraL, letraM, letraN, letraO, letraP,\
 		letraQ, letraR, letraS, letraT, letraU, letraV, letraW, letraX, letraY, letraZ, letraVirgulina };
+	// fica mais fácil acessar todos os efeitos sonoros com um enum
+	enum TodosOsEfeitosSonoros { somfx_HalterImpossivelDuranteMulher, somfx_HalterTodosDesafiosMorte, somfx_HalterMoscaVindo, somfx_HalterTodasNaoDesafioMorte, \
+		somfx_HalterPombosVindo, somfx_HalterEspantarPragas, somfx_HalterDesafioImpossivelSucesso, somfx_HalterImpossivelSucesso, somfx_HalterMedioSucesso, \
+		somfx_HalterDesafioImpossivelMorte, somfx_HalterDesafioMorte, somfx_HalterImpossivelMorte, somfx_HalterMedioMorte, somfx_HalterImpossivelDurante, \
+		somfx_HalterDesafio, somfx_HalterDesafioMulher, somfx_HalterDificilDurante, somfx_HalterMedioDurante, somfx_HalterAssovio1, somfx_HalterAssovio2, \
+		somfx_HalterAssovio3, somfx_HalterAssovio4, somfx_HalterAssovio5, somfx_HalterAssovio6, somfx_HalterSoluco };
 
 	// Sprites usadas pela classe
 	Sprite fundo, protagonista, barraProgresso;
 	vector<Sprite> pragasAladas, letrasAladas;
+	// vetor com os efeitos sonoros usados pela classe
+	vector<Som> sonsEfeitos;
 	// Textos usados pela class
 	Texto textoTemporizador, textoTemporizadorSombra;
 	Texto textoMensagem, textoAvisoPragas, textoAvisoPragasSombra;
@@ -72,7 +80,8 @@ class Halterofilismo
 	vector<vector<vector<int>>> xyFinaisSpritesPragas;	// Xmin,Ymin,Xmax,Ymax para as pragas para cada sprite, usado para mover as pragas
 	vector<vector<int>> xyPragas;	// coordenadas de desenho
 	vector<bool> direcaoPragas;	// true = direita; false = esquerda (devido à falsidade do igualitarismo)
-	vector<bool>	chegouPraga;	// usado para saber se a praga já está incomodando ou não
+	vector<bool> chegouPraga;	// usado para saber se a praga já está incomodando ou não
+	vector<bool> etapasDificuldadeAdicionada;
 
 
 	int xTemporizador, yTemporizador;		// coordenadas do temporizador
@@ -122,7 +131,7 @@ class Halterofilismo
 	void desativarEspantarMoscas();
 	void mudarFundo(int novoFundo);
 	void espantarPragas();
-
+	void atualizarDificuldade();
 public:
 	Halterofilismo();
 	~Halterofilismo();

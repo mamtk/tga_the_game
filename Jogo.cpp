@@ -1,4 +1,5 @@
 ﻿#include "Jogo.h"
+#include "Temporizador.h"
 
 Jogo::Jogo()
 {
@@ -31,15 +32,17 @@ void Jogo::inicializar()
 	recursos.carregarFonte("fonteNormalSombra", "UbuntuMono-B.ttf", 19);
 	recursos.carregarFonte("fonteGrande", "UbuntuMono-R.ttf", 27);
 	recursos.carregarFonte("fonteGrandeSombra", "UbuntuMono-B.ttf", 29);
-	// sons
+	// sons da historia
 	recursos.carregarAudio("somfundo_HalterFazenda", "audio/somfundo/somfundo_HalterFazenda.ogg");
 	recursos.carregarAudio("somfundo_HalterEsgoto", "audio/somfundo/somfundo_HalterEsgoto.ogg");
 	recursos.carregarAudio("somfundo_HalterCanil", "audio/somfundo/somfundo_HalterCanil.ogg");
 	recursos.carregarAudio("somfundo_HalterAcademiaSuburbio", "audio/somfundo/somfundo_HalterAcademiaSuburbio.ogg");
 	recursos.carregarAudio("somfundo_HalterAcademiaCentro", "audio/somfundo/somfundo_HalterAcademiaCentro.ogg");
 	recursos.carregarAudio("somfundo_HalterOlimpiadas", "audio/somfundo/somfundo_HalterOlimpiadas.ogg");
+	recursos.carregarAudio("somfx_Intro", "audio/somfx/somfx_Intro.ogg");
 	recursos.carregarAudio("somfx_BebeChorando", "audio/somfx/somfx_BebeChorando.ogg");
 	recursos.carregarAudio("somfx_GrunhidosBolaBilhar", "audio/somfx/somfx_GrunhidosBolaBilhar.ogg");
+	recursos.carregarAudio("somfx_GrunhidosBolaBilharMulher", "audio/somfx/somfx_GrunhidosBolaBilharMulher.ogg");
 	recursos.carregarAudio("somfx_CavaloDoido", "audio/somfx/somfx_CavaloDoido.ogg");
 	recursos.carregarAudio("somfx_CarroLigando", "audio/somfx/somfx_CarroLigando.ogg");
 	recursos.carregarAudio("somfx_Ovelhas", "audio/somfx/somfx_Ovelhas.ogg");
@@ -48,7 +51,35 @@ void Jogo::inicializar()
 	recursos.carregarAudio("somfx_Espirro", "audio/somfx/somfx_Espirro.ogg");
 	recursos.carregarAudio("somfx_OssosQuebrando", "audio/somfx/somfx_OssosQuebrando.ogg");
 	recursos.carregarAudio("somfx_VozNoRadio", "audio/somfx/somfx_VozNoRadio.ogg");
+	// efeitos sonoros do jogo
+	recursos.carregarAudio("somfx_HalterImpossivelDuranteMulher", "audio/somfx/somfx_HalterImpossivelDuranteMulher.ogg");
+	recursos.carregarAudio("somfx_HalterTodosDesafiosMorte", "audio/somfx/somfx_HalterTodosDesafiosMorte.ogg");
+	recursos.carregarAudio("somfx_HalterMoscaVindo", "audio/somfx/somfx_HalterMoscaVindo.ogg");
+	recursos.carregarAudio("somfx_HalterTodasNaoDesafioMorte", "audio/somfx/somfx_HalterTodasNaoDesafioMorte.ogg");
+	recursos.carregarAudio("somfx_HalterPombosVindo", "audio/somfx/somfx_HalterPombosVindo.ogg");
+	recursos.carregarAudio("somfx_HalterEspantarPragas", "audio/somfx/somfx_HalterEspantarPragas.ogg");
+	recursos.carregarAudio("somfx_HalterDesafioImpossivelSucesso", "audio/somfx/somfx_HalterDesafioImpossivelSucesso.ogg");
+	recursos.carregarAudio("somfx_HalterImpossivelSucesso", "audio/somfx/somfx_HalterImpossivelSucesso.ogg");
+	recursos.carregarAudio("somfx_HalterMedioSucesso", "audio/somfx/somfx_HalterMedioSucesso.ogg");
+	recursos.carregarAudio("somfx_HalterDesafioImpossivelMorte", "audio/somfx/somfx_HalterDesafioImpossivelMorte.ogg");
+	recursos.carregarAudio("somfx_HalterDesafioMorte", "audio/somfx/somfx_HalterDesafioMorte.ogg");
+	recursos.carregarAudio("somfx_HalterImpossivelMorte", "audio/somfx/somfx_HalterImpossivelMorte.ogg");
+	recursos.carregarAudio("somfx_HalterMedioMorte", "audio/somfx/somfx_HalterMedioMorte.ogg");
+	recursos.carregarAudio("somfx_HalterImpossivelDurante", "audio/somfx/somfx_HalterImpossivelDurante.ogg");
+	recursos.carregarAudio("somfx_HalterDesafio", "audio/somfx/somfx_HalterDesafio.ogg");
+	recursos.carregarAudio("somfx_HalterDesafioMulher", "audio/somfx/somfx_HalterDesafioMulher.ogg");
+	recursos.carregarAudio("somfx_HalterDificilDurante", "audio/somfx/somfx_HalterDificilDurante.ogg");
+	recursos.carregarAudio("somfx_HalterMedioDurante", "audio/somfx/somfx_HalterMedioDurante.ogg");
+	recursos.carregarAudio("somfx_HalterAssovio1", "audio/somfx/somfx_HalterAssovio1.ogg");
+	recursos.carregarAudio("somfx_HalterAssovio2", "audio/somfx/somfx_HalterAssovio2.ogg");
+	recursos.carregarAudio("somfx_HalterAssovio3", "audio/somfx/somfx_HalterAssovio3.ogg");
+	recursos.carregarAudio("somfx_HalterAssovio4", "audio/somfx/somfx_HalterAssovio4.ogg");
+	recursos.carregarAudio("somfx_HalterAssovio5", "audio/somfx/somfx_HalterAssovio5.ogg");
+	recursos.carregarAudio("somfx_HalterAssovio6", "audio/somfx/somfx_HalterAssovio6.ogg");
+	recursos.carregarAudio("somfx_HalterSoluco", "audio/somfx/somfx_HalterSoluco.ogg");
+	recursos.carregarAudio("somfx_HalterFinaleFogos", "audio/somfx/somfx_HalterFinaleFogos.ogg");
 	// menus
+	recursos.carregarAudio("somfx_MenuInstantaneo", "audio/somfx/somfx_MenuInstantaneo.ogg");
 	recursos.carregarAudio("somfundo_MenuPrincipal", "audio/music_02_Menu.ogg");
 	recursos.carregarAudio("somfundo_MenuOpcoes", "audio/music_03_Opcoes.ogg");
 	recursos.carregarAudio("somfundo_MenuAjuda", "audio/music_04_Ajuda.ogg");
@@ -57,6 +88,7 @@ void Jogo::inicializar()
 	recursos.carregarSpriteSheet("fx_Esmaecer", "img/fx/fx_esmaecer.png", 1, 100);
 	recursos.carregarSpriteSheet("fx_Dot", "img/fx/fx_Dot.png", 1, 1);
 	recursos.carregarSpriteSheet("fundo_teste", "img/fundos/fundo_teste.jpg");
+	recursos.carregarSpriteSheet("fx_IntroBunsOfSteel", "img/fx/fx_IntroBunsOfSteel.png", 0, 6);
 	// menuPrincipal
 	recursos.carregarSpriteSheet("fundo_MenuPrincipal01", "img/fundos/fundo_MenuPrincipal01.png");
 	recursos.carregarSpriteSheet("fundo_MenuPrincipal02", "img/fundos/fundo_MenuPrincipal02.png");
@@ -81,6 +113,9 @@ void Jogo::inicializar()
 	recursos.carregarSpriteSheet("fundo_HalterCanil", "img/fundos/fundo_HalterCanil.png");
 	recursos.carregarSpriteSheet("fundo_HalterAcademiaSuburbio", "img/fundos/fundo_HalterAcademiaSuburbio.png");
 	recursos.carregarSpriteSheet("fundo_HalterAcademiaCentro", "img/fundos/fundo_HalterAcademiaCentro.png");
+	recursos.carregarSpriteSheet("fundo_HalterMenuFalha", "img/fundos/fundo_HalterMenuFalha.png");
+	recursos.carregarSpriteSheet("fundo_HalterMenuVitoria", "img/fundos/fundo_HalterMenuVitoria.png");
+	recursos.carregarSpriteSheet("fundo_HalterFinale", "img/fundos/fundo_HalterFinale.png");
 	recursos.carregarSpriteSheet("fundo_HalterEtapaFazenda", "img/fundos/fundo_HalterEtapaFazenda.png");
 	recursos.carregarSpriteSheet("fundo_HalterEtapaEsgoto", "img/fundos/fundo_HalterEtapaEsgoto.png");
 	recursos.carregarSpriteSheet("fundo_HalterEtapaCanil", "img/fundos/fundo_HalterEtapaCanil.png");
@@ -208,7 +243,7 @@ void Jogo::inicializar()
 		L"Menu Principal", // [1]
 		L"Sair do jogo", // [2]
 	};
-	menuVitoria.inicializar(textoOpcoesVitoria, textoCabecalhoVitoria, " ", " ", { xCentro, (int)(yCentro*.3) }, 0, xCentro, (int)(yCentro), 0, 31, {}, {}, {}, true, "fonteNormalSombra");
+	menuVitoria.inicializar(textoOpcoesVitoria, textoCabecalhoVitoria, "fundo_HalterMenuVitoria", "", { xCentro, (int)(yCentro*.3) }, 0, xCentro, (int)(yCentro), 0, 31, {}, {}, {}, true, "fonteNormalSombra");
 
 	// menu de derrota campanha
 	wstring textoCabecalhoDerrota = L"Você perdeu!\nEscolha a opção desejada\n\nPressione [CIMA] ou [BAIXO] ou passe o mouse para mudar a seleção.\n\
@@ -217,16 +252,16 @@ void Jogo::inicializar()
 		L"Menu Principal", // [1]
 		L"Sair do jogo", // [2]
 	};
-	menuDerrota.inicializar(textoOpcoesDerrota, textoCabecalhoDerrota, " ", " ", { xCentro, (int)(yCentro*.3) }, 0, xCentro, (int)(yCentro), 0, 31, {}, {}, {}, true, "fonteNormalSombra");
+	menuDerrota.inicializar(textoOpcoesDerrota, textoCabecalhoDerrota, "fundo_HalterMenuFalha", "", { xCentro, (int)(yCentro*.3) }, 0, xCentro, (int)(yCentro), 0, 31, {}, {}, {}, true, "fonteNormalSombra");
 
 	// menu de vitoria sandbox
 	wstring textoCabecalhoVitoriaSandbox = L"Parabéns, você ganhou!\nEscolha a opção desejada\n\nPressione [CIMA] ou [BAIXO] ou passe o mouse para mudar a seleção.\n\
-													\nPressione [ENTER] para iniciar o jogo com a opção destacada ou Menu Principal para voltar ao menu.";
+		\nPressione [ENTER] para iniciar o jogo com a opção destacada ou Menu Principal para voltar ao menu.";
 	vector<wstring> textoOpcoesVitoriaSandbox = { L"Continuar", // [0]
 		L"Menu Principal", // [1]
 		L"Sair do jogo", // [2]
 	};
-	menuVitoriaSandbox.inicializar(textoOpcoesVitoriaSandbox, textoCabecalhoVitoriaSandbox, " ", " ", { xCentro, (int)(yCentro*.3) }, 0, xCentro, (int)(yCentro), 0, 31, {}, {}, {}, true, "fonteNormalSombra");
+	menuVitoriaSandbox.inicializar(textoOpcoesVitoriaSandbox, textoCabecalhoVitoriaSandbox, "fundo_HalterMenuVitoria", "", { xCentro, (int)(yCentro*.3) }, 0, xCentro, (int)(yCentro), 0, 31, {}, {}, {}, true, "fonteNormalSombra");
 
 	// menu de derrota sandbox
 	wstring textoCabecalhoDerrotaSandbox = L"Você perdeu!\nEscolha a opção desejada\n\n[CIMA] ou [BAIXO] ou passe o mouse para mudar a seleção.\n\
@@ -235,53 +270,53 @@ void Jogo::inicializar()
 		L"Menu Principal", // [1]
 		L"Sair do jogo", // [2]
 	};
-	menuDerrotaSandbox.inicializar(textoOpcoesDerrotaSandbox, textoCabecalhoDerrotaSandbox, " ", " ", { xCentro, (int)(yCentro*.3) }, 0, xCentro, (int)(yCentro), 0, 31, {}, {}, {}, true, "fonteNormalSombra");
+	menuDerrotaSandbox.inicializar(textoOpcoesDerrotaSandbox, textoCabecalhoDerrotaSandbox, "fundo_HalterMenuFalha", "", { xCentro, (int)(yCentro*.3) }, 0, xCentro, (int)(yCentro), 0, 31, {}, {}, {}, true, "fonteNormalSombra");
 
 	// menu de vitoria rapida
 	wstring textoCabecalhoVitoriaRapida = L"Parece que esta partida não o desafio o suficiente, deseja tentar o Desafio ( Não elimina)\nEscolha a opção desejada\n\nPressione [CIMA] ou [BAIXO] ou passe o mouse para mudar a seleção.\n\
-										   				\nPressione [ENTER] para iniciar o jogo com a opção destacada ou Menu Principal para voltar ao menu.";
+		\nPressione [ENTER] para iniciar o jogo com a opção destacada ou Menu Principal para voltar ao menu.";
 	vector<wstring> textoOpcoesVitoriaRapida = { L" Tentar Desafio",
 		L"Continuar",
 		L"Menu Principal",
 		L"Sair do jogo",
 	};
-	menuVitoriaRapida.inicializar(textoOpcoesVitoriaRapida, textoCabecalhoVitoriaRapida, " ", " ", { xCentro, (int)(yCentro*.3) }, 0, xCentro, (int)(yCentro), 0, 31, {}, {}, {}, true, "fonteNormalSombra");
+	menuVitoriaRapida.inicializar(textoOpcoesVitoriaRapida, textoCabecalhoVitoriaRapida, "fundo_HalterMenuVitoria", "", { xCentro, (int)(yCentro*.3) }, 0, xCentro, (int)(yCentro), 0, 31, {}, {}, {}, true, "fonteNormalSombra");
 
 	// menu de vitoria rapida sandbox
 	wstring textoCabecalhoVitoriaRapidaSandbox = L"Parece que esta partida não o desafio o suficiente, deseja tentar o Desafio ( Não elimina)\nEscolha a opção desejada\n\nPressione [CIMA] ou [BAIXO] ou passe o mouse para mudar a seleção.\n\
-												  		\nPressione [ENTER] para iniciar o jogo com a opção destacada ou Menu Principal para voltar ao menu.";
+		\nPressione [ENTER] para iniciar o jogo com a opção destacada ou Menu Principal para voltar ao menu.";
 	vector<wstring> textoOpcoesVitoriaRapidaSandbox = { L" Tentar Desafio",
 		L"Continuar",
 		L"Menu Principal",
 		L"Sair do jogo",
 	};
-	menuVitoriaRapidaSandbox.inicializar(textoOpcoesVitoriaRapidaSandbox, textoCabecalhoVitoriaRapidaSandbox, " ", " ", { xCentro, (int)(yCentro*.3) }, 0, xCentro, (int)(yCentro), 0, 31, {}, {}, {}, true, "fonteNormalSombra");
+	menuVitoriaRapidaSandbox.inicializar(textoOpcoesVitoriaRapidaSandbox, textoCabecalhoVitoriaRapidaSandbox, "fundo_HalterMenuVitoria", "", { xCentro, (int)(yCentro*.3) }, 0, xCentro, (int)(yCentro), 0, 31, {}, {}, {}, true, "fonteNormalSombra");
 	
 	// menu derrota rapida
 	wstring textoCabecalhoDerrotaRapida = L"Você perdeu no Desafio!\nEscolha a opção desejada\n\n[CIMA] ou [BAIXO] ou passe o mouse para mudar a seleção.\n\
-												  													\nPressione [ENTER] para iniciar o jogo com a opção destacada ou Menu Principal para voltar ao menu.";
+		\nPressione [ENTER] para iniciar o jogo com a opção destacada ou Menu Principal para voltar ao menu.";
 	vector<wstring> textoOpcoesDerrotaRapida = { L"Continuar", // [0]
 		L"Menu Principal", // [1]
 		L"Sair do jogo", // [2]
 	};
-	menuDerrotaRapida.inicializar(textoOpcoesDerrotaRapida, textoCabecalhoDerrotaRapida, " ", " ", { xCentro, (int)(yCentro*.3) }, 0, xCentro, (int)(yCentro), 0, 31, {}, {}, {}, true, "fonteNormalSombra");
+	menuDerrotaRapida.inicializar(textoOpcoesDerrotaRapida, textoCabecalhoDerrotaRapida, "fundo_HalterMenuFalha", "", { xCentro, (int)(yCentro*.3) }, 0, xCentro, (int)(yCentro), 0, 31, {}, {}, {}, true, "fonteNormalSombra");
 	
 	// menu derrota rapida sandbox
 	wstring textoCabecalhoDerrotaRapidaSandbox = L"Você perdeu no Desafio!\nEscolha a opção desejada\n\n[CIMA] ou [BAIXO] ou passe o mouse para mudar a seleção.\n\
-													\nPressione [ENTER] para iniciar o jogo com a opção destacada ou Menu Principal para voltar ao menu.";
+		\nPressione [ENTER] para iniciar o jogo com a opção destacada ou Menu Principal para voltar ao menu.";
 	vector<wstring> textoOpcoesDerrotaRapidaSandbox = { L"Continuar", // [0]
 		L"Menu Principal", // [1]
 		L"Sair do jogo", // [2]
 	};
-	menuDerrotaRapidaSandbox.inicializar(textoOpcoesDerrotaRapidaSandbox, textoCabecalhoDerrotaRapidaSandbox, " ", " ", { xCentro, (int)(yCentro*.3) }, 0, xCentro, (int)(yCentro), 0, 31, {}, {}, {}, true, "fonteNormalSombra");
+	menuDerrotaRapidaSandbox.inicializar(textoOpcoesDerrotaRapidaSandbox, textoCabecalhoDerrotaRapidaSandbox, "fundo_HalterMenuFalha", " ", { xCentro, (int)(yCentro*.3) }, 0, xCentro, (int)(yCentro), 0, 31, {}, {}, {}, true, "fonteNormalSombra");
 
 	// menu finale
-	wstring textoCabecalhoMenuFinale = L"Parabéns, você terminou o jogo.\nEscolha a opção desejada\n\n[CIMA] ou [BAIXO] ou passe o mouse para mudar a seleção.\n\
-												\nPressione [ENTER] para iniciar o jogo com a opção destacada ou Menu Principal para voltar ao menu.";
+	wstring textoCabecalhoMenuFinale = L"Parabéns, você conquistou as dificuldades e venceu o jogo.\nEscolha a opção desejada\n\n[CIMA] ou [BAIXO] ou passe o mouse para mudar a seleção.\n\
+			\nPressione [ENTER] para iniciar o jogo com a opção destacada ou Menu Principal para voltar ao menu.";
 	vector<wstring> textoOpcoesMenuFinale = { L"Menu Principal",
 		L"Sair do jogo",
 	};
-	menuFinale.inicializar(textoOpcoesMenuFinale, textoCabecalhoMenuFinale, " ", " ", { xCentro, (int)(yCentro*.3) }, 0, xCentro, (int)(yCentro), 0, 31, {}, {}, {}, true, "fonteNormalSombra");
+	menuFinale.inicializar(textoOpcoesMenuFinale, textoCabecalhoMenuFinale, "fundo_HalterFinale", "", { xCentro, (int)(yCentro*.3) }, 0, xCentro, (int)(yCentro), 0, 31, {}, {}, {}, true, "fonteNormalSombra");
 }
 
 void Jogo::finalizar()
@@ -296,8 +331,25 @@ void Jogo::finalizar()
 void Jogo::executar()
 {
 	// antes de iniciar o jogo fazemos nossa intro estilosa
-	//	detalhe que isso tá errado, era pra ser orientado a objeto, mas quem ia explicar as refs?
-	// TODO: abrir menu ao apertar esc (Continuar Jogo, Voltar ao Menu Principal, Fechar Jogo), talvez permitir mudar opções durante o jogo tb
+	Som somIntroIncrivelmenteDemais, somMenuInstaneo;
+	Texto maisDemaisAindaSuperTexto;
+	maisDemaisAindaSuperTexto.setWstring(L"Buns of Steel 2: A Herança de Família");
+	maisDemaisAindaSuperTexto.setCor(14, 99, 254);
+	maisDemaisAindaSuperTexto.setFonte("fonteGrandeSombra");
+
+	Sprite sprIntro;
+	somMenuInstaneo.setAudio("somfx_MenuInstantaneo");
+	sprIntro.setSpriteSheet("fx_IntroBunsOfSteel");
+	somIntroIncrivelmenteDemais.setAudio("somfx_Intro");
+	somIntroIncrivelmenteDemais.tocar();
+
+	while (somIntroIncrivelmenteDemais.estaTocando()) {
+		uniIniciarFrame();
+		sprIntro.avancarAnimacao();
+		sprIntro.desenhar(janela.getLargura() * .5, janela.getAltura() * .5);
+		maisDemaisAindaSuperTexto.desenhar(janela.getLargura() * .5, janela.getAltura() * .11);
+		uniTerminarFrame();
+	}
 
 	// começar a tocar música do menu principal
 	principal.tocarMusica();
@@ -315,6 +367,9 @@ void Jogo::executar()
 					halterofilia.prosseguir();		// e despausar o jogo
 				}
 				else {								// do contrário
+					if (!opcoesDeJogo[valorDesativarSom]) {	// se o som não estiver desativado
+						somMenuInstaneo.tocar();	// tocar efeito sonoro do menu instantâneo
+					}
 					menuInstantaneoAtivo = true;	// ativá-lo
 					halterofilia.pausar();			// e pausar o jogo
 				}
@@ -389,38 +444,41 @@ void Jogo::gerenciarEstado()
 			}
 			break;
 		case jogoHalterofilismoCampanha:
-			if (halterofilia.desenharMenuVitoria()) { // exibir o menu de vitoria
-				estado = menuVitoriaEstado;
+			// checamos do menu mais específico para o menos específico
+			if (halterofilia.desenharMenuFinale()) {
+				estado = menuFinaleEstado;
 			}
 			else if (halterofilia.desenharMenuVitoriaRapida()) {
 				estado = menuVitoriaRapidaEstado;
 			}
-			else if (halterofilia.desenharMenuDerrota()) { // exibir o menu de derrota
-				estado = menuDerrotaEstado;
+			else if (halterofilia.desenharMenuVitoria()) { // exibir o menu de vitoria
+				estado = menuVitoriaEstado;
 			}
 			else if (halterofilia.desenharMenuDerrotaRapida()) {
 				estado = menuDerrotaRapidaEstado;
 			}
-			else if (halterofilia.desenharMenuFinale()) {
-				estado = menuFinaleEstado;
+			else if (halterofilia.desenharMenuDerrota()) { // exibir o menu de derrota
+				estado = menuDerrotaEstado;
 			}
 			else
 				halterofilia.campanha();
 			break;
 		case jogoHalterofilismoSandbox:
-			halterofilia.sandbox();
-			if (halterofilia.desenharMenuVitoriaSandbox()) {
-				estado = menuVitoriaSandboxEstado;
-			}
-			else if (halterofilia.desenharMenuVitoriaRapidaSandbox()) {
+			// checamos do menu mais específico para o menos específico
+			if (halterofilia.desenharMenuVitoriaRapidaSandbox()) {
 				estado = menuVitoriaRapidaSandboxEstado;
 			}
-			else if (halterofilia.desenharMenuDerrotaSandbox()) {
-				estado = menuDerrotaSandboxEstado;
+			else if (halterofilia.desenharMenuVitoriaSandbox()) {
+				estado = menuVitoriaSandboxEstado;
 			}
 			else if (halterofilia.desenharMenuDerrotaRapidaSandbox()) {
 				estado = menuDerrotaRapidaSandboxEstado;
 			}
+			else if (halterofilia.desenharMenuDerrotaSandbox()) {
+				estado = menuDerrotaSandboxEstado;
+			}
+			else 
+				halterofilia.sandbox();
 			break;
 		case menuVitoriaEstado: 
 			menuVitoria.desenhar();
@@ -631,7 +689,7 @@ void Jogo::gerenciarMenuVitoriaSandbox()
 	{
 	case escolhaContinuarSandbox:
 		halterofilia.resetarLevantamento();
-		halterofilia.ativarJogando();
+		halterofilia.avancarEtapa();
 		estado = jogoHalterofilismoSandbox;
 		break;
 	case escolhaMenuPrincipalVitoriaSandbox:
@@ -714,7 +772,6 @@ void Jogo::gerenciarMenuVitoriaRapidaSandbox()
 		break;
 	case escolhaContinuarRapidaSandbox:
 		halterofilia.resetarLevantamento();
-		halterofilia.ativarJogando();
 		estado = jogoHalterofilismoSandbox;
 		break;
 	case escolhaMenuPrincipalVitoriaRapidaSandbox:
@@ -764,7 +821,6 @@ void Jogo::gerenciarMenuDerrotaRapidaSandbox()
 	{
 	case escolhaContinuarDerrotaRapidaSandbox:
 		halterofilia.resetarLevantamento();
-		halterofilia.ativarJogando();
 		estado = jogoHalterofilismoSandbox;
 		break;
 	case escolhaMenuPrincipalDerrotaRapidaSandbox:
@@ -795,7 +851,7 @@ void Jogo::gerenciarMenuFinale()
 		break;
 	default:
 	case escolhaSairMenuFinale:
-		aplicacao.sair == true;
+		aplicacao.sair = true;
 		break;
 	}
 }
