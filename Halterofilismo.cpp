@@ -84,6 +84,23 @@ void Halterofilismo::inicializar(int estado, vector<int> valoresOpcoesDeJogo)
 	coordenadasXY[5] = { 507, 475 };	// oimpíadas
 
 	// inicializar objetos texto
+	// placar
+	xPlacarAtual = xCentro * .45;
+	yPlacarAtual = yCentro * .15;
+	xPlacarMaximo = yCentro * .15;
+	yPlacarMaximo = yCentro * .77;
+	placarMaximo.setEspacamentoLinhas(1.5f);
+	placarMaximo.setCor(193, 255, 26); // verde limão
+	placarMaximo.setFonte("fonteGrande");
+	placarMaximoSombra.setEspacamentoLinhas(1.5f);
+	placarMaximoSombra.setCor(0, 0, 0); // branco
+	placarMaximoSombra.setFonte("fonteGrande");
+	placarAtual.setEspacamentoLinhas(1.5f);
+	placarAtual.setCor(36, 155, 0); // verde escuro
+	placarAtual.setFonte("fonteGrande");
+	placarAtualSombra.setEspacamentoLinhas(1.5f);
+	placarAtualSombra.setCor(0, 0, 0); // branco
+	placarAtualSombra.setFonte("fonteGrande");
 	// temporizador
 	xTemporizador = xCentro;
 	yTemporizador = yCentro * .15;
@@ -483,7 +500,14 @@ void Halterofilismo::desenharHUD()
 		return;					// mais nada a fazer aqui
 	}
 	if (estadoDoJogo == jogoHalterofilismoSandbox) {
-		// desenhar placar
+		// setar placar atual
+		placarAtual.setString(std::to_string(pontuacaoAtual));	// para um resultado melhor arredondamos pra int
+		placarAtualSombra.setString(std::to_string(pontuacaoAtual));
+		// desenhar pontuações
+		placarMaximo.desenhar(xPlacarMaximo, yPlacarMaximo);
+		placarMaximoSombra.desenhar(xPlacarMaximo, yPlacarMaximo);
+		placarAtual.desenhar(xPlacarAtual, yPlacarAtual);
+		placarAtualSombra.desenhar(xPlacarAtual, yPlacarAtual);
 	}
 
 	// primeiro desenhamos a sombra
@@ -550,6 +574,8 @@ void Halterofilismo::dificultar()
 				protagonista.avancarAnimacao(-deltaTempo);	// como queremos um retrocederAnimacao, precisamos fazer na mão
 		}
 	}
+	// pontuação = (tempoPassadoMS / fator de dificuldade)
+	pontuacaoAtual = temporizador.getTempoPassadoMS() / fatorDificuldade;
 }
 
 void Halterofilismo::pragaAlada()
@@ -1219,6 +1245,17 @@ void Halterofilismo::resetarLevantamento()
 	progresso = 0;
 	// melhor resetar a mais do que a menos
 	temporizador.reset();
+	// se sandbox
+	if (estadoDoJogo == jogoHalterofilismoSandbox) {
+		// atualizar placar maximo
+		if (pontuacaoAtual > pontuacaoMaxima)
+			pontuacaoMaxima = pontuacaoAtual;
+
+		string placarMaximoStr = "MAX: ";
+		placarMaximoStr += std::to_string(pontuacaoMaxima);	// para um resultado melhor arredondamos pra int
+		placarMaximo.setString(placarMaximoStr);
+		placarMaximoSombra.setString(placarMaximoStr);
+	}
 }
 
 void Halterofilismo::avancarEtapa() 

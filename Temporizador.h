@@ -21,6 +21,8 @@ public:
 	int getTempo();						// segundos
 	float getTempoMaximoMS();			// milissegundos
 	int getTempoMaximo();				// segundos
+	float getTempoPassadoMS();			// milissegundos
+	int getTempoPassado();				// segundos
 	std::string getTempoFormatado();	// horas:minutos:segundos
 	bool passouTempo(int segundos);		// automaticamente reseta o pontoZero se passou do limite
 	bool passouTempoMS(int milissegundos);	// automaticamente reseta o pontoZero se passou do limite
