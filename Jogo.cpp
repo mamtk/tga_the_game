@@ -451,7 +451,7 @@ void Jogo::gerenciarEstado()
 		case menuDerrotaRapidaSandboxEstado:
 			menuDerrotaRapidaSandbox.desenhar();
 			if (menuDerrotaRapidaSandbox.finalizado())
-				gerenciarMenuDerrotaRapidaSandbox;
+				gerenciarMenuDerrotaRapidaSandbox();
 			break;
 	}
 }

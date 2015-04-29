@@ -12,7 +12,7 @@ class Jogo
 	enum EstadoDoJogo {
 		menuPrincipal, menuJogos, menuOpcoes, menuAjuda, menuCreditos, menuHalterofilismoSandbox, jogoHalterofilismoCampanha, jogoHalterofilismoSandbox,
 		menuVitoriaEstado, menuDerrotaEstado, menuVitoriaSandboxEstado, menuDerrotaSandboxEstado, menuVitoriaRapidaEstado, menuVitoriaRapidaSandboxEstado,
-		menuDerrotaRapidaEstado, menuDerrotaRapidaSandboxEstado, menuFinale
+		menuDerrotaRapidaEstado, menuDerrotaRapidaSandboxEstado, menuFinaleEstado
 	};
 
 	// opções dos menus

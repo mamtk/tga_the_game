@@ -1209,6 +1209,22 @@ bool Halterofilismo::desenharMenuVitoriaRapida()
 	return false;
 }
 
+bool Halterofilismo::desenharMenuDerrotaRapida()
+{
+	if (terminouLevantamento && !venceu) {
+		return true;
+	}
+	return false;
+}
+
+bool Halterofilismo::desenharMenuDerrotaRapidaSandbox()
+{
+	if (terminouLevantamento && !venceu) {
+		return true;
+	}
+	return false;
+}
+
 bool Halterofilismo::desenharMenuVitoriaRapidaSandbox()
 {
 	if (terminouLevantamento && venceu){
@@ -1280,4 +1296,5 @@ void Halterofilismo::ativarLevantamentoRapido()
 {
 	tipo = levantamentoFatality;
 }
+
 
